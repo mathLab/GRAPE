@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.inner_iteration_parallel
-=========================================================
+grape.general\_graph.GeneralGraph.inner\_iteration\_parallel
+============================================================
 
 .. currentmodule:: grape.general_graph
 

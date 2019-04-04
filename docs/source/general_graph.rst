@@ -37,7 +37,7 @@ GeneralGraph
     GeneralGraph.merge_lists
     GeneralGraph.update_status
     GeneralGraph.delete_a_node
-    GeneralGraph.simulate_multi_room_fire
+    GeneralGraph.simulate_multi_room_perturbation
 
 .. autoclass:: GeneralGraph
     :members:

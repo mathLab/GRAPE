@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph
-================================
+grape.general\_graph.GeneralGraph
+=================================
 
 .. currentmodule:: grape.general_graph
 
@@ -72,7 +72,7 @@ grape.general_graph.GeneralGraph
       ~GeneralGraph.reverse
       ~GeneralGraph.rm_nodes
       ~GeneralGraph.selfloop_edges
-      ~GeneralGraph.simulate_multi_room_fire
+      ~GeneralGraph.simulate_multi_room_perturbation
       ~GeneralGraph.single_source_shortest_path_parallel
       ~GeneralGraph.single_source_shortest_path_serial
       ~GeneralGraph.size

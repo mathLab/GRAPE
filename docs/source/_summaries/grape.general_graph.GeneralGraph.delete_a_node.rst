@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.delete_a_node
-==============================================
+grape.general\_graph.GeneralGraph.delete\_a\_node
+=================================================
 
 .. currentmodule:: grape.general_graph
 

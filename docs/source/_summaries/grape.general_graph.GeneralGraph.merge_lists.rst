@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.merge_lists
-============================================
+grape.general\_graph.GeneralGraph.merge\_lists
+==============================================
 
 .. currentmodule:: grape.general_graph
 

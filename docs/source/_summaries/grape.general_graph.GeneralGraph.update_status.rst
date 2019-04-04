@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.update_status
-==============================================
+grape.general\_graph.GeneralGraph.update\_status
+================================================
 
 .. currentmodule:: grape.general_graph
 

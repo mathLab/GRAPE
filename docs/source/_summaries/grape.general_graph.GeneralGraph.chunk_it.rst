@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.chunk_it
-=========================================
+grape.general\_graph.GeneralGraph.chunk\_it
+===========================================
 
 .. currentmodule:: grape.general_graph
 

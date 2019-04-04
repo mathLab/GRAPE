@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.closeness_centrality
-=====================================================
+grape.general\_graph.GeneralGraph.closeness\_centrality
+=======================================================
 
 .. currentmodule:: grape.general_graph
 

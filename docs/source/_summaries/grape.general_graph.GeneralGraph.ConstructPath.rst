@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.ConstructPath
-==============================================
+grape.general\_graph.GeneralGraph.ConstructPath
+===============================================
 
 .. currentmodule:: grape.general_graph
 

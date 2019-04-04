@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.betweenness_centrality
-=======================================================
+grape.general\_graph.GeneralGraph.betweenness\_centrality
+=========================================================
 
 .. currentmodule:: grape.general_graph
 

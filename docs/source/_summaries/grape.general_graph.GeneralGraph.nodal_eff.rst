@@ -1,5 +1,5 @@
-grape.general_graph.GeneralGraph.nodal_eff
-==========================================
+grape.general\_graph.GeneralGraph.nodal\_eff
+============================================
 
 .. currentmodule:: grape.general_graph
 
