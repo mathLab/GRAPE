@@ -1,4 +1,3 @@
-
 import sys
 #print (networkx.__version__)
 #2.0
@@ -18,11 +17,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import networkx as nx
 import numpy as np
 logging.basicConfig(
-    filename="general_code_output.log",
-    level=logging.DEBUG,
-    filemode='w'
-    )
-
+    filename="general_code_output.log", level=logging.DEBUG, filemode='w')
 
 
 class GeneralGraph(nx.DiGraph):
@@ -42,7 +37,6 @@ class GeneralGraph(nx.DiGraph):
     """
 
     def load(self, filename):
-
         """Load input file.
 
 
@@ -116,9 +110,9 @@ class GeneralGraph(nx.DiGraph):
                     self.add_node(row['Mark'])
 
                 for key in [
-                        'Area', 'PerturbationResistant',
-                        'InitStatus', 'Description', 'From_to', 'Mark',
-                        'Father_mark']:
+                        'Area', 'PerturbationResistant', 'InitStatus',
+                        'Description', 'From_to', 'Mark', 'Father_mark'
+                ]:
                     self.node[row['Mark']][key] = row[key]
 
                 if row['Father_mark'] == 'NULL':
@@ -127,16 +121,16 @@ class GeneralGraph(nx.DiGraph):
                 if not row['Father_mark'] in self:
                     self.add_node(row['Father_mark'])
 
-                self.add_edge(row['Father_mark'], row['Mark'],
-                              Father_cond=row['Father_cond'])
-
+                self.add_edge(
+                    row['Father_mark'],
+                    row['Mark'],
+                    Father_cond=row['Father_cond'])
 
         self.broken = []
         self.newstatus = {}
         self.finalstatus = {}
         self.Status_Room = {}
         self.Mark_Status = {}
-
 
         self.room = nx.get_node_attributes(self, 'Area')
         self.FR = nx.get_node_attributes(self, 'PerturbationResistant')
@@ -153,25 +147,19 @@ class GeneralGraph(nx.DiGraph):
         self.From_to = nx.get_node_attributes(self, 'From_to')
 
         self.services_FROM = []
-        for id, From_to  in self.From_to.items():
+        for id, From_to in self.From_to.items():
             if From_to == "SOURCE":
                 self.services_FROM.append(id)
 
-
         self.services_TO = []
-        for id, From_to  in self.From_to.items():
+        for id, From_to in self.From_to.items():
             if From_to == "TARGET":
                 self.services_TO.append(id)
 
         #nx.draw(self, with_labels=True)
         #plt.show()
 
-
-
     def check_input_with_gephi(self):
-
-
-
         """ Write list of nodes and list of edges csv files
             to visualize the input with Gephi.
 
@@ -183,32 +171,47 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-
         nodes_to_print = []
         with open("check_import_nodes.csv", "w") as csvFile:
-            fields = ["Mark", "Description", "InitStatus",
-                      "PerturbationResistant", "Room"]
+            fields = [
+                "Mark", "Description", "InitStatus", "PerturbationResistant",
+                "Room"
+            ]
 
             writer = csv.DictWriter(csvFile, fieldnames=fields)
             writer.writeheader()
             if hasattr(self, "copy_of_self1"):
                 for n in self.copy_of_self1:
-                    nodes_to_print.append({'Mark': n,
-                                           'Description':self.copy_of_self1.node[n]["Description"],
-                                           'InitStatus' : self.copy_of_self1.node[n]["InitStatus"],
-                                           'PerturbationResistant': self.copy_of_self1.node[n]["PerturbationResistant"],
-                                           'Room' : self.copy_of_self1.node[n]["Area"]})
+                    nodes_to_print.append({
+                        'Mark':
+                        n,
+                        'Description':
+                        self.copy_of_self1.node[n]["Description"],
+                        'InitStatus':
+                        self.copy_of_self1.node[n]["InitStatus"],
+                        'PerturbationResistant':
+                        self.copy_of_self1.node[n]["PerturbationResistant"],
+                        'Room':
+                        self.copy_of_self1.node[n]["Area"]
+                    })
                 writer.writerows(nodes_to_print)
             else:
                 for n in self:
-                    nodes_to_print.append({'Mark': n, 'Description':self.node[n]["Description"],
-                                           'InitStatus' : self.node[n]["InitStatus"],
-                                           'PerturbationResistant': self.node[n]["PerturbationResistant"],
-                                           'Room' : self.node[n]["Area"]})
+                    nodes_to_print.append({
+                        'Mark':
+                        n,
+                        'Description':
+                        self.node[n]["Description"],
+                        'InitStatus':
+                        self.node[n]["InitStatus"],
+                        'PerturbationResistant':
+                        self.node[n]["PerturbationResistant"],
+                        'Room':
+                        self.node[n]["Area"]
+                    })
                 writer.writerows(nodes_to_print)
 
         csvFile.close()
-
 
         edges_to_print = []
         with open("check_import_edges.csv", "w") as csvFile:
@@ -217,27 +220,20 @@ class GeneralGraph(nx.DiGraph):
             writer.writeheader()
 
             if hasattr(self, "copy_of_self1"):
-    	        for n in self.copy_of_self1:
+                for n in self.copy_of_self1:
                     for p in self.copy_of_self1.predecessors(n):
-                        edges_to_print.append({'Mark': n,
-                                               'Father_mark': p})
+                        edges_to_print.append({'Mark': n, 'Father_mark': p})
 
             else:
                 for n in self:
                     for p in self.predecessors(n):
-                        edges_to_print.append({'Mark': n,
-                                               'Father_mark': p})
+                        edges_to_print.append({'Mark': n, 'Father_mark': p})
 
             writer.writerows(edges_to_print)
 
         csvFile.close()
 
-
-
-
-
     def ConstructPath(self, source, target, pred):
-
         """ Reconstruct source-target paths starting from predecessors matrix.
 
         Parameters
@@ -277,10 +273,7 @@ class GeneralGraph(nx.DiGraph):
 
         return path1
 
-
-
     def inner_iteration_serial(self, pred1, dist1):
-
         """ Serial Floyd Warshall's APSP inner iteration .
 
         Parameters
@@ -300,7 +293,6 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-
         for w in list(self.H):
             for u in list(self.H):
                 for v in list(self.H):
@@ -310,10 +302,7 @@ class GeneralGraph(nx.DiGraph):
 
         return pred1, dist1
 
-
-
     def inner_iteration_parallel(self, barrier, arr, arr1, init, stop):
-
         """ Serial Floyd Warshall's APSP inner iteration .
 
         Parameters
@@ -336,24 +325,21 @@ class GeneralGraph(nx.DiGraph):
         """
 
         n = arr.shape[0]
-        for w in range(n): # k
+        for w in range(n):  # k
             arr_copy = copy.deepcopy(arr[init:stop, :])
             np.minimum(
-                np.add.outer(arr[init:stop, w], arr[w, :]),#block,
+                np.add.outer(arr[init:stop, w], arr[w, :]),  #block,
                 arr[init:stop, :],
                 arr[init:stop, :])
             diff = np.equal(arr[init:stop, :], arr_copy)
             for ii in range(init, stop):
                 for jj in range(n):
-                    if(diff[ii-init, jj] == False):
+                    if (diff[ii - init, jj] == False):
                         arr1[ii, jj] = arr1[w, jj]
 
             barrier.wait()
 
-
-
     def inner_iteration_wrapper_parallel(self, arr, arr1):
-
         """ Wrapper for Floyd Warshall's APSP parallel inner iteration .
 
         Parameters
@@ -375,16 +361,21 @@ class GeneralGraph(nx.DiGraph):
 
         n = len(self.nodes())
 
-        chunk = [(0, int(n/self.num))]
+        chunk = [(0, int(n / self.num))]
 
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
 
         for i in range(1, self.num):
-            chunk.append((chunk[i-1][1], chunk[i-1][1] + len(node_chunks[i])))
+            chunk.append((chunk[i - 1][1],
+                          chunk[i - 1][1] + len(node_chunks[i])))
 
         barrier = mp.Barrier(self.num)
-        processes = [mp.Process(target=self.inner_iteration_parallel,
-                                args=(barrier, arr, arr1, chunk[p][0], chunk[p][1])) for p in range(self.num)]
+        processes = [
+            mp.Process(
+                target=self.inner_iteration_parallel,
+                args=(barrier, arr, arr1, chunk[p][0], chunk[p][1]))
+            for p in range(self.num)
+        ]
 
         for proc in processes:
             proc.start()
@@ -392,11 +383,7 @@ class GeneralGraph(nx.DiGraph):
         for proc in processes:
             proc.join()
 
-
-
     def floyd_warshall_predecessor_and_distance_parallel(self, weight='weight'):
-
-
         """ Parallel Floyd Warshall's APSP algorithm.
 
         Parameters
@@ -412,7 +399,8 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-        self.H = nx.convert_node_labels_to_integers(self, first_label=0, label_attribute='Mark_ids')
+        self.H = nx.convert_node_labels_to_integers(
+            self, first_label=0, label_attribute='Mark_ids')
         self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
 
         dist1 = np.full((len(self.H), len(self.H)), np.inf)
@@ -420,7 +408,8 @@ class GeneralGraph(nx.DiGraph):
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
 
-        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]**2)
+        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double,
+                                              dist1.shape[0]**2)
         arr = np.frombuffer(shared_arr, 'float64').reshape(dist1.shape)
         arr[:] = dist1
 
@@ -429,7 +418,8 @@ class GeneralGraph(nx.DiGraph):
             e_weight = d.get(weight, 1.0)
             pred1[u, v] = u
 
-        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double, pred1.shape[0]**2)
+        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double,
+                                                   pred1.shape[0]**2)
         arr1 = np.frombuffer(shared_arr_pred, 'float64').reshape(pred1.shape)
         arr1[:] = pred1
 
@@ -441,23 +431,29 @@ class GeneralGraph(nx.DiGraph):
 
             attribute_efficiency = []
 
-            rec_path = {self.ids[j]: self.ConstructPath(i, j, arr1) for j in sorted(list(self.H))}
+            rec_path = {
+                self.ids[j]: self.ConstructPath(i, j, arr1)
+                for j in sorted(list(self.H))
+            }
 
-            rec_path_1 = {key: value for key, value in rec_path.items() if value}
+            rec_path_1 = {
+                key: value
+                for key, value in rec_path.items() if value
+            }
 
             paths[i] = (self.ids[i], rec_path_1)
 
             kv_fw = rec_path_1
 
             for key, value in kv_fw.items():
-                length_path = len(value) -1
+                length_path = len(value) - 1
                 if length_path != 0:
-                    efficiency = 1/length_path
-                    dict_efficiency = {key:efficiency}
+                    efficiency = 1 / length_path
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
                 else:
                     efficiency = 0
-                    dict_efficiency = {key:efficiency}
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
 
             for m in list(self):
@@ -465,10 +461,7 @@ class GeneralGraph(nx.DiGraph):
                     self.node[m]["shortest_path"] = paths[i]
                     self.node[m]["efficiency"] = attribute_efficiency
 
-
-
     def floyd_warshall_predecessor_and_distance_serial(self, weight='weight'):
-
         """ Serial Floyd Warshall's APSP algorithm.
 
         Parameters
@@ -484,7 +477,8 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-        self.H = nx.convert_node_labels_to_integers(self, first_label=0, label_attribute='Mark_ids')
+        self.H = nx.convert_node_labels_to_integers(
+            self, first_label=0, label_attribute='Mark_ids')
         self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
 
         dist1 = np.full((len(self.H), len(self.H)), np.inf)
@@ -497,7 +491,7 @@ class GeneralGraph(nx.DiGraph):
 
         pred1 = np.full((len(self.H), len(self.H)), np.inf)
 
-        for u, v, d in self.H.edges(data=True): # for each edge
+        for u, v, d in self.H.edges(data=True):  # for each edge
             e_weight = d.get(weight, 1.0)
             pred1[u, v] = u
 
@@ -508,21 +502,27 @@ class GeneralGraph(nx.DiGraph):
         for i in list(self.H):
 
             attribute_efficiency = []
-            rec_path = {self.ids[j]: self.ConstructPath(i, j, pred1) for j in sorted(list(self.H))}
-            rec_path_1 = {key: value for key, value in rec_path.items() if value}
+            rec_path = {
+                self.ids[j]: self.ConstructPath(i, j, pred1)
+                for j in sorted(list(self.H))
+            }
+            rec_path_1 = {
+                key: value
+                for key, value in rec_path.items() if value
+            }
             paths[i] = (self.ids[i], rec_path_1)
 
             kv_fw = rec_path_1
 
             for key, value in kv_fw.items():
-                length_path = len(value) -1
+                length_path = len(value) - 1
                 if length_path != 0:
-                    efficiency = 1/length_path
-                    dict_efficiency = {key:efficiency}
+                    efficiency = 1 / length_path
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
                 else:
                     efficiency = 0
-                    dict_efficiency = {key:efficiency}
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
 
             for m in list(self):
@@ -530,10 +530,7 @@ class GeneralGraph(nx.DiGraph):
                     self.node[m]["shortest_path"] = paths[i]
                     self.node[m]["efficiency"] = attribute_efficiency
 
-
-
     def single_source_shortest_path_serial(self):
-
         """ Serial SSSP algorithm based on BFS.
 
 
@@ -557,22 +554,19 @@ class GeneralGraph(nx.DiGraph):
             self.node[n]["shortest_path"] = sssps
             kv_sssps = sssps[1]
             for key, value in kv_sssps.items():
-                length_path = len(value) -1
+                length_path = len(value) - 1
                 if length_path != 0:
-                    efficiency = 1/length_path
-                    dict_efficiency = {key:efficiency}
+                    efficiency = 1 / length_path
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
                 else:
                     efficiency = 0
-                    dict_efficiency = {key:efficiency}
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
 
             self.node[n]["efficiency"] = attribute_efficiency
 
-
-
     def single_source_shortest_path_parallel(self, out_q, nodi):
-
         """ Parallel SSSP algorithm based on BFS.
 
         Parameters
@@ -601,10 +595,7 @@ class GeneralGraph(nx.DiGraph):
             ssspp = (n, nx.single_source_shortest_path(self, n))
             out_q.put(ssspp)
 
-
-
     def chunk_it(self, nodi, n):
-
         """ Divide graph nodes in chunks according to number of processes.
 
         Parameters
@@ -620,20 +611,16 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-        avg = len(nodi)/ n
+        avg = len(nodi) / n
         out = []
         last = 0.0
 
-        while  last < len(nodi):
-            out.append(nodi[int(last):int(last+avg)])
+        while last < len(nodi):
+            out.append(nodi[int(last):int(last + avg)])
             last += avg
         return out
 
-
-
     def parallel_wrapper_proc(self):
-
-
         """ Wrapper for parallel SSSP algorithm based on BFS.
 
 
@@ -646,8 +633,6 @@ class GeneralGraph(nx.DiGraph):
 
         self.attribute_ssspp = []
         attribute_efficiency = []
-
-
         """
         #compute the shortest path only for nodes with successors
         #(out_degree > 0)
@@ -665,9 +650,14 @@ class GeneralGraph(nx.DiGraph):
 
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
 
-        processes = [mp.Process(target=self.single_source_shortest_path_parallel,
-                                args=(out_q, node_chunks[p],)) for p in range(self.num)]
-
+        processes = [
+            mp.Process(
+                target=self.single_source_shortest_path_parallel,
+                args=(
+                    out_q,
+                    node_chunks[p],
+                )) for p in range(self.num)
+        ]
 
         for proc in processes:
             proc.start()
@@ -681,7 +671,6 @@ class GeneralGraph(nx.DiGraph):
             if not running:
                 break
 
-
         for ssspp in self.attribute_ssspp:
 
             n = ssspp[0]
@@ -689,25 +678,21 @@ class GeneralGraph(nx.DiGraph):
             kv_ssspp = ssspp[1]
 
             for key, value in kv_ssspp.items():
-                length_path = len(value) -1
+                length_path = len(value) - 1
                 if length_path != 0:
-                    efficiency = 1/length_path
-                    dict_efficiency = {key:efficiency}
+                    efficiency = 1 / length_path
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
                     self.node[n]["efficiency"] = attribute_efficiency
                 else:
                     efficiency = 0
-                    dict_efficiency = {key:efficiency}
+                    dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
                     self.node[n]["efficiency"] = attribute_efficiency
 
-
             self.node[n]["shortest_path"] = ssspp
 
-
-
     def nodal_eff(self):
-
         """ Global efficiency of the node.
 
         Returns
@@ -736,7 +721,7 @@ class GeneralGraph(nx.DiGraph):
 
         if "original_nodal_eff" in all_attributes:
 
-            deleted_nodes = set(list(self.copy_of_self1))- set(list(self))
+            deleted_nodes = set(list(self.copy_of_self1)) - set(list(self))
 
             for v in deleted_nodes:
                 self.copy_of_self1.node[v]["final_nodal_eff"] = " "
@@ -747,7 +732,8 @@ class GeneralGraph(nx.DiGraph):
                 for i in kv_efficiency:
                     for key, value in i.items():
                         sum_efficiencies = sum_efficiencies + value
-                self.copy_of_self1.node[v]["final_nodal_eff"] = sum_efficiencies/(g_len -1)
+                self.copy_of_self1.node[v][
+                    "final_nodal_eff"] = sum_efficiencies / (g_len - 1)
 
         else:
             for v in self:
@@ -756,13 +742,10 @@ class GeneralGraph(nx.DiGraph):
                 for i in kv_efficiency:
                     for key, value in i.items():
                         sum_efficiencies = sum_efficiencies + value
-                self.node[v]["original_nodal_eff"] = sum_efficiencies/(g_len -1)
-
-
-
+                self.node[v]["original_nodal_eff"] = sum_efficiencies / (
+                    g_len - 1)
 
     def local_eff(self):
-
         """ Local efficiency of the node.
 
 
@@ -793,7 +776,7 @@ class GeneralGraph(nx.DiGraph):
 
         if "original_local_eff" in all_attributes:
 
-            deleted_nodes = set(list(self.copy_of_self1))- set(list(self))
+            deleted_nodes = set(list(self.copy_of_self1)) - set(list(self))
 
             for v in deleted_nodes:
                 self.copy_of_self1.node[v]["final_local_eff"] = " "
@@ -802,15 +785,14 @@ class GeneralGraph(nx.DiGraph):
                 subgraph = list(self.successors(v))
                 denom_subg = len(list(subgraph))
 
-
                 if denom_subg != 0:
                     sum_efficiencies = 0
                     for w in list(subgraph):
-                        kv_efficiency = self.copy_of_self1.node[w]["final_nodal_eff"]
+                        kv_efficiency = self.copy_of_self1.node[w][
+                            "final_nodal_eff"]
                         sum_efficiencies = sum_efficiencies + kv_efficiency
 
-
-                    loc_eff = sum_efficiencies/denom_subg
+                    loc_eff = sum_efficiencies / denom_subg
 
                     self.copy_of_self1.node[v]["final_local_eff"] = loc_eff
                 else:
@@ -825,15 +807,12 @@ class GeneralGraph(nx.DiGraph):
                         kv_efficiency = self.node[w]["original_nodal_eff"]
                         sum_efficiencies = sum_efficiencies + kv_efficiency
 
-                    loc_eff = sum_efficiencies/denom_subg
+                    loc_eff = sum_efficiencies / denom_subg
                     self.node[v]["original_local_eff"] = loc_eff
                 else:
                     self.node[v]["original_local_eff"] = "0"
 
-
-
     def global_eff(self):
-
         """ Average global efficiency of the whole graph.
 
 
@@ -863,19 +842,17 @@ class GeneralGraph(nx.DiGraph):
 
         for v in self:
             kv_efficiency = self.node[v]["original_nodal_eff"]
-            sum_eff = sum_eff+kv_efficiency
+            sum_eff = sum_eff + kv_efficiency
 
         if "original_avg_global_eff" in all_attributes:
             for v in self.copy_of_self1:
-                self.copy_of_self1.node[v]["final_avg_global_eff"] = sum_eff/g_len
+                self.copy_of_self1.node[v][
+                    "final_avg_global_eff"] = sum_eff / g_len
         else:
             for v in self:
-                self.node[v]["original_avg_global_eff"] = sum_eff/g_len
-
-
+                self.node[v]["original_avg_global_eff"] = sum_eff / g_len
 
     def betweenness_centrality(self):
-
         """ Betweenness_centrality measure of each node.
 
 
@@ -914,14 +891,11 @@ class GeneralGraph(nx.DiGraph):
 
             numb_sp_with_node = len(sp_with_node)
 
-            bet_cen = numb_sp_with_node/length_tot_shortest_paths_list
+            bet_cen = numb_sp_with_node / length_tot_shortest_paths_list
 
             self.node[node]["betweenness_centrality"] = bet_cen
 
-
-
     def closeness_centrality(self):
-
         """ Closeness_centrality measure of each node.
 
 
@@ -954,22 +928,19 @@ class GeneralGraph(nx.DiGraph):
                 if len(value) > 1:
                     tot_shortest_paths_list.append(value)
 
-
         for node in self:
             totsp = []
             sp_with_node = []
             for l in tot_shortest_paths_list:
                 if node in l and node == l[-1]:
                     sp_with_node.append(l)
-                    totsp.append(len(l)-1)
-            norm = len(totsp)/nom
-            clo_cen = (len(totsp) / sum(totsp)) * norm if (sum(totsp)) != 0 else 0
+                    totsp.append(len(l) - 1)
+            norm = len(totsp) / nom
+            clo_cen = (len(totsp) / sum(totsp)) * norm if (
+                sum(totsp)) != 0 else 0
             self.node[node]["closeness_centrality"] = clo_cen
 
-
-
     def degree_centrality(self):
-
         """ degree centrality measure of each node.
 
 
@@ -998,10 +969,7 @@ class GeneralGraph(nx.DiGraph):
             deg_cen = num_neighbor_nodes / denom
             self.node[node]["degree_centrality"] = deg_cen
 
-
-
     def indegree_centrality(self):
-
         """ Indegree centrality measure of each node.
 
 
@@ -1029,10 +997,7 @@ class GeneralGraph(nx.DiGraph):
             else:
                 self.node[node]["indegree_centrality"] = 0
 
-
-
     def outdegree_centrality(self):
-
         """ Outdegree centrality measure of each node.
 
 
@@ -1060,10 +1025,7 @@ class GeneralGraph(nx.DiGraph):
             else:
                 self.node[node]["outdegree_centrality"] = 0
 
-
-
     def calculate_shortest_path(self):
-
         """ Choose the most appropriate way to compute the all-pairs shortest
         path depending on graph size and density .
         For a dense graph choose Floyd Warshall algorithm .
@@ -1085,24 +1047,21 @@ class GeneralGraph(nx.DiGraph):
         if n_of_nodes > 10000:
             print("go parallel!")
             if g_density <= 0.000001:
-                print ("the graph is sparse, density =", g_density)
+                print("the graph is sparse, density =", g_density)
                 self.parallel_wrapper_proc()
             else:
-                print ("the graph is dense, density =", g_density)
+                print("the graph is dense, density =", g_density)
                 self.floyd_warshall_predecessor_and_distance_parallel()
         else:
             print("go serial!")
             if g_density <= 0.000001:
-                print ("the graph is sparse, density =", g_density)
+                print("the graph is sparse, density =", g_density)
                 self.single_source_shortest_path_serial()
             else:
-                print ("the graph is dense, density =", g_density)
+                print("the graph is dense, density =", g_density)
                 self.floyd_warshall_predecessor_and_distance_serial()
 
-
-
     def check_before(self):
-
         """ Describe the topology of the integer graph, before the occurrency
         of any failure in the system.
         Compute efficiency measures for the whole graph and its nodes.
@@ -1132,31 +1091,37 @@ class GeneralGraph(nx.DiGraph):
 
                         oshp = min(osip, key=len)
 
-                        oshpl = (len(oshp)-1)
+                        oshpl = (len(oshp) - 1)
 
-                        oeff = 1/oshpl
+                        oeff = 1 / oshpl
 
-                        ids = ii+jj
+                        ids = ii + jj
 
-                        self.lst0.append({'from': ii, 'to' : jj,
-                                          'original_shortest_path_length': oshpl,
-                                          'original_shortest_path': oshp,
-                                          'original_simple path': osip,
-                                          'original_pair_efficiency': oeff,
-                                          'ids': ids})
+                        self.lst0.append({
+                            'from': ii,
+                            'to': jj,
+                            'original_shortest_path_length': oshpl,
+                            'original_shortest_path': oshp,
+                            'original_simple path': osip,
+                            'original_pair_efficiency': oeff,
+                            'ids': ids
+                        })
 
                     else:
                         oshpl = "NO_PATH"
                         osip = "NO_PATH"
                         oshp = "NO_PATH"
                         oeff = "NO_PATH"
-                        ids = ii+jj
-                        self.lst0.append({'from': ii, 'to' : jj,
-                                          'original_shortest_path_length': oshpl,
-                                          'original_shortest_path': oshp,
-                                          'original_simple path': osip,
-                                          'original_pair_efficiency': oeff,
-                                          'ids': ids})
+                        ids = ii + jj
+                        self.lst0.append({
+                            'from': ii,
+                            'to': jj,
+                            'original_shortest_path_length': oshpl,
+                            'original_shortest_path': oshp,
+                            'original_simple path': osip,
+                            'original_pair_efficiency': oeff,
+                            'ids': ids
+                        })
 
                 else:
 
@@ -1164,15 +1129,16 @@ class GeneralGraph(nx.DiGraph):
                     osip = "NO_PATH"
                     oshp = "NO_PATH"
                     oeff = "NO_PATH"
-                    ids = ii+jj
-                    self.lst0.append({'from': ii, 'to' : jj,
-                                      'original_shortest_path_length': oshpl,
-                                      'original_shortest_path': oshp,
-                                      'original_simple path': osip,
-                                      'original_pair_efficiency': oeff,
-                                      'ids': ids})
-
-
+                    ids = ii + jj
+                    self.lst0.append({
+                        'from': ii,
+                        'to': jj,
+                        'original_shortest_path_length': oshpl,
+                        'original_shortest_path': oshp,
+                        'original_simple path': osip,
+                        'original_pair_efficiency': oeff,
+                        'ids': ids
+                    })
 
     def check_after(self):
         """ Describe the topology of the potentially damaged graph,
@@ -1191,12 +1157,11 @@ class GeneralGraph(nx.DiGraph):
 
         self.local_eff()
 
-
         for nn in self.services_FROM:
             n = list(self.Mark.keys())[list(self.Mark.values()).index(nn)]
             for OODD in self.services_TO:
-                OD = list(self.Mark.keys())[list(self.Mark.values()).index(OODD)]
-
+                OD = list(self.Mark.keys())[list(
+                    self.Mark.values()).index(OODD)]
 
                 if n in self.nodes() and OD in self.nodes():
                     if nx.has_path(self, n, OD):
@@ -1213,48 +1178,64 @@ class GeneralGraph(nx.DiGraph):
 
                                     if self.newstatus[node] == "1":
 
-                                        logging.debug("found CLOSED isolation_A at node: %s ", node)
+                                        logging.debug(
+                                            "found CLOSED isolation_A at node: %s ",
+                                            node)
 
                                     elif self.newstatus[node] == "0":
 
-                                        logging.debug("found OPEN isolation_A and CLOSED it at node: %s ", node)
+                                        logging.debug(
+                                            "found OPEN isolation_A and CLOSED it at node: %s ",
+                                            node)
 
                                         self.finalstatus.update({node: "1"})
                                 else:
                                     if self.status[node] == "1":
 
-                                        logging.debug("found CLOSED isolation_A at node: %s ", node)
+                                        logging.debug(
+                                            "found CLOSED isolation_A at node: %s ",
+                                            node)
                                     elif self.status[node] == "0":
 
                                         self.finalstatus.update({node: "1"})
 
-                                        logging.debug("found OPEN isolation_A and CLOSED it at node: %s ", node)
+                                        logging.debug(
+                                            "found OPEN isolation_A and CLOSED it at node: %s ",
+                                            node)
 
                             elif self.D[node] == "isolation_B":
 
                                 if node in self.newstatus:
                                     if self.newstatus[node] == "1":
 
-                                        logging.debug("found OPEN isolation_B at node: %s ", node)
+                                        logging.debug(
+                                            "found OPEN isolation_B at node: %s ",
+                                            node)
                                     elif self.newstatus[node] == "0":
 
                                         self.finalstatus.update({node: "1"})
-                                        logging.debug("found CLOSED isolation_B and OPENED it, at node: %s", node)
+                                        logging.debug(
+                                            "found CLOSED isolation_B and OPENED it, at node: %s",
+                                            node)
                                 else:
                                     if self.status[node] == "1":
-                                        logging.debug("found OPEN isolation_B at node: %s ", node)
+                                        logging.debug(
+                                            "found OPEN isolation_B at node: %s ",
+                                            node)
                                     elif self.status[node] == "0":
 
                                         self.finalstatus.update({node: "1"})
-                                        logging.debug("found CLOSED isolation_B and OPENED it, at node: %s", node)
+                                        logging.debug(
+                                            "found CLOSED isolation_B and OPENED it, at node: %s",
+                                            node)
 
                         shp = min(sip, key=len)
 
-                        shpl = (len(shp)-1)
+                        shpl = (len(shp) - 1)
 
-                        neff = 1/shpl
+                        neff = 1 / shpl
 
-                        ids = nn+OODD
+                        ids = nn + OODD
 
                     else:
 
@@ -1262,23 +1243,26 @@ class GeneralGraph(nx.DiGraph):
                         sip = "NO_PATH"
                         shp = "NO_PATH"
                         neff = "NO_PATH"
-                        ids = nn+OODD
+                        ids = nn + OODD
 
                 else:
                     shpl = "NO_PATH"
                     sip = "NO_PATH"
                     shp = "NO_PATH"
                     neff = "NO_PATH"
-                    ids = nn+OODD
-                self.lst.append({'from': nn, 'room': self.room[n],
-                                 'to': OODD, 'final_shortest_path_length': shpl,
-                                 'final_shortest_path': shp, 'final_simple_path': sip,
-                                 'final_pair_efficiency' : neff, 'ids' : ids})
-
-
+                    ids = nn + OODD
+                self.lst.append({
+                    'from': nn,
+                    'room': self.room[n],
+                    'to': OODD,
+                    'final_shortest_path_length': shpl,
+                    'final_shortest_path': shp,
+                    'final_simple_path': sip,
+                    'final_pair_efficiency': neff,
+                    'ids': ids
+                })
 
     def rm_nodes(self, node, visited=None):
-
         """ Remove nodes from the graph in a depth first search way to
         propagate the failure.
 
@@ -1290,13 +1274,11 @@ class GeneralGraph(nx.DiGraph):
 
         """
 
-
         if visited is None:
             visited = set()
         visited.add(node)
         logging.debug('visited: %s', visited)
         logging.debug('node: %s', node)
-
 
         if self.D[node] == "isolation_A":
 
@@ -1305,7 +1287,8 @@ class GeneralGraph(nx.DiGraph):
 
             elif self.status[node] == "1":
                 self.newstatus.update({node: "0"})
-                logging.debug('found CLOSE isolation_A and OPENED it at node: %s', node)
+                logging.debug(
+                    'found CLOSE isolation_A and OPENED it at node: %s', node)
 
             if len(visited) == 1:
                 self.broken.append((node, "NULL"))
@@ -1321,8 +1304,8 @@ class GeneralGraph(nx.DiGraph):
 
             elif self.status[node] == "1":
                 self.newstatus.update({node: "0"})
-                logging.debug("found OPEN isolation_B and CLOSED it, at node: %s", node)
-
+                logging.debug(
+                    "found OPEN isolation_B and CLOSED it, at node: %s", node)
 
             if len(visited) == 1:
                 self.broken.append((node, "NULL"))
@@ -1330,7 +1313,6 @@ class GeneralGraph(nx.DiGraph):
 
             else:
                 return visited
-
 
         else:
             pred = list(self.predecessors(node))
@@ -1341,7 +1323,7 @@ class GeneralGraph(nx.DiGraph):
                 for p in pred:
                     cond.add(self.condition[(p, node)])
                     if any(p in x for x in self.broken):
-                        count = count+1
+                        count = count + 1
             else:
                 cond.add("SINGLE")
 
@@ -1364,10 +1346,7 @@ class GeneralGraph(nx.DiGraph):
 
         return visited
 
-
-
     def merge_lists(self, l1, l2, key):
-
         """ Merge two lists of dictionaries according to their keys.
 
         Parameters
@@ -1382,17 +1361,14 @@ class GeneralGraph(nx.DiGraph):
 
         """
         merged = {}
-        for item in l1+l2:
+        for item in l1 + l2:
             if item[key] in merged:
                 merged[item[key]].update(item)
             else:
                 merged[item[key]] = item
         return [val for (_, val) in merged.items()]
 
-
-
     def update_status(self, multi_rooms):
-
         """ Update the status of the components in the rooms after
         the propagation of the failure.
 
@@ -1410,11 +1386,15 @@ class GeneralGraph(nx.DiGraph):
         """
 
         if self.newstatus:
-            self.newstatus = {k: v for k, v in self.newstatus.items() if k not in self.nodes_in_room}
+            self.newstatus = {
+                k: v
+                for k, v in self.newstatus.items()
+                if k not in self.nodes_in_room
+            }
             ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
             os_keys = set(self.copy_of_self1) - set(ns_keys)
 
-            for id, newstatus  in self.newstatus.items():
+            for id, newstatus in self.newstatus.items():
                 self.copy_of_self1.node[id]["IntermediateStatus"] = newstatus
             for id in os_keys:
                 self.copy_of_self1.node[id]["IntermediateStatus"] = " "
@@ -1422,13 +1402,16 @@ class GeneralGraph(nx.DiGraph):
             for id in list(self.copy_of_self1):
                 self.copy_of_self1.node[id]["IntermediateStatus"] = " "
 
-
         if self.finalstatus:
-            self.finalstatus = {k: v for k, v in self.finalstatus.items() if k not in self.nodes_in_room}
+            self.finalstatus = {
+                k: v
+                for k, v in self.finalstatus.items()
+                if k not in self.nodes_in_room
+            }
             fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
             ost_keys = set(self.copy_of_self1) - set(fs_keys)
 
-            for id, finalstatus  in self.finalstatus.items():
+            for id, finalstatus in self.finalstatus.items():
                 self.copy_of_self1.node[id]["FinalStatus"] = finalstatus
             for id in ost_keys:
                 self.copy_of_self1.node[id]["FinalStatus"] = " "
@@ -1452,10 +1435,7 @@ class GeneralGraph(nx.DiGraph):
             else:
                 self.copy_of_self1.node[n]["Status_Room"] = "AVAILABLE"
 
-
-
     def delete_a_node(self, node):
-
         """ Delete a node in the graph to simulate a damage to a component in
         a plant and start to propagate the failure.
 
@@ -1506,46 +1486,48 @@ class GeneralGraph(nx.DiGraph):
             rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
             with open("service_paths_component_damage.csv", "w") as csvFile:
-                fields = ["from", "to", "final_simple_path",
-                          "final_shortest_path", "final_shortest_path_length",
-                          "final_pair_efficiency",
-                          "room", "ids", 'original_simple path',
-                          'original_shortest_path_length',
-                          'original_pair_efficiency',
-                          'original_shortest_path']
+                fields = [
+                    "from", "to", "final_simple_path", "final_shortest_path",
+                    "final_shortest_path_length", "final_pair_efficiency",
+                    "room", "ids", 'original_simple path',
+                    'original_shortest_path_length', 'original_pair_efficiency',
+                    'original_shortest_path'
+                ]
                 writer = csv.DictWriter(csvFile, fieldnames=fields)
                 writer.writeheader()
                 writer.writerows(rb_paths_p)
             csvFile.close()
 
-            self.newstatus = {k: v for k, v in self.newstatus.items() if k not in self.bn}
+            self.newstatus = {
+                k: v
+                for k, v in self.newstatus.items() if k not in self.bn
+            }
 
             if self.newstatus:
 
                 ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
                 os_keys = set(self.copy_of_self1) - set(ns_keys)
 
-                for id, newstatus  in self.newstatus.items():
-                    self.copy_of_self1.node[id]["IntermediateStatus"] = newstatus
+                for id, newstatus in self.newstatus.items():
+                    self.copy_of_self1.node[id][
+                        "IntermediateStatus"] = newstatus
                 for id in os_keys:
                     self.copy_of_self1.node[id]["IntermediateStatus"] = " "
             else:
                 for id in list(self.copy_of_self1):
                     self.copy_of_self1.node[id]["IntermediateStatus"] = " "
 
-
             if self.finalstatus:
                 fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
                 ost_keys = set(self.copy_of_self1) - set(fs_keys)
 
-                for id, finalstatus  in self.finalstatus.items():
+                for id, finalstatus in self.finalstatus.items():
                     self.copy_of_self1.node[id]["FinalStatus"] = finalstatus
                 for id in ost_keys:
                     self.copy_of_self1.node[id]["FinalStatus"] = " "
             else:
                 for id in list(self.copy_of_self1):
                     self.copy_of_self1.node[id]["FinalStatus"] = " "
-
 
             for n in self.copy_of_self1:
 
@@ -1559,42 +1541,66 @@ class GeneralGraph(nx.DiGraph):
             list_to_print = []
 
             with open("component_damage.csv", "w") as csvFile:
-                fields = ["Mark", "Description", "InitStatus",
-                          "IntermediateStatus", "FinalStatus",
-                          "Mark_Status", "PerturbationResistant",
-                          "Room", "Status_Room",
-                          "closeness_centrality", "betweenness_centrality",
-                          "indegree_centrality", "original_local_eff",
-                          "final_local_eff", "original_global_eff",
-                          "final_global_eff", "original_avg_global_eff",
-                          "final_avg_global_eff"]
+                fields = [
+                    "Mark", "Description", "InitStatus", "IntermediateStatus",
+                    "FinalStatus", "Mark_Status", "PerturbationResistant",
+                    "Room", "Status_Room", "closeness_centrality",
+                    "betweenness_centrality", "indegree_centrality",
+                    "original_local_eff", "final_local_eff",
+                    "original_global_eff", "final_global_eff",
+                    "original_avg_global_eff", "final_avg_global_eff"
+                ]
 
                 writer = csv.DictWriter(csvFile, fieldnames=fields)
                 writer.writeheader()
 
                 for n in self.copy_of_self1:
-                    list_to_print.append({'Mark': n, 'Description':self.copy_of_self1.node[n]["Description"], 'InitStatus' : self.copy_of_self1.node[n]["InitStatus"],
-                                          'IntermediateStatus' : self.copy_of_self1.node[n]["IntermediateStatus"], 'FinalStatus' : self.copy_of_self1.node[n]["FinalStatus"], 'Mark_Status' : self.copy_of_self1.node[n]["Mark_Status"],
-                                          'PerturbationResistant': self.copy_of_self1.node[n]["PerturbationResistant"],
-'Room' : self.copy_of_self1.node[n]["Area"],
-                                      'Status_Room' : self.copy_of_self1.node[n]["Status_Room"],
-  'closeness_centrality' : self.copy_of_self1.node[n]["closeness_centrality"],
-                                          'betweenness_centrality': self.copy_of_self1.node[n]["betweenness_centrality"], 'indegree_centrality' : self.copy_of_self1.node[n]["indegree_centrality"],
-                                          'original_local_eff': self.copy_of_self1.node[n]["original_local_eff"], 'final_local_eff': self.copy_of_self1.node[n]["final_local_eff"],
-                                          'original_global_eff': self.copy_of_self1.node[n]["original_nodal_eff"], 'final_global_eff': self.copy_of_self1.node[n]["final_nodal_eff"],
-                                          'original_avg_global_eff': self.copy_of_self1.node[n]["original_avg_global_eff"], 'final_avg_global_eff': self.copy_of_self1.node[n]["final_avg_global_eff"]})
+                    list_to_print.append({
+                        'Mark':
+                        n,
+                        'Description':
+                        self.copy_of_self1.node[n]["Description"],
+                        'InitStatus':
+                        self.copy_of_self1.node[n]["InitStatus"],
+                        'IntermediateStatus':
+                        self.copy_of_self1.node[n]["IntermediateStatus"],
+                        'FinalStatus':
+                        self.copy_of_self1.node[n]["FinalStatus"],
+                        'Mark_Status':
+                        self.copy_of_self1.node[n]["Mark_Status"],
+                        'PerturbationResistant':
+                        self.copy_of_self1.node[n]["PerturbationResistant"],
+                        'Room':
+                        self.copy_of_self1.node[n]["Area"],
+                        'Status_Room':
+                        self.copy_of_self1.node[n]["Status_Room"],
+                        'closeness_centrality':
+                        self.copy_of_self1.node[n]["closeness_centrality"],
+                        'betweenness_centrality':
+                        self.copy_of_self1.node[n]["betweenness_centrality"],
+                        'indegree_centrality':
+                        self.copy_of_self1.node[n]["indegree_centrality"],
+                        'original_local_eff':
+                        self.copy_of_self1.node[n]["original_local_eff"],
+                        'final_local_eff':
+                        self.copy_of_self1.node[n]["final_local_eff"],
+                        'original_global_eff':
+                        self.copy_of_self1.node[n]["original_nodal_eff"],
+                        'final_global_eff':
+                        self.copy_of_self1.node[n]["final_nodal_eff"],
+                        'original_avg_global_eff':
+                        self.copy_of_self1.node[n]["original_avg_global_eff"],
+                        'final_avg_global_eff':
+                        self.copy_of_self1.node[n]["final_avg_global_eff"]
+                    })
                 writer.writerows(list_to_print)
             csvFile.close()
 
-
         else:
-            print ('The node is not in the graph')
-            print ('Insert a valid node')
-
-
+            print('The node is not in the graph')
+            print('Insert a valid node')
 
     def simulate_multi_room_perturbation(self, multi_rooms):
-
         """ Simulate a damage in one or multiple rooms.
 
         Parameters
@@ -1614,12 +1620,12 @@ class GeneralGraph(nx.DiGraph):
         for room in multi_rooms:
 
             if room not in list(self.room.values()):
-                print ('The room is not in the graph')
-                print ('Insert a valid room')
-                print ("Valid rooms:", set(self.room.values()))
+                print('The room is not in the graph')
+                print('Insert a valid room')
+                print("Valid rooms:", set(self.room.values()))
                 sys.exit()
             else:
-                for id, Area  in self.room.items():
+                for id, Area in self.room.items():
                     if Area == room:
                         self.nodes_in_room.append(id)
 
@@ -1629,13 +1635,11 @@ class GeneralGraph(nx.DiGraph):
         self.indegree_centrality()
         self.copy_of_self1 = copy.deepcopy(self)
 
-
         FR_nodes = []
 
-        for id, PerturbationResistant  in self.FR.items():
+        for id, PerturbationResistant in self.FR.items():
             if PerturbationResistant == "1":
                 FR_nodes.append(id)
-
 
         FV_nodes_in_room = set(self.nodes_in_room) - set(FR_nodes)
         FV_nodes_in_room = [x for x in FV_nodes_in_room if str(x) != 'nan']
@@ -1651,7 +1655,7 @@ class GeneralGraph(nx.DiGraph):
                     for n in self.bn:
                         self.remove_node(n)
 
-                FV_nodes_in_room = list(set(FV_nodes_in_room)-set(self.bn))
+                FV_nodes_in_room = list(set(FV_nodes_in_room) - set(self.bn))
 
             FV_nodes_in_room = FV_nodes_in_room
 
@@ -1666,12 +1670,12 @@ class GeneralGraph(nx.DiGraph):
         rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
         with open("service_paths_multi_room_perturbation.csv", "w") as csvFile:
-            fields = ["from", "to", "final_simple_path", "final_shortest_path",
-                      "final_shortest_path_length", "final_pair_efficiency",
-                      "room", "ids", 'original_simple path',
-                      'original_shortest_path_length',
-                      'original_pair_efficiency',
-                      'original_shortest_path']
+            fields = [
+                "from", "to", "final_simple_path", "final_shortest_path",
+                "final_shortest_path_length", "final_pair_efficiency", "room",
+                "ids", 'original_simple path', 'original_shortest_path_length',
+                'original_pair_efficiency', 'original_shortest_path'
+            ]
             writer = csv.DictWriter(csvFile, fieldnames=fields)
             writer.writeheader()
             writer.writerows(rb_paths_p)
@@ -1681,30 +1685,58 @@ class GeneralGraph(nx.DiGraph):
 
         list_to_print = []
         with open("room_perturbation.csv", "w") as csvFile:
-            fields = ["Mark", "Description", "InitStatus", "IntermediateStatus",
-                      "FinalStatus", "Mark_Status",
-                      "PerturbationResistant", "Room",
-                      "Status_Room", "closeness_centrality",
-                      "betweenness_centrality", "indegree_centrality",
-                      "original_local_eff", "final_local_eff",
-                      "original_global_eff", "final_global_eff",
-                      "original_avg_global_eff", "final_avg_global_eff"]
-
+            fields = [
+                "Mark", "Description", "InitStatus", "IntermediateStatus",
+                "FinalStatus", "Mark_Status", "PerturbationResistant", "Room",
+                "Status_Room", "closeness_centrality", "betweenness_centrality",
+                "indegree_centrality", "original_local_eff", "final_local_eff",
+                "original_global_eff", "final_global_eff",
+                "original_avg_global_eff", "final_avg_global_eff"
+            ]
 
             writer = csv.DictWriter(csvFile, fieldnames=fields)
             writer.writeheader()
             for n in self.copy_of_self1:
-                list_to_print.append({'Mark': n, 'Description':self.copy_of_self1.node[n]["Description"], 'InitStatus' : self.copy_of_self1.node[n]["InitStatus"],
-                                      'IntermediateStatus' : self.copy_of_self1.node[n]["IntermediateStatus"], 'FinalStatus' : self.copy_of_self1.node[n]["FinalStatus"], 'Mark_Status' : self.copy_of_self1.node[n]["Mark_Status"],
-                                      'PerturbationResistant': self.copy_of_self1.node[n]["PerturbationResistant"],  'Room' : self.copy_of_self1.node[n]["Area"],
-                                      'Status_Room' : self.copy_of_self1.node[n]["Status_Room"], 'closeness_centrality' : self.copy_of_self1.node[n]["closeness_centrality"],
-                                      'betweenness_centrality': self.copy_of_self1.node[n]["betweenness_centrality"], 'indegree_centrality' : self.copy_of_self1.node[n]["indegree_centrality"],
-                                      'original_local_eff': self.copy_of_self1.node[n]["original_local_eff"], 'final_local_eff': self.copy_of_self1.node[n]["final_local_eff"],
-                                      'original_global_eff': self.copy_of_self1.node[n]["original_nodal_eff"], 'final_global_eff': self.copy_of_self1.node[n]["final_nodal_eff"],
-                                      'original_avg_global_eff': self.copy_of_self1.node[n]["original_avg_global_eff"], 'final_avg_global_eff': self.copy_of_self1.node[n]["final_avg_global_eff"]})
+                list_to_print.append({
+                    'Mark':
+                    n,
+                    'Description':
+                    self.copy_of_self1.node[n]["Description"],
+                    'InitStatus':
+                    self.copy_of_self1.node[n]["InitStatus"],
+                    'IntermediateStatus':
+                    self.copy_of_self1.node[n]["IntermediateStatus"],
+                    'FinalStatus':
+                    self.copy_of_self1.node[n]["FinalStatus"],
+                    'Mark_Status':
+                    self.copy_of_self1.node[n]["Mark_Status"],
+                    'PerturbationResistant':
+                    self.copy_of_self1.node[n]["PerturbationResistant"],
+                    'Room':
+                    self.copy_of_self1.node[n]["Area"],
+                    'Status_Room':
+                    self.copy_of_self1.node[n]["Status_Room"],
+                    'closeness_centrality':
+                    self.copy_of_self1.node[n]["closeness_centrality"],
+                    'betweenness_centrality':
+                    self.copy_of_self1.node[n]["betweenness_centrality"],
+                    'indegree_centrality':
+                    self.copy_of_self1.node[n]["indegree_centrality"],
+                    'original_local_eff':
+                    self.copy_of_self1.node[n]["original_local_eff"],
+                    'final_local_eff':
+                    self.copy_of_self1.node[n]["final_local_eff"],
+                    'original_global_eff':
+                    self.copy_of_self1.node[n]["original_nodal_eff"],
+                    'final_global_eff':
+                    self.copy_of_self1.node[n]["final_nodal_eff"],
+                    'original_avg_global_eff':
+                    self.copy_of_self1.node[n]["original_avg_global_eff"],
+                    'final_avg_global_eff':
+                    self.copy_of_self1.node[n]["final_avg_global_eff"]
+                })
             writer.writerows(list_to_print)
         csvFile.close()
-
 
 
 if __name__ == '__main__':
