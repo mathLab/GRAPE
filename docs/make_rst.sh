@@ -45,4 +45,6 @@ for f in $files; do
     echo -e "    :undoc-members:"                  >> $output
     echo -e "    :show-inheritance:"               >> $output
     echo -e "    :noindex:"                        >> $output
+
+    cat $output
 done
