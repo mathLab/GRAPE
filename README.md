@@ -13,7 +13,6 @@
     <a href='https://coveralls.io/github/mathLab/GRAPE'>
         <img src='https://coveralls.io/repos/github/mathLab/GRAPE/badge.svg' alt='Coverage Status' />
     </a>
-
     <a href="https://www.codacy.com/app/mathLab/GRAPE?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mathLab/GRAPE&amp;utm_campaign=Badge_Grade">
         <img src="https://api.codacy.com/project/badge/Grade/b23abc23ad544f248bd3d755c6aa235d"/>
     </a>
