@@ -51,7 +51,7 @@ class GeneralGraph(nx.DiGraph):
             The same line reports the name of the predecessor
             of a particular node/component,
             the relationship between them, and the list of
-            node’s attributes (room in which the component is
+            node's attributes (room in which the component is
             present, perturbation resistance, etc.).
             In this way each line correspones to an edge
             connecting a component to its parent component.
@@ -87,13 +87,13 @@ class GeneralGraph(nx.DiGraph):
             while the edges connecting the nodes harbor the logic
             relations (edge attributes) existing between the components
             (ORPHAN, SINGLE, AND, and OR).
-            • An ORPHAN edge is the edge of a node without predecessors.
-            • A SINGLE edge connects a node to its only one predecessor.
-            • An AND edge indicates that the node/component
+            - An ORPHAN edge is the edge of a node without predecessors.
+            - A SINGLE edge connects a node to its only one predecessor.
+            - An AND edge indicates that the node/component
               has more than one predecessor. All the predecessors are
               necessary for the functioning of that component.
-            • An OR edge indicates that the node/component has
-              more than one predecessor. Just one of the node’s
+            - An OR edge indicates that the node/component has
+              more than one predecessor. Just one of the node's
               predecessors should be active to guarantee the functioning
               of the component.
             For this reason, correct input formatting
@@ -764,7 +764,7 @@ class GeneralGraph(nx.DiGraph):
 
             Local efficiency shows the efficiency of the connections between
             the first-order outgoing neighbors of node v when v is removed.
-            Equivalently, local efficiency measures the “resilience” of digraph
+            Equivalently, local efficiency measures the "resilience" of digraph
             to the damage of node removal, i.e. if we remove a node,
             how efficient its first-order outgoing neighbors can communicate.
             It is in the range [0, 1].
