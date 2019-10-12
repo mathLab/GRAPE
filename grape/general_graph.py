@@ -1,21 +1,17 @@
+import networkx as nx
+import numpy as np
 import sys
-#print (networkx.__version__)
-#2.0
 import csv
-from multiprocessing import Queue, current_process
-import multiprocessing.sharedctypes
+from multiprocessing import Queue
 import multiprocessing as mp
 import ctypes
 import logging
 import warnings
-from operator import add
 from itertools import chain
 import copy
-import matplotlib.pyplot as plt
 from networkx.drawing.nx_agraph import graphviz_layout
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
-import networkx as nx
-import numpy as np
 logging.basicConfig(
     filename="general_code_output.log", level=logging.DEBUG, filemode='w')
 
@@ -23,12 +19,12 @@ logging.basicConfig(
 class GeneralGraph(nx.DiGraph):
     """Class GeneralGraph for directed graphs (DiGraph).
 
-
     Constructs a new graph given an input file.
     A DiGraph stores nodes and edges with optional data or attributes.
     DiGraphs hold directed edges.
     Nodes can be arbitrary python objects with optional key/value attributes.
-    Edges are represented  as links between nodes with optional key/value attributes.
+    Edges are represented  as links between nodes with optional key/value
+    attributes.
 
     Parameters
     ----------
@@ -98,9 +94,7 @@ class GeneralGraph(nx.DiGraph):
               of the component.
             For this reason, correct input formatting
             is one of the most important steps of the analysis.
-
         """
-
         with open(filename, 'r') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=',')
 
@@ -156,21 +150,15 @@ class GeneralGraph(nx.DiGraph):
             if From_to == "TARGET":
                 self.services_TO.append(id)
 
-        #nx.draw(self, with_labels=True)
-        #plt.show()
-
     def check_input_with_gephi(self):
         """ Write list of nodes and list of edges csv files
             to visualize the input with Gephi.
-
 
         Returns
         -------
         nodes_to_print: list
         edges_to_print: list
-
         """
-
         nodes_to_print = []
         with open("check_import_nodes.csv", "w") as csvFile:
             fields = [
@@ -234,7 +222,8 @@ class GeneralGraph(nx.DiGraph):
         csvFile.close()
 
     def ConstructPath(self, source, target, pred):
-        """ Reconstruct source-target paths starting from predecessors matrix.
+        """ Reconstruct source-target paths starting from predecessors
+        matrix.
 
         Parameters
         ----------
@@ -243,7 +232,8 @@ class GeneralGraph(nx.DiGraph):
         target : node
             Ending node for path
         pred : numpy.ndarray
-            matrix of predecessors computed with Floyd Warshall's APSP algorithm
+            matrix of predecessors computed with Floyd Warshall's
+            APSP algorithm
 
         Returns
         -------
@@ -251,9 +241,7 @@ class GeneralGraph(nx.DiGraph):
 
         All returned paths include both the source and target in the path
         as well as the intermediate nodes.
-
         """
-
         if source == target:
             path = [source]
         else:
@@ -290,9 +278,7 @@ class GeneralGraph(nx.DiGraph):
             updated matrix of predecessors
         dist1 : numpy.matrixlib.defmatrix.matrix
             updated matrix of distances
-
         """
-
         for w in list(self.H):
             for u in list(self.H):
                 for v in list(self.H):
@@ -323,12 +309,11 @@ class GeneralGraph(nx.DiGraph):
         arr : numpy.ndarray
             updated shared matrix of distances
         """
-
         n = arr.shape[0]
         for w in range(n):  # k
             arr_copy = copy.deepcopy(arr[init:stop, :])
             np.minimum(
-                np.add.outer(arr[init:stop, w], arr[w, :]),  #block,
+                np.add.outer(arr[init:stop, w], arr[w, :]), #block,
                 arr[init:stop, :],
                 arr[init:stop, :])
             diff = np.equal(arr[init:stop, :], arr_copy)
@@ -340,7 +325,7 @@ class GeneralGraph(nx.DiGraph):
             barrier.wait()
 
     def inner_iteration_wrapper_parallel(self, arr, arr1):
-        """ Wrapper for Floyd Warshall's APSP parallel inner iteration .
+        """ Wrapper for Floyd Warshall's APSP parallel inner iteration.
 
         Parameters
         ----------
@@ -356,13 +341,9 @@ class GeneralGraph(nx.DiGraph):
             updated matrix of predecessors
         arr : np.array
             updated matrix of distances
-
         """
-
         n = len(self.nodes())
-
         chunk = [(0, int(n / self.num))]
-
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
 
         for i in range(1, self.num):
@@ -396,9 +377,7 @@ class GeneralGraph(nx.DiGraph):
         -------
         Node's "shortest_path" and "efficiency" attributes to every other node
         in the graph.
-
         """
-
         self.H = nx.convert_node_labels_to_integers(
             self, first_label=0, label_attribute='Mark_ids')
         self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
@@ -408,8 +387,8 @@ class GeneralGraph(nx.DiGraph):
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
 
-        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double,
-                                              dist1.shape[0]**2)
+        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]
+                                              **2)
         arr = np.frombuffer(shared_arr, 'float64').reshape(dist1.shape)
         arr[:] = dist1
 
@@ -474,21 +453,15 @@ class GeneralGraph(nx.DiGraph):
         -------
         Node's "shortest_path" and "efficiency" attributes to every other node
         in the graph, from every node in the graph.
-
         """
-
         self.H = nx.convert_node_labels_to_integers(
             self, first_label=0, label_attribute='Mark_ids')
         self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
 
         dist1 = np.full((len(self.H), len(self.H)), np.inf)
-
         np.fill_diagonal(dist1, 0)
-
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
-
         dist1[dist1 == 0] = np.inf
-
         pred1 = np.full((len(self.H), len(self.H)), np.inf)
 
         for u, v, d in self.H.edges(data=True):  # for each edge
@@ -533,7 +506,6 @@ class GeneralGraph(nx.DiGraph):
     def single_source_shortest_path_serial(self):
         """ Serial SSSP algorithm based on BFS.
 
-
         Returns
         -------
         Node's "shortest_path" and "efficiency" attributes to every other node
@@ -545,9 +517,7 @@ class GeneralGraph(nx.DiGraph):
         paths between the source and each target node, all of which have the
         same shortest length. For each target node, this function returns
         only one of those paths.
-
         """
-
         for n in self:
             attribute_efficiency = []
             sssps = (n, nx.single_source_shortest_path(self, n))
@@ -587,15 +557,13 @@ class GeneralGraph(nx.DiGraph):
         paths between the source and each target node, all of which have the
         same shortest length. For each target node, this function returns
         only one of those paths.
-
-
         """
-
         for n in nodi:
             ssspp = (n, nx.single_source_shortest_path(self, n))
             out_q.put(ssspp)
 
-    def chunk_it(self, nodi, n):
+    @staticmethod
+    def chunk_it(nodi, n):
         """ Divide graph nodes in chunks according to number of processes.
 
         Parameters
@@ -608,9 +576,7 @@ class GeneralGraph(nx.DiGraph):
         Returns
         -------
         List of graph nodes to be assigned to every process.
-
         """
-
         avg = len(nodi) / n
         out = []
         last = 0.0
@@ -622,7 +588,6 @@ class GeneralGraph(nx.DiGraph):
 
     def parallel_wrapper_proc(self):
         """ Wrapper for parallel SSSP algorithm based on BFS.
-
 
         Returns
         -------
@@ -653,10 +618,8 @@ class GeneralGraph(nx.DiGraph):
         processes = [
             mp.Process(
                 target=self.single_source_shortest_path_parallel,
-                args=(
-                    out_q,
-                    node_chunks[p],
-                )) for p in range(self.num)
+                args=(out_q,
+                      node_chunks[p], )) for p in range(self.num)
         ]
 
         for proc in processes:
@@ -711,11 +674,8 @@ class GeneralGraph(nx.DiGraph):
             Global efficiency of the node is equal to zero for a node without
             any outgoing path and equal to one we can reach from node v
             to each node of the digraph.
-
         """
-
         g_len = len(list(self))
-
         first_node = list(self)[0]
         all_attributes = list(self.node[first_node].keys())
 
@@ -748,7 +708,6 @@ class GeneralGraph(nx.DiGraph):
     def local_eff(self):
         """ Local efficiency of the node.
 
-
         Returns
         -------
         float
@@ -768,9 +727,7 @@ class GeneralGraph(nx.DiGraph):
             to the damage of node removal, i.e. if we remove a node,
             how efficient its first-order outgoing neighbors can communicate.
             It is in the range [0, 1].
-
         """
-
         first_node = list(self)[0]
         all_attributes = list(self.node[first_node].keys())
 
@@ -815,12 +772,12 @@ class GeneralGraph(nx.DiGraph):
     def global_eff(self):
         """ Average global efficiency of the whole graph.
 
-
         Returns
         -------
         float
 
-            Node's "original_avg_global_eff" and "final_avg_global_eff" attributes.
+            Node's "original_avg_global_eff" and "final_avg_global_eff"
+            attributes.
 
             "original_avg_global_eff" is the average global efficiency of the
             integer graph, before the occurrency of any damage which
@@ -832,9 +789,7 @@ class GeneralGraph(nx.DiGraph):
 
             The average global efficiency of a graph is the average efficiency
             of all pairs of nodes.
-
         """
-
         g_len = len(list(self))
         sum_eff = 0
         first_node = list(self)[0]
@@ -855,7 +810,6 @@ class GeneralGraph(nx.DiGraph):
     def betweenness_centrality(self):
         """ Betweenness_centrality measure of each node.
 
-
         Returns
         -------
         float
@@ -867,11 +821,8 @@ class GeneralGraph(nx.DiGraph):
             Nodes with the highest betweenness centrality hold the higher level
             of control on the information flowing between different nodes in
             the network, because more information will pass through them.
-
         """
-
         tot_shortest_paths = nx.get_node_attributes(self, 'shortest_path')
-
         tot_shortest_paths_list = []
 
         for node in self:
@@ -898,27 +849,21 @@ class GeneralGraph(nx.DiGraph):
     def closeness_centrality(self):
         """ Closeness_centrality measure of each node.
 
-
         Returns
         -------
         float
 
             Node's closeness_centrality attribute.
-            Closeness centrality measures the reciprocal of the average shortest
-            path distance from a node to all other reachable nodes in the graph.
-            Thus, the more central a node is, the closer it is to all other nodes.
-            This measure allows to identify good broadcasters, that is key
-            elements in a graph, depicting how closely the nodes are connected
-            with each other.
-
+            Closeness centrality measures the reciprocal of the average
+            shortest path distance from a node to all other reachable
+            nodes in the graph. Thus, the more central a node is, the closer
+            it is to all other nodes. This measure allows to identify good
+            broadcasters, that is key elements in a graph, depicting how
+            closely the nodes are connected with each other.
         """
-
         g_len = len(list(self))
-
         nom = g_len - 1
-
         tot_shortest_paths = nx.get_node_attributes(self, 'shortest_path')
-
         tot_shortest_paths_list = []
 
         for node in self:
@@ -936,13 +881,12 @@ class GeneralGraph(nx.DiGraph):
                     sp_with_node.append(l)
                     totsp.append(len(l) - 1)
             norm = len(totsp) / nom
-            clo_cen = (len(totsp) / sum(totsp)) * norm if (
-                sum(totsp)) != 0 else 0
+            clo_cen = (len(totsp) /
+                       sum(totsp)) * norm if (sum(totsp)) != 0 else 0
             self.node[node]["closeness_centrality"] = clo_cen
 
     def degree_centrality(self):
         """ degree centrality measure of each node.
-
 
         Returns
         -------
@@ -956,12 +900,9 @@ class GeneralGraph(nx.DiGraph):
             for large volumes of flux transactions with other nodes. A node
             with high degree centrality is a node with many dependencies.
             TODO: it can be trivially parallelized
-            (see single_source_shortest_path_parallel for the way to go )
-
+            (see single_source_shortest_path_parallel for the way to go)
         """
-
         g_len = len(list(self))
-
         denom = g_len - 1
 
         for node in self:
@@ -972,7 +913,6 @@ class GeneralGraph(nx.DiGraph):
     def indegree_centrality(self):
         """ Indegree centrality measure of each node.
 
-
         Returns
         -------
         float
@@ -982,9 +922,7 @@ class GeneralGraph(nx.DiGraph):
             centrality are called cascade resulting nodes.
             TODO: it can be trivially parallelized
             (see single_source_shortest_path_parallel for the way to go )
-
         """
-
         g_len = len(list(self))
 
         denom = g_len - 1
@@ -1000,7 +938,6 @@ class GeneralGraph(nx.DiGraph):
     def outdegree_centrality(self):
         """ Outdegree centrality measure of each node.
 
-
         Returns
         -------
         float
@@ -1012,9 +949,7 @@ class GeneralGraph(nx.DiGraph):
             (see single_source_shortest_path_parallel for the way to go )
 
         """
-
         g_len = len(list(self))
-
         denom = g_len - 1
 
         for node in self:
@@ -1033,10 +968,7 @@ class GeneralGraph(nx.DiGraph):
         For big graphs go parallel (number of processes equals the total
         number of available CPUs).
         For small graphs go serial.
-
-
         """
-
         n_of_nodes = self.order()
         g_density = nx.density(self)
         self.num = mp.cpu_count()
@@ -1066,18 +998,11 @@ class GeneralGraph(nx.DiGraph):
         of any failure in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
-
-
         """
-
         self.calculate_shortest_path()
-
         self.lst0 = []
-
         self.nodal_eff()
-
         self.global_eff()
-
         self.local_eff()
 
         for ii in self.services_FROM:
@@ -1145,23 +1070,17 @@ class GeneralGraph(nx.DiGraph):
         after the occurrency of a failure in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
-
-
         """
-
         self.calculate_shortest_path()
-
         self.nodal_eff()
-
         self.global_eff()
-
         self.local_eff()
 
         for nn in self.services_FROM:
             n = list(self.Mark.keys())[list(self.Mark.values()).index(nn)]
             for OODD in self.services_TO:
-                OD = list(self.Mark.keys())[list(
-                    self.Mark.values()).index(OODD)]
+                OD = list(self.Mark.keys())[list(self.Mark.values()).index(
+                    OODD)]
 
                 if n in self.nodes() and OD in self.nodes():
                     if nx.has_path(self, n, OD):
@@ -1346,7 +1265,8 @@ class GeneralGraph(nx.DiGraph):
 
         return visited
 
-    def merge_lists(self, l1, l2, key):
+    @staticmethod
+    def merge_lists(l1, l2, key):
         """ Merge two lists of dictionaries according to their keys.
 
         Parameters
@@ -1394,13 +1314,13 @@ class GeneralGraph(nx.DiGraph):
             ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
             os_keys = set(self.copy_of_self1) - set(ns_keys)
 
-            for id, newstatus in self.newstatus.items():
-                self.copy_of_self1.node[id]["IntermediateStatus"] = newstatus
-            for id in os_keys:
-                self.copy_of_self1.node[id]["IntermediateStatus"] = " "
+            for index, newstatus in self.newstatus.items():
+                self.copy_of_self1.node[index]["IntermediateStatus"] = newstatus
+            for index in os_keys:
+                self.copy_of_self1.node[index]["IntermediateStatus"] = " "
         else:
-            for id in list(self.copy_of_self1):
-                self.copy_of_self1.node[id]["IntermediateStatus"] = " "
+            for index in list(self.copy_of_self1):
+                self.copy_of_self1.node[index]["IntermediateStatus"] = " "
 
         if self.finalstatus:
             self.finalstatus = {
@@ -1411,13 +1331,13 @@ class GeneralGraph(nx.DiGraph):
             fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
             ost_keys = set(self.copy_of_self1) - set(fs_keys)
 
-            for id, finalstatus in self.finalstatus.items():
-                self.copy_of_self1.node[id]["FinalStatus"] = finalstatus
-            for id in ost_keys:
-                self.copy_of_self1.node[id]["FinalStatus"] = " "
+            for index, finalstatus in self.finalstatus.items():
+                self.copy_of_self1.node[index]["FinalStatus"] = finalstatus
+            for index in ost_keys:
+                self.copy_of_self1.node[index]["FinalStatus"] = " "
         else:
-            for id in list(self.copy_of_self1):
-                self.copy_of_self1.node[id]["FinalStatus"] = " "
+            for index in list(self.copy_of_self1):
+                self.copy_of_self1.node[index]["FinalStatus"] = " "
 
         deleted_nodes = set(self.copy_of_self1) - set(self)
 
@@ -1508,26 +1428,26 @@ class GeneralGraph(nx.DiGraph):
                 ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
                 os_keys = set(self.copy_of_self1) - set(ns_keys)
 
-                for id, newstatus in self.newstatus.items():
-                    self.copy_of_self1.node[id][
+                for index, newstatus in self.newstatus.items():
+                    self.copy_of_self1.node[index][
                         "IntermediateStatus"] = newstatus
-                for id in os_keys:
-                    self.copy_of_self1.node[id]["IntermediateStatus"] = " "
+                for index in os_keys:
+                    self.copy_of_self1.node[index]["IntermediateStatus"] = " "
             else:
-                for id in list(self.copy_of_self1):
-                    self.copy_of_self1.node[id]["IntermediateStatus"] = " "
+                for index in list(self.copy_of_self1):
+                    self.copy_of_self1.node[index]["IntermediateStatus"] = " "
 
             if self.finalstatus:
                 fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
                 ost_keys = set(self.copy_of_self1) - set(fs_keys)
 
-                for id, finalstatus in self.finalstatus.items():
-                    self.copy_of_self1.node[id]["FinalStatus"] = finalstatus
-                for id in ost_keys:
-                    self.copy_of_self1.node[id]["FinalStatus"] = " "
+                for index, finalstatus in self.finalstatus.items():
+                    self.copy_of_self1.node[index]["FinalStatus"] = finalstatus
+                for index in ost_keys:
+                    self.copy_of_self1.node[index]["FinalStatus"] = " "
             else:
-                for id in list(self.copy_of_self1):
-                    self.copy_of_self1.node[id]["FinalStatus"] = " "
+                for index in list(self.copy_of_self1):
+                    self.copy_of_self1.node[index]["FinalStatus"] = " "
 
             for n in self.copy_of_self1:
 
