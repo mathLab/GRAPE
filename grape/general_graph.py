@@ -1,14 +1,16 @@
-import networkx as nx
+"""GeneralGraph for directed graphs (DiGraph) module"""
+
+from multiprocessing import Queue
+import multiprocessing as mp
 import numpy as np
 import sys
 import csv
-from multiprocessing import Queue
-import multiprocessing as mp
 import ctypes
 import logging
 import warnings
 from itertools import chain
 import copy
+import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
