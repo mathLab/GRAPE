@@ -123,29 +123,29 @@ class TestInputGraph(TestCase):
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
 
-        room_dict = {
-            '1': 'room1',
-            '2': 'room1',
-            '3': 'room1',
-            '4': 'room1',
-            '5': 'room1',
-            '6': 'room4',
-            '7': 'room4',
-            '8': 'room4',
-            '9': 'room3',
-            '10': 'room3',
-            '11': 'room2',
-            '12': 'room2',
-            '13': 'room2',
-            '14': 'room2',
-            '15': 'room3',
-            '16': 'room3',
-            '17': 'room3',
-            '18': 'room2',
-            '19': 'room2'
+        area_dict = {
+            '1': 'area1',
+            '2': 'area1',
+            '3': 'area1',
+            '4': 'area1',
+            '5': 'area1',
+            '6': 'area4',
+            '7': 'area4',
+            '8': 'area4',
+            '9': 'area3',
+            '10': 'area3',
+            '11': 'area2',
+            '12': 'area2',
+            '13': 'area2',
+            '14': 'area2',
+            '15': 'area3',
+            '16': 'area3',
+            '17': 'area3',
+            '18': 'area2',
+            '19': 'area2'
         }
 
-        self.assertDictEqual(room_dict, g.room, msg=" Wrong ROOM in input ")
+        self.assertDictEqual(area_dict, g.area, msg=" Wrong AREA in input ")
 
     def test_PerturbationResistant(self):
         """

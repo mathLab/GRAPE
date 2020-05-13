@@ -44,36 +44,36 @@ class GeneralGraph(nx.DiGraph):
         filename : input file in csv format
             The input for the graph construction currently
             consists of text files reflecting the hierarchy of
-            the plant components and their features.
+            the plant elementss and their features.
             In the text input files each line corresponds
-            to a node/component description.
+            to a node/element description.
             The same line reports the name of the predecessor
-            of a particular node/component,
+            of a particular node/element,
             the relationship between them, and the list of
-            node's attributes (room in which the component is
+            node's attributes (area in which the element is
             present, perturbation resistance, etc.).
             In this way each line correspones to an edge
-            connecting a component to its parent component.
+            connecting a element to its parent element.
 
             Each line should contain the following info:
-            - component id ("Mark")
-            - parent of the component id ("Father_mark")
+            - element id ("Mark")
+            - parent of the element id ("Father_mark")
             - parent-child relationship
               ("Father_cond": AND, OR, SINGLE, ORPHAN. It is an edge attribute.)
-            - type of component
-              ("Description": isolation_A, isolation_B are isolating components
+            - type of element
+              ("Description": isolation_A, isolation_B are isolating elements
               with opposite behaviour. It is a node attribute.)
-            - state of the isolating component
+            - state of the isolating element
               ("InitStatus": 1,0. It is a node attribute.)
-            - room in which the component is located
+            - area in which the element is located
               ("Area". It is a node attribute.)
-            - component external perturbation resistance
+            - element external perturbation resistance
               ("PerturbationResistant": 1,0. It is a node attribute.)
-            - source - target components
+            - source - target elements
               ("From_to": SOURCE or TARGET. It is a node attribute.)
 
-            The hierarchy of the components explains how commodities
-            flow from one component to another component
+            The hierarchy of the elements explains how commodities
+            flow from one element to another element
             and from one system to another system.
             In fact, if the input is properly formatted, with this
             simple digraph model it is possible to represent and
@@ -81,20 +81,20 @@ class GeneralGraph(nx.DiGraph):
             in a unique graph without losing information about
             their peculiarities.
 
-            In the graph, the nodes represent the plant components
-            (such as generators, cables, isolation components and pipes)
+            In the graph, the nodes represent the plant elements
+            (such as generators, cables, isolation elements and pipes)
             while the edges connecting the nodes harbor the logic
-            relations (edge attributes) existing between the components
+            relations (edge attributes) existing between the elements
             (ORPHAN, SINGLE, AND, and OR).
             - An ORPHAN edge is the edge of a node without predecessors.
             - A SINGLE edge connects a node to its only one predecessor.
-            - An AND edge indicates that the node/component
+            - An AND edge indicates that the node/element
               has more than one predecessor. All the predecessors are
-              necessary for the functioning of that component.
-            - An OR edge indicates that the node/component has
+              necessary for the functioning of that element.
+            - An OR edge indicates that the node/element has
               more than one predecessor. Just one of the node's
               predecessors should be active to guarantee the functioning
-              of the component.
+              of the element.
             For this reason, correct input formatting
             is one of the most important steps of the analysis.
         """
@@ -126,10 +126,10 @@ class GeneralGraph(nx.DiGraph):
         self.broken = []
         self.newstatus = {}
         self.finalstatus = {}
-        self.Status_Room = {}
+        self.Status_Area = {}
         self.Mark_Status = {}
 
-        self.room = nx.get_node_attributes(self, 'Area')
+        self.area = nx.get_node_attributes(self, 'Area')
         self.FR = nx.get_node_attributes(self, 'PerturbationResistant')
         self.D = nx.get_node_attributes(self, 'Description')
         self.status = nx.get_node_attributes(self, 'InitStatus')
@@ -163,7 +163,7 @@ class GeneralGraph(nx.DiGraph):
         with open("check_import_nodes.csv", "w") as csvFile:
             fields = [
                 "Mark", "Description", "InitStatus", "PerturbationResistant",
-                "Room"
+                "Area"
             ]
 
             writer = csv.DictWriter(csvFile, fieldnames=fields)
@@ -179,7 +179,7 @@ class GeneralGraph(nx.DiGraph):
                         self.copy_of_self1.nodes[n]["InitStatus"],
                         'PerturbationResistant':
                         self.copy_of_self1.nodes[n]["PerturbationResistant"],
-                        'Room':
+                        'Area':
                         self.copy_of_self1.nodes[n]["Area"]
                     })
                 writer.writerows(nodes_to_print)
@@ -194,7 +194,7 @@ class GeneralGraph(nx.DiGraph):
                         self.nodes[n]["InitStatus"],
                         'PerturbationResistant':
                         self.nodes[n]["PerturbationResistant"],
-                        'Room':
+                        'Area':
                         self.nodes[n]["Area"]
                     })
                 writer.writerows(nodes_to_print)
@@ -662,12 +662,12 @@ class GeneralGraph(nx.DiGraph):
             Node's "original_nodal_eff" and "final_nodal_eff" attributes.
 
             "original_nodal_eff" is the efficiency of each node in the
-            integer graph, before the occurrency of any damage which may
+            integer graph, before the occurrency of any perturbation which may
             affect the system.
 
             "final_nodal_eff" is the efficiency of each node in the potentially
-            damaged graph, recalcualted after the propagation of the
-            failure resulting from a damage.
+            perturbed graph, recalcualted after the propagation of the
+            failure resulting from a perturbation.
 
             Global efficiency of the node is equal to zero for a node without
             any outgoing path and equal to one we can reach from node v
@@ -712,17 +712,17 @@ class GeneralGraph(nx.DiGraph):
             Node's "original_local_eff" and "final_local_eff" attributes.
 
             "original_local_eff" is the local efficiency of each node in the
-            integer graph, before the occurrency of any damage which may
+            integer graph, before the occurrency of any perturbation which may
             affect the system.
 
             "final_local_eff" is the local efficiency of each node in the
-            potentially damaged graph, recalcualted after the propagation
-            of the failure resulting from a damage.
+            potentially perturbed graph, recalcualted after the propagation
+            of the failure resulting from a parturbation.
 
             Local efficiency shows the efficiency of the connections between
             the first-order outgoing neighbors of node v when v is removed.
             Equivalently, local efficiency measures the "resilience" of digraph
-            to the damage of node removal, i.e. if we remove a node,
+            to the perturbation of node removal, i.e. if we remove a node,
             how efficient its first-order outgoing neighbors can communicate.
             It is in the range [0, 1].
         """
@@ -778,12 +778,12 @@ class GeneralGraph(nx.DiGraph):
             attributes.
 
             "original_avg_global_eff" is the average global efficiency of the
-            integer graph, before the occurrency of any damage which
+            integer graph, before the occurrency of any parturbation which
             may affect system.
 
             "final_avg_global_eff" is the efficiency of each node in the
-            potentially damaged graph, recalcualted after the propagation of
-            the failure resulting from a damage.
+            potentially perturbed graph, recalcualted after the propagation of
+            the failure resulting from a perturbation.
 
             The average global efficiency of a graph is the average efficiency
             of all pairs of nodes.
@@ -1077,7 +1077,7 @@ class GeneralGraph(nx.DiGraph):
                     })
 
     def check_after(self):
-        """ Describe the topology of the potentially damaged graph,
+        """ Describe the topology of the potentially perturbed graph,
         after the occurrency of a failure in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
@@ -1183,7 +1183,7 @@ class GeneralGraph(nx.DiGraph):
                     ids = nn + OODD
                 self.lst.append({
                     'from': nn,
-                    'room': self.room[n],
+                    'area': self.area[n],
                     'to': OODD,
                     'final_shortest_path_length': shpl,
                     'final_shortest_path': shp,
@@ -1299,28 +1299,28 @@ class GeneralGraph(nx.DiGraph):
                 merged[item[key]] = item
         return [val for (_, val) in merged.items()]
 
-    def update_status(self, multi_rooms):
-        """ Update the status of the components in the rooms after
+    def update_status(self, multi_areas):
+        """ Update the status of the elements in the areas after
         the propagation of the failure.
 
         Parameters
         ----------
-        multi_rooms : list
-            Rooms or rooms in which a perturbing event occurred.
+        multi_areas : list
+            Areas or areas in which a perturbing event occurred.
 
         Returns
         ----------
         nodes attribute "IntermediateStatus": int
         nodes attribute "FinalStatus": int
         nodes attribute "Mark_Status": str
-        nodes attribute "Status_Room": str
+        nodes attribute "Status_Area": str
         """
 
         if self.newstatus:
             self.newstatus = {
                 k: v
                 for k, v in self.newstatus.items()
-                if k not in self.nodes_in_room
+                if k not in self.nodes_in_area
             }
             ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
             os_keys = set(self.copy_of_self1) - set(ns_keys)
@@ -1338,7 +1338,7 @@ class GeneralGraph(nx.DiGraph):
             self.finalstatus = {
                 k: v
                 for k, v in self.finalstatus.items()
-                if k not in self.nodes_in_room
+                if k not in self.nodes_in_area
             }
             fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
             ost_keys = set(self.copy_of_self1) - set(fs_keys)
@@ -1360,15 +1360,15 @@ class GeneralGraph(nx.DiGraph):
             else:
                 self.copy_of_self1.nodes[n]["Mark_Status"] = "ACTIVE"
 
-            self.copy_of_self1.nodes[n]["Status_Room"] = "AVAILABLE"
+            self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
-            if self.copy_of_self1.nodes[n]["Area"] in multi_rooms:
-                self.copy_of_self1.nodes[n]["Status_Room"] = "DAMAGED"
+            if self.copy_of_self1.nodes[n]["Area"] in multi_areas:
+                self.copy_of_self1.nodes[n]["Status_Area"] = "DAMAGED"
             else:
-                self.copy_of_self1.nodes[n]["Status_Room"] = "AVAILABLE"
+                self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
     def delete_a_node(self, node):
-        """ Delete a node in the graph to simulate a damage to a component in
+        """ Delete a node in the graph to simulate a perturbation to an element in
         a plant and start to propagate the failure.
 
         Parameters
@@ -1382,7 +1382,7 @@ class GeneralGraph(nx.DiGraph):
         nodes attribute "IntermediateStatus": int
         nodes attribute "FinalStatus": int
         nodes attribute "Mark_Status": str
-        nodes attribute "Status_Room": str
+        nodes attribute "Status_Area": str
         """
 
         if node in self.nodes():
@@ -1417,11 +1417,11 @@ class GeneralGraph(nx.DiGraph):
 
             rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
-            with open("service_paths_component_damage.csv", "w") as csvFile:
+            with open("service_paths_element_perturbation.csv", "w") as csvFile:
                 fields = [
                     "from", "to", "final_simple_path", "final_shortest_path",
                     "final_shortest_path_length", "final_pair_efficiency",
-                    "room", "ids", 'original_simple path',
+                    "area", "ids", 'original_simple path',
                     'original_shortest_path_length', 'original_pair_efficiency',
                     'original_shortest_path'
                 ]
@@ -1468,15 +1468,15 @@ class GeneralGraph(nx.DiGraph):
                 else:
                     self.copy_of_self1.nodes[n]["Mark_Status"] = "ACTIVE"
 
-                self.copy_of_self1.nodes[n]["Status_Room"] = "AVAILABLE"
+                self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
             list_to_print = []
 
-            with open("component_damage.csv", "w") as csvFile:
+            with open("element_perturbation.csv", "w") as csvFile:
                 fields = [
                     "Mark", "Description", "InitStatus", "IntermediateStatus",
                     "FinalStatus", "Mark_Status", "PerturbationResistant",
-                    "Room", "Status_Room", "closeness_centrality",
+                    "Area", "Status_Area", "closeness_centrality",
                     "betweenness_centrality", "indegree_centrality",
                     "original_local_eff", "final_local_eff",
                     "original_global_eff", "final_global_eff",
@@ -1502,10 +1502,10 @@ class GeneralGraph(nx.DiGraph):
                         self.copy_of_self1.nodes[n]["Mark_Status"],
                         'PerturbationResistant':
                         self.copy_of_self1.nodes[n]["PerturbationResistant"],
-                        'Room':
+                        'Area':
                         self.copy_of_self1.nodes[n]["Area"],
-                        'Status_Room':
-                        self.copy_of_self1.nodes[n]["Status_Room"],
+                        'Status_Area':
+                        self.copy_of_self1.nodes[n]["Status_Area"],
                         'closeness_centrality':
                         self.copy_of_self1.nodes[n]["closeness_centrality"],
                         'betweenness_centrality':
@@ -1532,34 +1532,34 @@ class GeneralGraph(nx.DiGraph):
             print('The node is not in the graph')
             print('Insert a valid node')
 
-    def simulate_multi_room_perturbation(self, multi_rooms):
-        """ Simulate a damage in one or multiple rooms.
+    def simulate_multi_area_perturbation(self, multi_areas):
+        """ Simulate a perturbation in one or multiple areas.
 
         Parameters
         ----------
-        multi_rooms : list
-            List of rooms in which the damage occurred.
+        multi_areas : list
+            List of areas in which the perturbation occurred.
         Returns
         ----------
         nodes attribute "IntermediateStatus": int
         nodes attribute "FinalStatus": int
         nodes attribute "Mark_Status": str
-        nodes attribute "Status_Room": str
+        nodes attribute "Status_Area": str
         """
 
-        self.nodes_in_room = []
+        self.nodes_in_area = []
 
-        for room in multi_rooms:
+        for area in multi_areas:
 
-            if room not in list(self.room.values()):
-                print('The room is not in the graph')
-                print('Insert a valid room')
-                print("Valid rooms:", set(self.room.values()))
+            if area not in list(self.area.values()):
+                print('The area is not in the graph')
+                print('Insert a valid area')
+                print("Valid areas:", set(self.area.values()))
                 sys.exit()
             else:
-                for id, Area in self.room.items():
-                    if Area == room:
-                        self.nodes_in_room.append(id)
+                for id, Area in self.area.items():
+                    if Area == area:
+                        self.nodes_in_area.append(id)
 
         self.check_before()
         self.closeness_centrality()
@@ -1573,11 +1573,11 @@ class GeneralGraph(nx.DiGraph):
             if PerturbationResistant == "1":
                 FR_nodes.append(id)
 
-        FV_nodes_in_room = set(self.nodes_in_room) - set(FR_nodes)
-        FV_nodes_in_room = [x for x in FV_nodes_in_room if str(x) != 'nan']
+        FV_nodes_in_area = set(self.nodes_in_area) - set(FR_nodes)
+        FV_nodes_in_area = [x for x in FV_nodes_in_area if str(x) != 'nan']
 
-        if (len(FV_nodes_in_room)) != 0:
-            for node in FV_nodes_in_room:
+        if (len(FV_nodes_in_area)) != 0:
+            for node in FV_nodes_in_area:
                 self.broken = []
                 if node in self.nodes():
                     self.rm_nodes(node)
@@ -1587,9 +1587,9 @@ class GeneralGraph(nx.DiGraph):
                     for n in self.bn:
                         self.remove_node(n)
 
-                FV_nodes_in_room = list(set(FV_nodes_in_room) - set(self.bn))
+                FV_nodes_in_area = list(set(FV_nodes_in_area) - set(self.bn))
 
-            FV_nodes_in_room = FV_nodes_in_room
+            FV_nodes_in_area = FV_nodes_in_area
 
             self.lst = []
 
@@ -1601,10 +1601,10 @@ class GeneralGraph(nx.DiGraph):
 
         rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
-        with open("service_paths_multi_room_perturbation.csv", "w") as csvFile:
+        with open("service_paths_multi_area_perturbation.csv", "w") as csvFile:
             fields = [
                 "from", "to", "final_simple_path", "final_shortest_path",
-                "final_shortest_path_length", "final_pair_efficiency", "room",
+                "final_shortest_path_length", "final_pair_efficiency", "area",
                 "ids", 'original_simple path', 'original_shortest_path_length',
                 'original_pair_efficiency', 'original_shortest_path'
             ]
@@ -1613,14 +1613,14 @@ class GeneralGraph(nx.DiGraph):
             writer.writerows(rb_paths_p)
         csvFile.close()
 
-        self.update_status(multi_rooms)
+        self.update_status(multi_areas)
 
         list_to_print = []
-        with open("room_perturbation.csv", "w") as csvFile:
+        with open("area_perturbation.csv", "w") as csvFile:
             fields = [
                 "Mark", "Description", "InitStatus", "IntermediateStatus",
-                "FinalStatus", "Mark_Status", "PerturbationResistant", "Room",
-                "Status_Room", "closeness_centrality", "betweenness_centrality",
+                "FinalStatus", "Mark_Status", "PerturbationResistant", "Area",
+                "Status_Area", "closeness_centrality", "betweenness_centrality",
                 "indegree_centrality", "original_local_eff", "final_local_eff",
                 "original_global_eff", "final_global_eff",
                 "original_avg_global_eff", "final_avg_global_eff"
@@ -1644,10 +1644,10 @@ class GeneralGraph(nx.DiGraph):
                     self.copy_of_self1.nodes[n]["Mark_Status"],
                     'PerturbationResistant':
                     self.copy_of_self1.nodes[n]["PerturbationResistant"],
-                    'Room':
+                    'Area':
                     self.copy_of_self1.nodes[n]["Area"],
-                    'Status_Room':
-                    self.copy_of_self1.nodes[n]["Status_Room"],
+                    'Status_Area':
+                    self.copy_of_self1.nodes[n]["Status_Area"],
                     'closeness_centrality':
                     self.copy_of_self1.nodes[n]["closeness_centrality"],
                     'betweenness_centrality':
@@ -1677,5 +1677,5 @@ if __name__ == '__main__':
     g.load(sys.argv[1])
     g.check_input_with_gephi()
     g.delete_a_node("1")
-    #g.simulate_multi_room_perturbation(['room1'])
-    ##g.simulate_multi_room_perturbation(['room1','room2','room3'])
+    #g.simulate_multi_area_perturbation(['area1'])
+    ##g.simulate_multi_area_perturbation(['area1','area2','area3'])

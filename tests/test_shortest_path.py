@@ -15,7 +15,7 @@ class TestShortestPathGraph(TestCase):
     def setUpClass(cls):
         """
 		Shortest paths for the toy graph:
-		- 'initial_shortest_paths': shortest paths before any damage
+		- 'initial_shortest_paths': shortest paths before any
 		perturbation
 		"""
         cls.initial_shortest_paths = {
