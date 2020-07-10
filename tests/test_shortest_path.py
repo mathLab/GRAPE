@@ -1,10 +1,9 @@
 """TestShortestPathGraph to check shortest path calculation of GeneralGraph"""
 
 from unittest import TestCase
+import copy
 import multiprocessing as mp
 from grape.general_graph import GeneralGraph
-
-import networkx as nx
 
 class TestShortestPathGraph(TestCase):
     """
@@ -16,6 +15,9 @@ class TestShortestPathGraph(TestCase):
         """
 		Shortest paths for the toy graph:
 		- 'initial_shortest_paths': shortest paths before any
+		perturbation
+		- 'final_shp_delete_a_node': shortest paths after deletion of node '1'
+		- 'final_shp_multi_area_perturbation': paths after multi area
 		perturbation
 		"""
         cls.initial_shortest_paths = {
@@ -233,6 +235,57 @@ class TestShortestPathGraph(TestCase):
             }
         }
 
+        cls.final_shp_delete_a_node = copy.deepcopy(cls.initial_shortest_paths)
+        cls.final_shp_delete_a_node.pop('1')
+
+        cls.final_shp_multi_area_perturbation = {
+            '1': {
+                '1': ['1'],
+                '3': ['1', '3'],
+                '2': ['1', '2'],
+                '5': ['1', '3', '5'],
+                '4': ['1', '2', '4'],
+                '6': ['1', '2', '4', '6'],
+                '7': ['1', '2', '4', '6', '7'],
+                '8': ['1', '2', '4', '6', '8']
+            },
+            '2': {
+                '2': ['2'],
+                '4': ['2', '4'],
+                '6': ['2', '4', '6'],
+                '7': ['2', '4', '6', '7'],
+                '8': ['2', '4', '6', '8']
+            },
+            '3': {
+                '3': ['3'],
+                '5': ['3', '5']
+            },
+            '4': {
+                '4': ['4'],
+                '6': ['4', '6'],
+                '7': ['4', '6', '7'],
+                '8': ['4', '6', '8']            
+            },
+            '5': {
+                '5': ['5']
+            },
+            '6': {
+                '6': ['6'],
+                '7': ['6', '7'],
+                '8': ['6', '8']
+            },
+            '7': {
+                '7': ['7'],
+                '6': ['7', '6'],
+                '8': ['7', '6', '8']           
+            },
+            '8': {
+                '8': ['8'],
+                '6': ['8', '6'],
+                '7': ['8', '6', '7'],
+            }
+        }
+
     @classmethod
     def check_shortest_paths(cls, test, true_path, graph):
         """
@@ -242,6 +295,8 @@ class TestShortestPathGraph(TestCase):
 		The shortest path is not necessarily unique:
 		the entire source-target path does not necessarily coincide.
 		"""
+        print(true_path)
+
         for source, all_paths in true_path.items():
             for target, path in all_paths.items():
                 test.assertEqual(
@@ -269,7 +324,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.parallel_wrapper_proc()
 
-        self.check_shortest_paths(self,self.initial_shortest_paths,g)
+        self.check_shortest_paths(self, self.initial_shortest_paths, g)
 
     def test_floyd_warshall_parallel(self):
         """
@@ -280,7 +335,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.floyd_warshall_predecessor_and_distance_parallel()
 
-        self.check_shortest_paths(self,self.initial_shortest_paths,g)
+        self.check_shortest_paths(self, self.initial_shortest_paths, g)
 
     def test_BFS_serial(self):
         """
@@ -292,7 +347,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.single_source_shortest_path_serial()
 
-        self.check_shortest_paths(self,self.initial_shortest_paths,g)
+        self.check_shortest_paths(self, self.initial_shortest_paths, g)
 
     def test_floyd_warshall_serial(self):
         """
@@ -303,4 +358,41 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.floyd_warshall_predecessor_and_distance_serial()
 
-        self.check_shortest_paths(self,self.initial_shortest_paths,g)
+        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+
+    def test_delete_a_node(self):
+        """
+		The following test checks the topology of the graph after a perturbation.
+		The perturbation here considered is the deletion of a node, namely node '1'.
+		"""
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.delete_a_node("1")
+
+        print(type(self.final_shp_delete_a_node))
+
+        self.check_shortest_paths(self, self.final_shp_delete_a_node, g)
+
+    def test_single_area_perturbation(self):
+        """
+		The following test checks the topology of the graph after a perturbation.
+		The perturbation here considered is the perturbation in one area.
+		The shortest paths must be exactly the same as the initial ones because
+		all the nodes in area 1 are perturbation resistant.
+		"""
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_multi_area_perturbation(['area1'])
+
+        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+
+    def test_multi_area_perturbation(self):
+        """
+		The following test checks the topology of the graph after a perturbation.
+		The perturbation here considered is the perturbation in multiple areas.
+		"""
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_multi_area_perturbation(['area1', 'area2', 'area3'])
+
+        self.check_shortest_paths(self, self.final_shp_multi_area_perturbation, g)
