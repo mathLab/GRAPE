@@ -12,7 +12,6 @@ import warnings
 from itertools import chain
 import copy
 import networkx as nx
-from networkx.drawing.nx_agraph import graphviz_layout
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 logging.basicConfig(
@@ -136,7 +135,6 @@ class GeneralGraph(nx.DiGraph):
         self.Mark = nx.get_node_attributes(self, 'Mark')
         self.Father_mark = nx.get_node_attributes(self, 'Father_mark')
         self.condition = nx.get_edge_attributes(self, 'Father_cond')
-        self.pos = graphviz_layout(self, prog='dot')
 
         self.From_to = nx.get_node_attributes(self, 'From_to')
 
