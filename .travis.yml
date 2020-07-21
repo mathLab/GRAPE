@@ -32,12 +32,11 @@ before_install:
     # Useful for debugging any issues with conda
     - conda info -a
     - conda config --add channels conda-forge
-    - conda install graphviz=2.38
 
 install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
-    - pip install coverage numpy scipy matplotlib networkx nose coveralls pygraphviz
+    - pip install coverage numpy scipy matplotlib networkx nose coveralls
     - python setup.py install
 
 script:
