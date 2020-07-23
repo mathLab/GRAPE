@@ -245,35 +245,35 @@ class TestInputGraph(TestCase):
 
         self.assertDictEqual(D_dict, g.D, msg=" Wrong DESCRIPTION in input ")
 
-    def test_From_to(self):
+    def test_Type(self):
         """
-		Unittest check for From_to attribute of GeneralGraph:
+		Unittest check for Type attribute of GeneralGraph:
 		correct input reading.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
 
-        From_to_dict = {
-            '1': '',
-            '2': '',
-            '3': '',
-            '4': '',
-            '5': '',
-            '6': '',
-            '7': '',
-            '8': '',
-            '9': 'SOURCE',
-            '10': '',
-            '11': '',
-            '12': '',
-            '13': '',
-            '14': '',
-            '15': '',
-            '16': '',
-            '17': '',
-            '18': 'TARGET',
-            '19': ''
+        Type_dict = {
+            '1': 'SOURCE',
+            '2': 'HUB',
+            '3': 'HUB',
+            '4': 'HUB',
+            '5': 'HUB',
+            '6': 'HUB',
+            '7': 'HUB',
+            '8': 'HUB',
+            '9': 'HUB',
+            '10': 'HUB',
+            '11': 'HUB',
+            '12': 'HUB',
+            '13': 'HUB',
+            '14': 'HUB',
+            '15': 'SOURCE',
+            '16': 'HUB',
+            '17': 'HUB',
+            '18': 'USER',
+            '19': 'HUB'
         }
 
         self.assertDictEqual(
-            From_to_dict, g.From_to, msg=" Wrong FROM TO in input ")
+            Type_dict, g.Type, msg=" Wrong TYPE in input ")

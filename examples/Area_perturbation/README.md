@@ -27,8 +27,8 @@ with opposite behaviour. It is a node attribute.)
 (**Area**. It is a node attribute.)
 - element external perturbation resistance 
 (**PerturbationResistant**: *1*, *0*. It is a node attribute.)
-- source - target elements 
-(**From_to**: *SOURCE* or *TARGET*. It is a node attribute.)
+- source - hub - user elements 
+(**Type**: *SOURCE* or *HUB* or *USER*. It is a node attribute.)
 
 The hierarchy of the elements explains how commodities
 flow from one element to another element

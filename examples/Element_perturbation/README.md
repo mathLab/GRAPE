@@ -27,8 +27,8 @@ with opposite behaviour. It is a node attribute.)
 (**Area**. It is a node attribute.)
 - element external perturbation resistance 
 (**PerturbationResistant**: *1*, *0*. It is a node attribute.)
-- source - target elements 
-(**From_to**: *SOURCE* or *TARGET*. It is a node attribute.)
+- source - hub - user elements 
+(**Type**: *SOURCE* or *HUB* or *USER*. It is a node attribute.)
 
 The hierarchy of the elements explains how commodities
 flow from one element to another element
@@ -57,7 +57,7 @@ is one of the most important steps of the analysis.
 
 ## Example
 
-In the cartoon is represented the example input file  `TOY_graph.csv `.
+In the cartoon is represented the example input file `TOY_graph.csv `.
 In this file are present 19 nodes/elements connected by
 direct edges that reflect the hierarchy of the system 
 in a parent-child fashion.
@@ -83,7 +83,7 @@ These nodes will not be affected by the simulated
 perturbation.
 
 Nodes 2 and 3 are isolating elements ("Description field" =
-"isolation_A"). In the figure, perturbating node 1 would result 
+"isolation_A"). In the figure, perturbing node 1 would result 
 in the breakage of all the nodes present in the graph except 
 node 15 in absence of isolating elements. On the other hand, 
 isolating elements 2 and 3 would stop the perturbation propagation
@@ -122,7 +122,7 @@ and closeness indices (*closeness_centrality*, *betweenness_centrality*,
 
 In this table are reported the paths (all paths and shortest paths), if any, 
 that connect source and target elements.
-Paths are calculated before and after perturbating one or multiple elements.
+Paths are calculated before and after perturbing one or multiple elements.
 
 ### general_code_output.log
 

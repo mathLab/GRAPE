@@ -69,7 +69,7 @@ class GeneralGraph(nx.DiGraph):
             - element external perturbation resistance
               ("PerturbationResistant": 1,0. It is a node attribute.)
             - source - target elements
-              ("From_to": SOURCE or TARGET. It is a node attribute.)
+              ("Type": SOURCE/HUB/USER. It is a node attribute.)
 
             The hierarchy of the elements explains how commodities
             flow from one element to another element
@@ -107,7 +107,7 @@ class GeneralGraph(nx.DiGraph):
 
                 for key in [
                         'Area', 'PerturbationResistant', 'InitStatus',
-                        'Description', 'From_to', 'Mark', 'Father_mark'
+                        'Description', 'Type', 'Mark', 'Father_mark'
                 ]:
                     self.nodes[row['Mark']][key] = row[key]
 
@@ -136,17 +136,18 @@ class GeneralGraph(nx.DiGraph):
         self.Father_mark = nx.get_node_attributes(self, 'Father_mark')
         self.condition = nx.get_edge_attributes(self, 'Father_cond')
 
-        self.From_to = nx.get_node_attributes(self, 'From_to')
+        self.Type = nx.get_node_attributes(self, 'Type')
 
-        self.services_FROM = []
-        for id, From_to in self.From_to.items():
-            if From_to == "SOURCE":
-                self.services_FROM.append(id)
-
-        self.services_TO = []
-        for id, From_to in self.From_to.items():
-            if From_to == "TARGET":
-                self.services_TO.append(id)
+        self.services_SOURCE = []
+        self.services_HUB = []
+        self.services_USER = []
+        for id, Type in self.Type.items():
+            if Type == "SOURCE":
+                self.services_SOURCE.append(id)
+            elif Type == "HUB":
+                self.services_HUB.append(id)
+            elif Type == "USER":
+                self.services_USER.append(id)
 
     def check_input_with_gephi(self):
         """ Write list of nodes and list of edges csv files
@@ -1000,9 +1001,9 @@ class GeneralGraph(nx.DiGraph):
         self.global_eff()
         self.local_eff()
 
-        for ii in self.services_FROM:
+        for ii in self.services_SOURCE:
             i = list(self.Mark.keys())[list(self.Mark.values()).index(ii)]
-            for jj in self.services_TO:
+            for jj in self.services_USER:
                 j = list(self.Mark.keys())[list(self.Mark.values()).index(jj)]
                 if i in self.nodes() and j in self.nodes():
                     if nx.has_path(self, i, j):
@@ -1085,9 +1086,9 @@ class GeneralGraph(nx.DiGraph):
         self.global_eff()
         self.local_eff()
 
-        for nn in self.services_FROM:
+        for nn in self.services_SOURCE:
             n = list(self.Mark.keys())[list(self.Mark.values()).index(nn)]
-            for OODD in self.services_TO:
+            for OODD in self.services_USER:
                 OD = list(self.Mark.keys())[list(
                     self.Mark.values()).index(OODD)]
 
