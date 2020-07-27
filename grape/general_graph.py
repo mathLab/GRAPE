@@ -149,6 +149,12 @@ class GeneralGraph(nx.DiGraph):
             elif Type == "USER":
                 self.services_USER.append(id)
 
+        self.valv = {
+			"isolation_A" : { "0": "OPEN", "1": "CLOSED"},
+			"isolation_B" : { "0": "CLOSED", "1": "OPEN"},
+			"unknown" : { "0": "OFF", "1": "ON"}
+			}
+
     def check_input_with_gephi(self):
         """ Write list of nodes and list of edges csv files
             to visualize the input with Gephi.
@@ -605,7 +611,6 @@ class GeneralGraph(nx.DiGraph):
 
         node_chunks = chunk_it(retain_nodes, num)
         """
-
         out_q = Queue()
 
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
@@ -1101,62 +1106,38 @@ class GeneralGraph(nx.DiGraph):
 
                         for node in set_sip:
 
-                            if self.D[node] == "isolation_A":
+                            if self.D[node] in self.valv:
 
                                 if node in self.newstatus:
 
                                     if self.newstatus[node] == "1":
 
                                         logging.debug(
-                                            "found CLOSED isolation_A at node: %s ",
-                                            node)
+                                            "valve %s at node %s, state %s",
+                                            self.D[node], node, self.valv[self.D[node]]["1"])
 
                                     elif self.newstatus[node] == "0":
 
-                                        logging.debug(
-                                            "found OPEN isolation_A and CLOSED it at node: %s ",
-                                            node)
-
                                         self.finalstatus.update({node: "1"})
+                                        
+                                        logging.debug(
+                                            "valve %s at node %s, from %s to %s",
+                                            self.D[node], node, self.valv[self.D[node]]["0"],
+                                            self.valv[self.D[node]]["1"])
                                 else:
                                     if self.status[node] == "1":
 
                                         logging.debug(
-                                            "found CLOSED isolation_A at node: %s ",
-                                            node)
+                                            "valve %s at node %s, state %s",
+                                            self.D[node], node, self.valv[self.D[node]]["1"])
                                     elif self.status[node] == "0":
 
                                         self.finalstatus.update({node: "1"})
 
                                         logging.debug(
-                                            "found OPEN isolation_A and CLOSED it at node: %s ",
-                                            node)
-
-                            elif self.D[node] == "isolation_B":
-
-                                if node in self.newstatus:
-                                    if self.newstatus[node] == "1":
-
-                                        logging.debug(
-                                            "found OPEN isolation_B at node: %s ",
-                                            node)
-                                    elif self.newstatus[node] == "0":
-
-                                        self.finalstatus.update({node: "1"})
-                                        logging.debug(
-                                            "found CLOSED isolation_B and OPENED it, at node: %s",
-                                            node)
-                                else:
-                                    if self.status[node] == "1":
-                                        logging.debug(
-                                            "found OPEN isolation_B at node: %s ",
-                                            node)
-                                    elif self.status[node] == "0":
-
-                                        self.finalstatus.update({node: "1"})
-                                        logging.debug(
-                                            "found CLOSED isolation_B and OPENED it, at node: %s",
-                                            node)
+                                            "valve %s at node %s, from %s to %s",
+                                            self.D[node], node, self.valv[self.D[node]]["0"],
+                                            self.valv[self.D[node]]["1"])
 
                         shp = min(sip, key=len)
 
@@ -1202,39 +1183,24 @@ class GeneralGraph(nx.DiGraph):
         visited : None or string, optional
 
         """
-
         if visited is None:
             visited = set()
         visited.add(node)
         logging.debug('visited: %s', visited)
         logging.debug('node: %s', node)
 
-        if self.D[node] == "isolation_A":
+        if self.D[node] in self.valv:
 
             if self.status[node] == "0":
-                logging.debug('found OPEN isolation_A at node:  %s', node)
+                logging.debug('valve %s at node %s, state %s',
+                self.D[node], node, self.valv[self.D[node]]["0"])
 
             elif self.status[node] == "1":
                 self.newstatus.update({node: "0"})
                 logging.debug(
-                    'found CLOSE isolation_A and OPENED it at node: %s', node)
-
-            if len(visited) == 1:
-                self.broken.append((node, "NULL"))
-                logging.debug("broken1: %s", self.broken)
-
-            else:
-                return visited
-
-        elif self.D[node] == "isolation_B":
-
-            if self.status[node] == "0":
-                logging.debug("found CLOSED isolation_B at node: %s ", node)
-
-            elif self.status[node] == "1":
-                self.newstatus.update({node: "0"})
-                logging.debug(
-                    "found OPEN isolation_B and CLOSED it, at node: %s", node)
+                    'valve %s at node %s, from %s to %s',
+                    self.D[node], node, self.valv[self.D[node]]["1"],
+                    self.valv[self.D[node]]["0"])
 
             if len(visited) == 1:
                 self.broken.append((node, "NULL"))
@@ -1298,7 +1264,7 @@ class GeneralGraph(nx.DiGraph):
                 merged[item[key]] = item
         return [val for (_, val) in merged.items()]
 
-    def update_status(self, multi_areas):
+    def update_areas(self, multi_areas):
         """ Update the status of the elements in the areas after
         the propagation of the failure.
 
@@ -1314,44 +1280,12 @@ class GeneralGraph(nx.DiGraph):
         nodes attribute "Mark_Status": str
         nodes attribute "Status_Area": str
         """
-
-        if self.newstatus:
-            self.newstatus = {
-                k: v
-                for k, v in self.newstatus.items()
-                if k not in self.nodes_in_area
-            }
-            ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
-            os_keys = set(self.copy_of_self1) - set(ns_keys)
-
-            for index, newstatus in self.newstatus.items():
-                self.copy_of_self1.nodes[index][
-                    "IntermediateStatus"] = newstatus
-            for index in os_keys:
-                self.copy_of_self1.nodes[index]["IntermediateStatus"] = " "
-        else:
-            for index in list(self.copy_of_self1):
-                self.copy_of_self1.nodes[index]["IntermediateStatus"] = " "
-
-        if self.finalstatus:
-            self.finalstatus = {
-                k: v
-                for k, v in self.finalstatus.items()
-                if k not in self.nodes_in_area
-            }
-            fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
-            ost_keys = set(self.copy_of_self1) - set(fs_keys)
-
-            for index, finalstatus in self.finalstatus.items():
-                self.copy_of_self1.nodes[index]["FinalStatus"] = finalstatus
-            for index in ost_keys:
-                self.copy_of_self1.nodes[index]["FinalStatus"] = " "
-        else:
-            for index in list(self.copy_of_self1):
-                self.copy_of_self1.nodes[index]["FinalStatus"] = " "
-
+        self.update_status(self.newstatus, "IntermediateStatus", self.nodes_in_area)
+        
+        self.update_status(self.finalstatus, "FinalStatus", self.nodes_in_area)
+        
         deleted_nodes = set(self.copy_of_self1) - set(self)
-
+        
         for n in self.copy_of_self1:
 
             if n in deleted_nodes:
@@ -1383,7 +1317,6 @@ class GeneralGraph(nx.DiGraph):
         nodes attribute "Mark_Status": str
         nodes attribute "Status_Area": str
         """
-
         if node in self.nodes():
 
             self.check_before()
@@ -1414,51 +1347,11 @@ class GeneralGraph(nx.DiGraph):
 
             self.check_after()
 
-            rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
-
-            with open("service_paths_element_perturbation.csv", "w") as csvFile:
-                fields = [
-                    "from", "to", "final_simple_path", "final_shortest_path",
-                    "final_shortest_path_length", "final_pair_efficiency",
-                    "area", "ids", 'original_simple path',
-                    'original_shortest_path_length', 'original_pair_efficiency',
-                    'original_shortest_path'
-                ]
-                writer = csv.DictWriter(csvFile, fieldnames=fields)
-                writer.writeheader()
-                writer.writerows(rb_paths_p)
-            csvFile.close()
-
-            self.newstatus = {
-                k: v
-                for k, v in self.newstatus.items() if k not in self.bn
-            }
-
-            if self.newstatus:
-
-                ns_keys = self.newstatus.keys() & list(self.copy_of_self1)
-                os_keys = set(self.copy_of_self1) - set(ns_keys)
-
-                for index, newstatus in self.newstatus.items():
-                    self.copy_of_self1.nodes[index][
-                        "IntermediateStatus"] = newstatus
-                for index in os_keys:
-                    self.copy_of_self1.nodes[index]["IntermediateStatus"] = " "
-            else:
-                for index in list(self.copy_of_self1):
-                    self.copy_of_self1.nodes[index]["IntermediateStatus"] = " "
-
-            if self.finalstatus:
-                fs_keys = self.finalstatus.keys() & list(self.copy_of_self1)
-                ost_keys = set(self.copy_of_self1) - set(fs_keys)
-
-                for index, finalstatus in self.finalstatus.items():
-                    self.copy_of_self1.nodes[index]["FinalStatus"] = finalstatus
-                for index in ost_keys:
-                    self.copy_of_self1.nodes[index]["FinalStatus"] = " "
-            else:
-                for index in list(self.copy_of_self1):
-                    self.copy_of_self1.nodes[index]["FinalStatus"] = " "
+            self.service_paths_tofile("service_paths_element_perturbation.csv")
+            
+            self.update_status(self.newstatus, "IntermediateStatus", self.bn)
+          
+            self.update_status(self.finalstatus, "FinalStatus", self.bn)
 
             for n in self.copy_of_self1:
 
@@ -1469,63 +1362,7 @@ class GeneralGraph(nx.DiGraph):
 
                 self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
-            list_to_print = []
-
-            with open("element_perturbation.csv", "w") as csvFile:
-                fields = [
-                    "Mark", "Description", "InitStatus", "IntermediateStatus",
-                    "FinalStatus", "Mark_Status", "PerturbationResistant",
-                    "Area", "Status_Area", "closeness_centrality",
-                    "betweenness_centrality", "indegree_centrality",
-                    "original_local_eff", "final_local_eff",
-                    "original_global_eff", "final_global_eff",
-                    "original_avg_global_eff", "final_avg_global_eff"
-                ]
-
-                writer = csv.DictWriter(csvFile, fieldnames=fields)
-                writer.writeheader()
-
-                for n in self.copy_of_self1:
-                    list_to_print.append({
-                        'Mark':
-                        n,
-                        'Description':
-                        self.copy_of_self1.nodes[n]["Description"],
-                        'InitStatus':
-                        self.copy_of_self1.nodes[n]["InitStatus"],
-                        'IntermediateStatus':
-                        self.copy_of_self1.nodes[n]["IntermediateStatus"],
-                        'FinalStatus':
-                        self.copy_of_self1.nodes[n]["FinalStatus"],
-                        'Mark_Status':
-                        self.copy_of_self1.nodes[n]["Mark_Status"],
-                        'PerturbationResistant':
-                        self.copy_of_self1.nodes[n]["PerturbationResistant"],
-                        'Area':
-                        self.copy_of_self1.nodes[n]["Area"],
-                        'Status_Area':
-                        self.copy_of_self1.nodes[n]["Status_Area"],
-                        'closeness_centrality':
-                        self.copy_of_self1.nodes[n]["closeness_centrality"],
-                        'betweenness_centrality':
-                        self.copy_of_self1.nodes[n]["betweenness_centrality"],
-                        'indegree_centrality':
-                        self.copy_of_self1.nodes[n]["indegree_centrality"],
-                        'original_local_eff':
-                        self.copy_of_self1.nodes[n]["original_local_eff"],
-                        'final_local_eff':
-                        self.copy_of_self1.nodes[n]["final_local_eff"],
-                        'original_global_eff':
-                        self.copy_of_self1.nodes[n]["original_nodal_eff"],
-                        'final_global_eff':
-                        self.copy_of_self1.nodes[n]["final_nodal_eff"],
-                        'original_avg_global_eff':
-                        self.copy_of_self1.nodes[n]["original_avg_global_eff"],
-                        'final_avg_global_eff':
-                        self.copy_of_self1.nodes[n]["final_avg_global_eff"]
-                    })
-                writer.writerows(list_to_print)
-            csvFile.close()
+            self.graph_characterization_tofile("element_perturbation.csv")
 
         else:
             print('The node is not in the graph')
@@ -1545,7 +1382,6 @@ class GeneralGraph(nx.DiGraph):
         nodes attribute "Mark_Status": str
         nodes attribute "Status_Area": str
         """
-
         self.nodes_in_area = []
 
         for area in multi_areas:
@@ -1598,9 +1434,61 @@ class GeneralGraph(nx.DiGraph):
 
             self.check_after()
 
+        self.service_paths_tofile("service_paths_multi_area_perturbation.csv")
+        
+        self.update_areas(multi_areas)
+        
+        self.graph_characterization_tofile("area_perturbation.csv")
+        
+    def update_status(self, which_status, field, already_updated):
+        """ Update the status of the nodes not concerned
+            by the perturbation. The status of nodes
+            interested by the perturbation is already
+            updated during failure propagation. 
+
+        Parameters
+        ----------
+        which_status : dict
+            Status to be updated.
+        field: str
+            Name of status to be updated.
+        already_updated: list
+            List of nodes already updated.
+        Returns
+        ----------
+        updated status which_status: dict
+        """
+        if which_status:
+            which_status = {
+                k: v
+                for k, v in which_status.items()
+                if k not in already_updated
+            }
+            ns_keys = which_status.keys() & list(self.copy_of_self1)
+            os_keys = set(self.copy_of_self1) - set(ns_keys)
+
+            for index, updated_status in which_status.items():
+                self.copy_of_self1.nodes[index][field] = updated_status
+            for index in os_keys:
+                self.copy_of_self1.nodes[index][field] = " "
+        else:
+            for index in list(self.copy_of_self1):
+                self.copy_of_self1.nodes[index][field] = " "
+
+        return which_status
+
+    def service_paths_tofile(self, filename):
+        """ Write to file the service paths
+        situation after the perturbation.
+
+        Parameters
+        ----------
+        filename : str
+            Name of output file.
+        """
         rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
-        with open("service_paths_multi_area_perturbation.csv", "w") as csvFile:
+        with open(filename, "w") as csvFile:
             fields = [
                 "from", "to", "final_simple_path", "final_shortest_path",
                 "final_shortest_path_length", "final_pair_efficiency", "area",
@@ -1612,10 +1500,17 @@ class GeneralGraph(nx.DiGraph):
             writer.writerows(rb_paths_p)
         csvFile.close()
 
-        self.update_status(multi_areas)
+    def graph_characterization_tofile(self, filename):
+        """ Write to file graph characterization
+        after the perturbation.
 
+        Parameters
+        ----------
+        filename : str
+            Name of output file.
+        """
         list_to_print = []
-        with open("area_perturbation.csv", "w") as csvFile:
+        with open(filename, "w") as csvFile:
             fields = [
                 "Mark", "Description", "InitStatus", "IntermediateStatus",
                 "FinalStatus", "Mark_Status", "PerturbationResistant", "Area",
@@ -1675,6 +1570,6 @@ if __name__ == '__main__':
     g = GeneralGraph()
     g.load(sys.argv[1])
     g.check_input_with_gephi()
-    g.delete_a_node("1")
-    #g.simulate_multi_area_perturbation(['area1'])
-    ##g.simulate_multi_area_perturbation(['area1','area2','area3'])
+    #g.delete_a_node("1")
+    g.simulate_multi_area_perturbation(['area1'])
+    #g.simulate_multi_area_perturbation(['area1','area2','area3'])
