@@ -37,7 +37,6 @@ class GeneralGraph(nx.DiGraph):
     def load(self, filename):
         """Load input file.
 
-
         Parameters
         ----------
         filename : input file in csv format
@@ -56,6 +55,7 @@ class GeneralGraph(nx.DiGraph):
 
             Each line should contain the following info:
             - element id ("Mark")
+              ("Mark" attribite must be unique for each node)
             - parent of the element id ("Father_mark")
             - parent-child relationship
               ("Father_cond": AND, OR, SINGLE, ORPHAN. It is an edge attribute.)
@@ -68,8 +68,10 @@ class GeneralGraph(nx.DiGraph):
               ("Area". It is a node attribute.)
             - element external perturbation resistance
               ("PerturbationResistant": 1,0. It is a node attribute.)
-            - source - target elements
-              ("Type": SOURCE/HUB/USER. It is a node attribute.)
+            - source - hub - user elements
+              ("Type": SOURCE or HUB or USER. It is a node attribute.)
+            - service flowing between two nodes
+              ("Service": it is a floating point number. It is an edge attribute.)
 
             The hierarchy of the elements explains how commodities
             flow from one element to another element
@@ -120,7 +122,8 @@ class GeneralGraph(nx.DiGraph):
                 self.add_edge(
                     row['Father_mark'],
                     row['Mark'],
-                    Father_cond=row['Father_cond'])
+                    Father_cond = row['Father_cond'],
+                    weight = float(row['Service']) )
 
         self.broken = []
         self.newstatus = {}
@@ -135,8 +138,8 @@ class GeneralGraph(nx.DiGraph):
         self.Mark = nx.get_node_attributes(self, 'Mark')
         self.Father_mark = nx.get_node_attributes(self, 'Father_mark')
         self.condition = nx.get_edge_attributes(self, 'Father_cond')
-
         self.Type = nx.get_node_attributes(self, 'Type')
+        self.Service = nx.get_edge_attributes(self, 'weight')
 
         self.services_SOURCE = []
         self.services_HUB = []
@@ -267,7 +270,9 @@ class GeneralGraph(nx.DiGraph):
         return path1
 
     def inner_iteration_serial(self, pred1, dist1):
-        """ Serial Floyd Warshall's APSP inner iteration .
+        """ Serial Floyd Warshall's APSP inner iteration.
+        Distance matrix is intended to take edges weight
+        into account.
 
         Parameters
         ----------
@@ -275,7 +280,6 @@ class GeneralGraph(nx.DiGraph):
             matrix of predecessors
         dist1 : numpy.matrixlib.defmatrix.matrix
             matrix of distances
-
 
         Returns
         -------
@@ -290,11 +294,14 @@ class GeneralGraph(nx.DiGraph):
                     if dist1[u, v] > dist1[u, w] + dist1[w, v]:
                         dist1[u, v] = dist1[u, w] + dist1[w, v]
                         pred1[u, v] = pred1[w, v]
+            dist1[w,w] = 0.
+            pred1[w,w] = np.inf
 
         return pred1, dist1
+        
 
     def inner_iteration_parallel(self, barrier, arr, arr1, init, stop):
-        """ Serial Floyd Warshall's APSP inner iteration .
+        """ Serial Floyd Warshall's APSP inner iteration.
 
         Parameters
         ----------
@@ -305,7 +312,6 @@ class GeneralGraph(nx.DiGraph):
             shared matrix of distances
         init : int
         stop : int
-
 
         Returns
         -------
@@ -326,6 +332,8 @@ class GeneralGraph(nx.DiGraph):
                 for jj in range(n):
                     if (diff[ii - init, jj] == False):
                         arr1[ii, jj] = arr1[w, jj]
+                arr[ii,ii] = 0.
+                arr1[ii,ii] = np.inf
 
             barrier.wait()
 
@@ -338,7 +346,6 @@ class GeneralGraph(nx.DiGraph):
             matrix of predecessors
         arr : np.array
             matrix of distances
-
 
         Returns
         -------
@@ -369,19 +376,13 @@ class GeneralGraph(nx.DiGraph):
         for proc in processes:
             proc.join()
 
-    def floyd_warshall_predecessor_and_distance_parallel(self, weight='weight'):
+    def floyd_warshall_predecessor_and_distance_parallel(self):
         """ Parallel Floyd Warshall's APSP algorithm.
-
-        Parameters
-        ----------
-        weight :  None or string, optional (default = weight)
-            If weight, every edge has weight/distance/cost 1.
-
 
         Returns
         -------
-        Node's "shortest_path" and "efficiency" attributes to every other node
-        in the graph.
+        Node's "shortest_path" and "efficiency" attributes to every node
+        in the graph. Edges weight is taken into account in distance matrix.
         """
         self.H = nx.convert_node_labels_to_integers(
             self, first_label=0, label_attribute='Mark_ids')
@@ -390,18 +391,15 @@ class GeneralGraph(nx.DiGraph):
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
 
-        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]
-                                              **2)
+        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]**2)
         arr = np.frombuffer(shared_arr, 'float64').reshape(dist1.shape)
         arr[:] = dist1
 
         pred1 = np.full((len(self.H), len(self.H)), np.inf)
         for u, v, d in self.H.edges(data=True):
-            e_weight = d.get(weight, 1.0)
             pred1[u, v] = u
 
-        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double,
-                                                   pred1.shape[0]**2)
+        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double,pred1.shape[0]**2)
         arr1 = np.frombuffer(shared_arr_pred, 'float64').reshape(pred1.shape)
         arr1[:] = pred1
 
@@ -409,26 +407,26 @@ class GeneralGraph(nx.DiGraph):
 
         paths = {}
 
+        self.ids_reversed = { value: key for key, value in self.ids.items() }
+
         for i in list(self.H):
 
+            self.nodes[self.ids[i]]["shpath_length"] = {}
             attribute_efficiency = []
 
             rec_path = {
                 self.ids[j]: self.ConstructPath(i, j, arr1)
                 for j in sorted(list(self.H))
             }
-
-            rec_path_1 = {
+            
+            kv_fw = {
                 key: value
                 for key, value in rec_path.items() if value
             }
 
-            paths[i] = (self.ids[i], rec_path_1)
-
-            kv_fw = rec_path_1
-
             for key, value in kv_fw.items():
-                length_path = len(value) - 1
+                length_path = arr[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
+                self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
                 if length_path != 0:
                     efficiency = 1 / length_path
                     dict_efficiency = {key: efficiency}
@@ -440,22 +438,16 @@ class GeneralGraph(nx.DiGraph):
 
             for m in list(self):
                 if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["shortest_path"] = paths[i]
+                    self.nodes[m]["shortest_path"] = kv_fw
                     self.nodes[m]["efficiency"] = attribute_efficiency
 
-    def floyd_warshall_predecessor_and_distance_serial(self, weight='weight'):
+    def floyd_warshall_predecessor_and_distance_serial(self):
         """ Serial Floyd Warshall's APSP algorithm.
-
-        Parameters
-        ----------
-        weight :  None or string, optional (default = None)
-            If None, every edge has weight/distance/cost 1.
-
 
         Returns
         -------
-        Node's "shortest_path" and "efficiency" attributes to every other node
-        in the graph, from every node in the graph.
+        Node's "shortest_path" and "efficiency" attributes between each couple of
+        nodes in the graph. Edges weight is taken into account in distance matrix.
         """
         self.H = nx.convert_node_labels_to_integers(
             self, first_label=0, label_attribute='Mark_ids')
@@ -463,33 +455,34 @@ class GeneralGraph(nx.DiGraph):
 
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
-        pred1 = np.full((len(self.H), len(self.H)), np.inf)
 
-        for u, v, d in self.H.edges(data=True):  # for each edge
-            e_weight = d.get(weight, 1.0)
+        pred1 = np.full((len(self.H), len(self.H)), np.inf)
+        for u, v, d in self.H.edges(data=True):
             pred1[u, v] = u
 
         self.inner_iteration_serial(pred1, dist1)
 
         paths = {}
 
+        self.ids_reversed = { value: key for key, value in self.ids.items() }
+
         for i in list(self.H):
 
+            self.nodes[self.ids[i]]["shpath_length"] = {}
             attribute_efficiency = []
             rec_path = {
                 self.ids[j]: self.ConstructPath(i, j, pred1)
                 for j in sorted(list(self.H))
             }
-            rec_path_1 = {
+            
+            kv_fw = {
                 key: value
                 for key, value in rec_path.items() if value
             }
-            paths[i] = (self.ids[i], rec_path_1)
-
-            kv_fw = rec_path_1
-
+            
             for key, value in kv_fw.items():
-                length_path = len(value) - 1
+                length_path = dist1[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
+                self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
                 if length_path != 0:
                     efficiency = 1 / length_path
                     dict_efficiency = {key: efficiency}
@@ -501,32 +494,29 @@ class GeneralGraph(nx.DiGraph):
 
             for m in list(self):
                 if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["shortest_path"] = paths[i]
+                    self.nodes[m]["shortest_path"] = kv_fw
                     self.nodes[m]["efficiency"] = attribute_efficiency
 
     def single_source_shortest_path_serial(self):
-        """ Serial SSSP algorithm based on BFS.
+        """ Serial SSSP algorithm based on Dijkstra’s method.
 
         Returns
         -------
-        Node's "shortest_path" and "efficiency" attributes to every other node
-        in the graph, from every node in the graph.
+        Node's "shortest_path" and "efficiency" attributes between each couple of
+        nodes in the graph. Edges weight is taken into account.
 
         Notes
         -----
-        The shortest path is not necessarly unique. So there can be multiple
-        paths between the source and each target node, all of which have the
-        same shortest length. For each target node, this function returns
-        only one of those paths.
+        Edge weight attributes must be numerical. Distances are calculated as
+        sums of weighted edges traversed.
         """
         for n in self:
             attribute_efficiency = []
-            sssps = (n, nx.single_source_shortest_path(self, n))
-            self.nodes[n]["shortest_path"] = sssps
-            kv_sssps = sssps[1]
-            for key, value in kv_sssps.items():
-                length_path = len(value) - 1
-                if length_path != 0:
+            sssps = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
+            self.nodes[n]["shortest_path"] = sssps[1][1]
+            self.nodes[n]["shpath_length"] = sssps[1][0]
+            for key, length_path in self.nodes[n]["shpath_length"].items():
+                if length_path != 0 :
                     efficiency = 1 / length_path
                     dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
@@ -536,9 +526,9 @@ class GeneralGraph(nx.DiGraph):
                     attribute_efficiency.append(dict_efficiency)
 
             self.nodes[n]["efficiency"] = attribute_efficiency
-
+            
     def single_source_shortest_path_parallel(self, out_q, nodi):
-        """ Parallel SSSP algorithm based on BFS.
+        """ Parallel SSSP algorithm based on Dijkstra’s method.
 
         Parameters
         ----------
@@ -549,25 +539,23 @@ class GeneralGraph(nx.DiGraph):
 
         Returns
         -------
-        Node's "shortest_path" and "efficiency" attributes to every other node
-        in the graph, from every node in the graph.
+        Node's "shortest_path" and "efficiency" attributes between each couple
+        of nodes in the graph. Edges weight is taken into account.
 
         Notes
         -----
-        The shortest path is not necessarly unique. So there can be multiple
-        paths between the source and each target node, all of which have the
-        same shortest length. For each target node, this function returns
-        only one of those paths.
+        Edge weight attributes must be numerical. Distances are calculated as
+        sums of weighted edges traversed.
         """
         for n in nodi:
-            ssspp = (n, nx.single_source_shortest_path(self, n))
+            ssspp = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
             out_q.put(ssspp)
 
     @staticmethod
     def chunk_it(nodi, n):
         """ Divide graph nodes in chunks according to number of processes.
-
-        Parameters
+        
+		Parameters
         ----------
         nodi : list
             list of nodes in the graph
@@ -588,29 +576,16 @@ class GeneralGraph(nx.DiGraph):
         return out
 
     def parallel_wrapper_proc(self):
-        """ Wrapper for parallel SSSP algorithm based on BFS.
+        """ Wrapper for parallel SSSP algorithm based on Dijkstra’s method.
 
         Returns
         -------
-        Node's "shortest_path" and "efficiency" attributes to every other node
-        in the graph, from every node in the graph.
-
+        Node's "shortest_path" and "efficiency" attributes between each couple
+        of nodes in the graph. Edges weight is taken into account.
         """
 
         self.attribute_ssspp = []
-        attribute_efficiency = []
-        """
-        #compute the shortest path only for nodes with successors
-        #(out_degree > 0)
-        retain_nodes = []
-        for v in self:
-            out_degree= self.out_degree(v)
-            if out_degree > 0:
-                retain_nodes.append(v)
-        #print(retain_nodes)
-
-        node_chunks = chunk_it(retain_nodes, num)
-        """
+        
         out_q = Queue()
 
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
@@ -638,24 +613,22 @@ class GeneralGraph(nx.DiGraph):
 
         for ssspp in self.attribute_ssspp:
 
+            attribute_efficiency = []
             n = ssspp[0]
+            self.nodes[n]["shortest_path"] = ssspp[1][1]
+            self.nodes[n]["shpath_length"] = ssspp[1][0]
 
-            kv_ssspp = ssspp[1]
-
-            for key, value in kv_ssspp.items():
-                length_path = len(value) - 1
+            for key, length_path in self.nodes[n]["shpath_length"].items():
                 if length_path != 0:
                     efficiency = 1 / length_path
                     dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
-                    self.nodes[n]["efficiency"] = attribute_efficiency
                 else:
                     efficiency = 0
                     dict_efficiency = {key: efficiency}
                     attribute_efficiency.append(dict_efficiency)
-                    self.nodes[n]["efficiency"] = attribute_efficiency
 
-            self.nodes[n]["shortest_path"] = ssspp
+            self.nodes[n]["efficiency"] = attribute_efficiency
 
     def nodal_eff(self):
         """ Global efficiency of the node.
@@ -670,12 +643,12 @@ class GeneralGraph(nx.DiGraph):
             affect the system.
 
             "final_nodal_eff" is the efficiency of each node in the potentially
-            perturbed graph, recalcualted after the propagation of the
+            perturbed graph, recalculated after the propagation of the
             failure resulting from a perturbation.
 
             Global efficiency of the node is equal to zero for a node without
-            any outgoing path and equal to one we can reach from node v
-            to each node of the digraph.
+            any outgoing path and equal to one if we can reach from node v
+            each node of the digraph.
         """
         g_len = len(list(self))
         first_node = list(self)[0]
@@ -829,8 +802,7 @@ class GeneralGraph(nx.DiGraph):
 
         for node in self:
             node_tot_shortest_paths = tot_shortest_paths[node]
-            node_tot_shortest_paths_dict = node_tot_shortest_paths[1]
-            for key, value in node_tot_shortest_paths_dict.items():
+            for key, value in node_tot_shortest_paths.items():
                 if len(value) > 1:
                     tot_shortest_paths_list.append(value)
         length_tot_shortest_paths_list = len(tot_shortest_paths_list)
@@ -842,9 +814,7 @@ class GeneralGraph(nx.DiGraph):
                     sp_with_node.append(l)
 
             numb_sp_with_node = len(sp_with_node)
-
             bet_cen = numb_sp_with_node / length_tot_shortest_paths_list
-
             self.nodes[node]["betweenness_centrality"] = bet_cen
 
     def closeness_centrality(self):
@@ -863,14 +833,12 @@ class GeneralGraph(nx.DiGraph):
             closely the nodes are connected with each other.
         """
         g_len = len(list(self))
-        nom = g_len - 1
         tot_shortest_paths = nx.get_node_attributes(self, 'shortest_path')
         tot_shortest_paths_list = []
 
         for node in self:
             node_tot_shortest_paths = tot_shortest_paths[node]
-            node_tot_shortest_paths_dict = node_tot_shortest_paths[1]
-            for key, value in node_tot_shortest_paths_dict.items():
+            for key, value in node_tot_shortest_paths.items():
                 if len(value) > 1:
                     tot_shortest_paths_list.append(value)
 
@@ -880,8 +848,9 @@ class GeneralGraph(nx.DiGraph):
             for l in tot_shortest_paths_list:
                 if node in l and node == l[-1]:
                     sp_with_node.append(l)
-                    totsp.append(len(l) - 1)
-            norm = len(totsp) / nom
+                    length_path = self.nodes[l[0]]["shpath_length"][l[-1]]
+                    totsp.append(length_path)
+            norm = len(totsp) / (g_len - 1)
             clo_cen = (
                 len(totsp) / sum(totsp)) * norm if (sum(totsp)) != 0 else 0
             self.nodes[node]["closeness_centrality"] = clo_cen
@@ -904,11 +873,10 @@ class GeneralGraph(nx.DiGraph):
             (see single_source_shortest_path_parallel for the way to go)
         """
         g_len = len(list(self))
-        denom = g_len - 1
 
         for node in self:
-            num_neighbor_nodes = self.degree(node)
-            deg_cen = num_neighbor_nodes / denom
+            num_neighbor_nodes = self.degree(node, weight = 'weight')
+            deg_cen = num_neighbor_nodes / (g_len - 1)
             self.nodes[node]["degree_centrality"] = deg_cen
 
     def indegree_centrality(self):
@@ -925,13 +893,11 @@ class GeneralGraph(nx.DiGraph):
             (see single_source_shortest_path_parallel for the way to go )
         """
         g_len = len(list(self))
-
-        denom = g_len - 1
-
+        
         for node in self:
-            num_incoming_nodes = self.in_degree(node)
+            num_incoming_nodes = self.in_degree(node, weight = 'weight')
             if num_incoming_nodes > 0:
-                in_cen = num_incoming_nodes / denom
+                in_cen = num_incoming_nodes / (g_len - 1)
                 self.nodes[node]["indegree_centrality"] = in_cen
             else:
                 self.nodes[node]["indegree_centrality"] = 0
@@ -951,12 +917,11 @@ class GeneralGraph(nx.DiGraph):
 
         """
         g_len = len(list(self))
-        denom = g_len - 1
-
+        
         for node in self:
-            num_outcoming_nodes = self.out_degree(node)
+            num_outcoming_nodes = self.out_degree(node, weight = 'weight')
             if num_outcoming_nodes > 0:
-                out_cen = num_outcoming_nodes / denom
+                out_cen = num_outcoming_nodes / (g_len - 1)
                 self.nodes[node]["outdegree_centrality"] = out_cen
             else:
                 self.nodes[node]["outdegree_centrality"] = 0
@@ -965,7 +930,8 @@ class GeneralGraph(nx.DiGraph):
         """ Choose the most appropriate way to compute the all-pairs shortest
         path depending on graph size and density .
         For a dense graph choose Floyd Warshall algorithm .
-        For a sparse graph choose a BFS, SSSP based algorithm .
+        For a sparse graph choose SSSP algorithm based on Dijkstra's method.
+        Edge weights of the graph are taken into account in the computation.
         For big graphs go parallel (number of processes equals the total
         number of available CPUs).
         For small graphs go serial.
@@ -1014,13 +980,9 @@ class GeneralGraph(nx.DiGraph):
                     if nx.has_path(self, i, j):
 
                         osip = list(nx.all_simple_paths(self, i, j))
-
-                        oshp = min(osip, key=len)
-
-                        oshpl = (len(oshp) - 1)
-
+                        oshp = self.nodes[i]["shortest_path"][j]
+                        oshpl = self.nodes[i]["shpath_length"][j]
                         oeff = 1 / oshpl
-
                         ids = ii + jj
 
                         self.lst0.append({
@@ -1046,6 +1008,7 @@ class GeneralGraph(nx.DiGraph):
                         oshp = "NO_PATH"
                         oeff = "NO_PATH"
                         ids = ii + jj
+
                         self.lst0.append({
                             'from':
                             ii,
@@ -1070,6 +1033,7 @@ class GeneralGraph(nx.DiGraph):
                     oshp = "NO_PATH"
                     oeff = "NO_PATH"
                     ids = ii + jj
+
                     self.lst0.append({
                         'from': ii,
                         'to': jj,
@@ -1139,12 +1103,9 @@ class GeneralGraph(nx.DiGraph):
                                             self.D[node], node, self.valv[self.D[node]]["0"],
                                             self.valv[self.D[node]]["1"])
 
-                        shp = min(sip, key=len)
-
-                        shpl = (len(shp) - 1)
-
+                        shp = self.nodes[n]["shortest_path"][OD]
+                        shpl = self.nodes[n]["shpath_length"][OD]
                         neff = 1 / shpl
-
                         ids = nn + OODD
 
                     else:
@@ -1161,6 +1122,7 @@ class GeneralGraph(nx.DiGraph):
                     shp = "NO_PATH"
                     neff = "NO_PATH"
                     ids = nn + OODD
+
                 self.lst.append({
                     'from': nn,
                     'area': self.area[n],
@@ -1429,6 +1391,7 @@ class GeneralGraph(nx.DiGraph):
             self.lst = []
 
             self.check_after()
+
         else:
             self.lst = []
 
@@ -1569,7 +1532,8 @@ if __name__ == '__main__':
 
     g = GeneralGraph()
     g.load(sys.argv[1])
+    
     g.check_input_with_gephi()
-    #g.delete_a_node("1")
-    g.simulate_multi_area_perturbation(['area1'])
-    #g.simulate_multi_area_perturbation(['area1','area2','area3'])
+    g.delete_a_node("1")
+    #g.simulate_multi_area_perturbation(['area1'])
+    ##g.simulate_multi_area_perturbation(['area1','area2','area3'])

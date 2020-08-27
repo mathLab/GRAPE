@@ -295,29 +295,37 @@ class TestShortestPathGraph(TestCase):
 		The shortest path is not necessarily unique:
 		the entire source-target path does not necessarily coincide.
 		"""
-        print(true_path)
-
         for source, all_paths in true_path.items():
             for target, path in all_paths.items():
                 test.assertEqual(
                     path[0],
-                    graph.nodes[source]["shortest_path"][1][target][0],
+                    graph.nodes[source]["shortest_path"][target][0],
                     msg="Wrong SOURCE in path from " + str(source) + " to " +
                     str(target))
+
                 test.assertEqual(
                     path[-1],
-                    graph.nodes[source]["shortest_path"][1][target][-1],
+                    graph.nodes[source]["shortest_path"][target][-1],
                     msg="Wrong TARGET in path from " + str(source) + " to " +
                     str(target))
-                test.assertEqual(
-                    len(path),
-                    len(graph.nodes[source]["shortest_path"][1][target]),
-                    msg="Wrong LENGTH of path from " + str(source) + " to " +
-                    str(target))
 
-    def test_BFS_parallel(self):
+                if source != target:
+                    test.assertEqual(
+                        len(path)-1,
+					    graph.nodes[source]["shpath_length"][target],
+                        msg="Wrong LENGTH of path from " + str(source) + " to " +
+                        str(target))
+                else:
+                    test.assertEqual(
+                        0.0,
+                        graph.nodes[source]["shpath_length"][target],
+                        msg="Wrong LENGTH of path from " + str(source) + " to " +
+                        str(target))
+
+    def test_Dijkstra_parallel(self):
         """
-		The following test checks the parallel SSSP algorithm based on BFS.
+		The following test checks the parallel SSSP algorithm based
+		on Dijkstra's method.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
@@ -337,9 +345,10 @@ class TestShortestPathGraph(TestCase):
 
         self.check_shortest_paths(self, self.initial_shortest_paths, g)
 
-    def test_BFS_serial(self):
+    def test_Dijkstra_serial(self):
         """
-		The following test checks the serial SSSP algorithm based on BFS.
+		The following test checks the serial SSSP algorithm based
+		on Dijkstra's method.
 		"""
         g = GeneralGraph()
         g = GeneralGraph()
@@ -368,8 +377,6 @@ class TestShortestPathGraph(TestCase):
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
         g.delete_a_node("1")
-
-        print(type(self.final_shp_delete_a_node))
 
         self.check_shortest_paths(self, self.final_shp_delete_a_node, g)
 

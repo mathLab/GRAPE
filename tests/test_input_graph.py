@@ -277,3 +277,44 @@ class TestInputGraph(TestCase):
 
         self.assertDictEqual(
             Type_dict, g.Type, msg=" Wrong TYPE in input ")
+
+    def test_Service(self):
+        """
+		Unittest check for Service attribute of GeneralGraph:
+		correct input reading.
+		"""
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+
+        Service_dict = {
+			('1', '2'): 1.0,
+			('1', '3'): 1.0,
+			('2', '4'): 1.0,
+			('3', '5'): 1.0,
+			('4', '6'): 1.0,
+			('5', '11'): 1.0,
+			('6', '7'): 1.0,
+			('6', '8'): 1.0,
+			('7', '6'): 1.0,
+			('8', '6'): 1.0,
+			('8', '9'): 1.0,
+			('9', '16'): 1.0,
+			('15', '9'): 1.0,
+			('16', '17'): 1.0,
+			('17', '16'): 1.0,
+			('17', '10'): 1.0,
+			('10', '11'): 1.0,
+			('11', '19'): 1.0,
+			('19', '12'): 1.0,
+			('19', '14'): 1.0,
+			('12', '19'): 1.0,
+			('12', '13'): 1.0,
+			('14', '19'): 1.0,
+			('14', '13'): 1.0,
+			('14', '18'): 1.0,
+			('13', '12'): 1.0,
+			('13', '14'): 1.0
+        }
+
+        self.assertDictEqual(
+            Service_dict, g.Service, msg=" Wrong SERVICE in input ")
