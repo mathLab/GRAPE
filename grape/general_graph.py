@@ -294,8 +294,6 @@ class GeneralGraph(nx.DiGraph):
                     if dist1[u, v] > dist1[u, w] + dist1[w, v]:
                         dist1[u, v] = dist1[u, w] + dist1[w, v]
                         pred1[u, v] = pred1[w, v]
-            dist1[w,w] = 0.
-            pred1[w,w] = np.inf
 
         return pred1, dist1
         
@@ -328,12 +326,7 @@ class GeneralGraph(nx.DiGraph):
                 arr[init:stop, :],
                 arr[init:stop, :])
             diff = np.equal(arr[init:stop, :], arr_copy)
-            for ii in range(init, stop):
-                for jj in range(n):
-                    if (diff[ii - init, jj] == False):
-                        arr1[ii, jj] = arr1[w, jj]
-                arr[ii,ii] = 0.
-                arr1[ii,ii] = np.inf
+            arr1[init:stop, :][~diff] = np.tile(arr1[w, :], (stop-init, 1))[~diff]
 
             barrier.wait()
 
@@ -390,6 +383,7 @@ class GeneralGraph(nx.DiGraph):
 
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
+        np.fill_diagonal(dist1,0.)
 
         shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]**2)
         arr = np.frombuffer(shared_arr, 'float64').reshape(dist1.shape)
@@ -455,6 +449,7 @@ class GeneralGraph(nx.DiGraph):
 
         dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
         dist1[dist1 == 0] = np.inf
+        np.fill_diagonal(dist1, 0.)
 
         pred1 = np.full((len(self.H), len(self.H)), np.inf)
         for u, v, d in self.H.edges(data=True):
