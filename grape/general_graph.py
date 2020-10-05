@@ -269,84 +269,96 @@ class GeneralGraph(nx.DiGraph):
 
         return path1
 
-    def inner_iteration_serial(self, pred1, dist1):
-        """ Serial Floyd Warshall's APSP inner iteration.
+    def ConstructPath_kernel(self, pred, nodi):
+
+        paths = {}
+
+        for i in nodi:
+            paths[self.ids[i]] = {
+                self.ids[j]: self.ConstructPath(i,j,pred)
+                for j in sorted(list(self.H))
+            }   
+
+        return paths
+
+    def ConstructPath_iteration_parallel(self, pred, nodi, rec_path):
+
+        paths = self.ConstructPath_kernel(pred, nodi)
+        rec_path.update(paths) 
+
+    def floyd_warshall_initialization(self):
+
+        self.H = nx.convert_node_labels_to_integers(
+            self, first_label=0, label_attribute='Mark_ids')
+        self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
+        self.ids_reversed = { value: key for key, value in self.ids.items() }
+
+        dist = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
+        dist[dist == 0] = np.inf
+        np.fill_diagonal(dist, 0.)
+
+        pred = np.full((len(self.H), len(self.H)), np.inf)
+        for u, v, d in self.H.edges(data=True):
+            pred[u, v] = u
+
+        return dist, pred
+
+    def floyd_warshall_kernel(self, dist, pred, init, stop, barrier=None):
+        """ Floyd Warshall's APSP inner iteration.
         Distance matrix is intended to take edges weight
         into account.
 
         Parameters
         ----------
-        pred1 : numpy.ndarray
+        pred : numpy.ndarray
             matrix of predecessors
-        dist1 : numpy.matrixlib.defmatrix.matrix
+        dist : numpy.ndarray
             matrix of distances
+        init  : int
+        stop  : int
+        barrier: multiprocessing.synchronize.Barrier
+            multiprocessing barrier
 
         Returns
         -------
-        pred1 : numpy.ndarray
+        pred : numpy.ndarray
             updated matrix of predecessors
-        dist1 : numpy.matrixlib.defmatrix.matrix
+        dist : numpy.matrixlib.defmatrix.matrix
             updated matrix of distances
         """
-        for w in list(self.H):
-            for u in list(self.H):
-                for v in list(self.H):
-                    if dist1[u, v] > dist1[u, w] + dist1[w, v]:
-                        dist1[u, v] = dist1[u, w] + dist1[w, v]
-                        pred1[u, v] = pred1[w, v]
-
-        return pred1, dist1
-        
-
-    def inner_iteration_parallel(self, barrier, arr, arr1, init, stop):
-        """ Serial Floyd Warshall's APSP inner iteration.
-
-        Parameters
-        ----------
-        barrier : multiprocessing.synchronize.Barrier
-        arr1 : numpy.ndarray
-            shared matrix of predecessors
-        arr : numpy.ndarray
-            shared matrix of distances
-        init : int
-        stop : int
-
-        Returns
-        -------
-        arr1 : numpy.ndarray
-            updated shared matrix of predecessors
-        arr : numpy.ndarray
-            updated shared matrix of distances
-        """
-        n = arr.shape[0]
+        n = dist.shape[0]
         for w in range(n):  # k
-            arr_copy = copy.deepcopy(arr[init:stop, :])
+            dist_copy = copy.deepcopy(dist[init:stop, :])
             np.minimum(
-                np.add.outer(arr[init:stop, w], arr[w, :]),  #block,
-                arr[init:stop, :],
-                arr[init:stop, :])
-            diff = np.equal(arr[init:stop, :], arr_copy)
-            arr1[init:stop, :][~diff] = np.tile(arr1[w, :], (stop-init, 1))[~diff]
+                np.reshape(
+                    np.add.outer(dist[init:stop, w], dist[w, :]),
+                    (stop-init, n)),
+                dist[init:stop, :],
+                dist[init:stop, :])
+            diff = np.equal(dist[init:stop, :], dist_copy)
+            pred[init:stop, :][~diff] = np.tile(pred[w, :], (stop-init, 1))[~diff]
+            
+        if barrier: barrier.wait() 
 
-            barrier.wait()
 
-    def inner_iteration_wrapper_parallel(self, arr, arr1):
-        """ Wrapper for Floyd Warshall's APSP parallel inner iteration.
-
-        Parameters
-        ----------
-        arr1 : np.array
-            matrix of predecessors
-        arr : np.array
-            matrix of distances
+    def floyd_warshall_predecessor_and_distance_parallel(self):
+        """ Parallel Floyd Warshall's APSP algorithm.
 
         Returns
         -------
-        arr1 : np.array
-            updated matrix of predecessors
-        arr : np.array
-            updated matrix of distances
+        Node's "shortest_path" and "efficiency" attributes to every node
+        in the graph. Edges weight is taken into account in distance matrix.
         """
+        dist, pred = self.floyd_warshall_initialization()
+
+        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist.shape[0]**2)
+        arr = np.frombuffer(shared_arr, 'float64').reshape(dist.shape)
+        arr[:] = dist
+
+        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double,pred.shape[0]**2)
+        arr1 = np.frombuffer(shared_arr_pred, 'float64').reshape(pred.shape)
+        arr1[:] = pred
+
         n = len(self.nodes())
         chunk = [(0, int(n / self.num))]
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
@@ -358,8 +370,8 @@ class GeneralGraph(nx.DiGraph):
         barrier = mp.Barrier(self.num)
         processes = [
             mp.Process(
-                target=self.inner_iteration_parallel,
-                args=(barrier, arr, arr1, chunk[p][0], chunk[p][1]))
+                target=self.floyd_warshall_kernel,
+                args=(arr, arr1, chunk[p][0], chunk[p][1], barrier))
             for p in range(self.num)
         ]
 
@@ -369,56 +381,32 @@ class GeneralGraph(nx.DiGraph):
         for proc in processes:
             proc.join()
 
-    def floyd_warshall_predecessor_and_distance_parallel(self):
-        """ Parallel Floyd Warshall's APSP algorithm.
+        manager = mp.Manager()
+        shpath_temp = manager.dict()
 
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes to every node
-        in the graph. Edges weight is taken into account in distance matrix.
-        """
-        self.H = nx.convert_node_labels_to_integers(
-            self, first_label=0, label_attribute='Mark_ids')
-        self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
+        processes = [
+            mp.Process( target=self.ConstructPath_iteration_parallel,
+            args=(arr1, list(map(self.ids_reversed.get, node_chunks[p])), shpath_temp))
+            for p in range(self.num) ]
 
-        dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
-        dist1[dist1 == 0] = np.inf
-        np.fill_diagonal(dist1,0.)
+        for proc in processes:
+            proc.start()
 
-        shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist1.shape[0]**2)
-        arr = np.frombuffer(shared_arr, 'float64').reshape(dist1.shape)
-        arr[:] = dist1
+        for proc in processes:
+            proc.join()
 
-        pred1 = np.full((len(self.H), len(self.H)), np.inf)
-        for u, v, d in self.H.edges(data=True):
-            pred1[u, v] = u
-
-        shared_arr_pred = mp.sharedctypes.RawArray(ctypes.c_double,pred1.shape[0]**2)
-        arr1 = np.frombuffer(shared_arr_pred, 'float64').reshape(pred1.shape)
-        arr1[:] = pred1
-
-        self.inner_iteration_wrapper_parallel(arr, arr1)
-
-        paths = {}
-
-        self.ids_reversed = { value: key for key, value in self.ids.items() }
+        for k in shpath_temp.keys():
+            self.nodes[k]["shortest_path"] = {
+                key: value
+                for key, value in shpath_temp[k].items() if value
+            }
 
         for i in list(self.H):
 
             self.nodes[self.ids[i]]["shpath_length"] = {}
             attribute_efficiency = []
 
-            rec_path = {
-                self.ids[j]: self.ConstructPath(i, j, arr1)
-                for j in sorted(list(self.H))
-            }
-            
-            kv_fw = {
-                key: value
-                for key, value in rec_path.items() if value
-            }
-
-            for key, value in kv_fw.items():
+            for key, value in self.nodes[self.ids[i]]["shortest_path"].items():
                 length_path = arr[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
                 if length_path != 0:
@@ -432,7 +420,6 @@ class GeneralGraph(nx.DiGraph):
 
             for m in list(self):
                 if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["shortest_path"] = kv_fw
                     self.nodes[m]["efficiency"] = attribute_efficiency
 
     def floyd_warshall_predecessor_and_distance_serial(self):
@@ -443,40 +430,25 @@ class GeneralGraph(nx.DiGraph):
         Node's "shortest_path" and "efficiency" attributes between each couple of
         nodes in the graph. Edges weight is taken into account in distance matrix.
         """
-        self.H = nx.convert_node_labels_to_integers(
-            self, first_label=0, label_attribute='Mark_ids')
-        self.ids = nx.get_node_attributes(self.H, 'Mark_ids')
+        dist, pred = self.floyd_warshall_initialization()
 
-        dist1 = nx.to_numpy_matrix(self.H, nodelist=sorted(list(self.H)))
-        dist1[dist1 == 0] = np.inf
-        np.fill_diagonal(dist1, 0.)
+        self.floyd_warshall_kernel(dist, pred, 0, dist.shape[0])
 
-        pred1 = np.full((len(self.H), len(self.H)), np.inf)
-        for u, v, d in self.H.edges(data=True):
-            pred1[u, v] = u
+        shpath_temp = self.ConstructPath_kernel(pred, list(self.H))
 
-        self.inner_iteration_serial(pred1, dist1)
-
-        paths = {}
-
-        self.ids_reversed = { value: key for key, value in self.ids.items() }
+        for k in shpath_temp.keys():
+            self.nodes[k]["shortest_path"] = {
+                key: value
+                for key, value in shpath_temp[k].items() if value
+            }
 
         for i in list(self.H):
 
             self.nodes[self.ids[i]]["shpath_length"] = {}
             attribute_efficiency = []
-            rec_path = {
-                self.ids[j]: self.ConstructPath(i, j, pred1)
-                for j in sorted(list(self.H))
-            }
             
-            kv_fw = {
-                key: value
-                for key, value in rec_path.items() if value
-            }
-            
-            for key, value in kv_fw.items():
-                length_path = dist1[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
+            for key, value in self.nodes[self.ids[i]]["shortest_path"].items():
+                length_path = dist[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
                 if length_path != 0:
                     efficiency = 1 / length_path
@@ -489,7 +461,6 @@ class GeneralGraph(nx.DiGraph):
 
             for m in list(self):
                 if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["shortest_path"] = kv_fw
                     self.nodes[m]["efficiency"] = attribute_efficiency
 
     def single_source_shortest_path_serial(self):
