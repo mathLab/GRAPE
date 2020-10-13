@@ -286,6 +286,18 @@ class GeneralGraph(nx.DiGraph):
         paths = self.ConstructPath_kernel(pred, nodi)
         rec_path.update(paths) 
 
+    def compute_efficiency(self):
+
+        for n in self:
+            self.nodes[n]["efficiency"] = {}
+            for key, length_path in self.nodes[n]["shpath_length"].items():
+                if length_path != 0 :
+                    efficiency = 1 / length_path
+                    self.nodes[n]["efficiency"].update({key: efficiency})
+                else:
+                    efficiency = 0
+                    self.nodes[n]["efficiency"].update({key: efficiency})
+            
     def floyd_warshall_initialization(self):
 
         self.H = nx.convert_node_labels_to_integers(
@@ -339,7 +351,6 @@ class GeneralGraph(nx.DiGraph):
             pred[init:stop, :][~diff] = np.tile(pred[w, :], (stop-init, 1))[~diff]
             
         if barrier: barrier.wait() 
-
 
     def floyd_warshall_predecessor_and_distance_parallel(self):
         """ Parallel Floyd Warshall's APSP algorithm.
@@ -404,23 +415,12 @@ class GeneralGraph(nx.DiGraph):
         for i in list(self.H):
 
             self.nodes[self.ids[i]]["shpath_length"] = {}
-            attribute_efficiency = []
 
             for key, value in self.nodes[self.ids[i]]["shortest_path"].items():
                 length_path = arr[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
-                if length_path != 0:
-                    efficiency = 1 / length_path
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-                else:
-                    efficiency = 0
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
 
-            for m in list(self):
-                if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["efficiency"] = attribute_efficiency
+        self.compute_efficiency()
 
     def floyd_warshall_predecessor_and_distance_serial(self):
         """ Serial Floyd Warshall's APSP algorithm.
@@ -445,23 +445,12 @@ class GeneralGraph(nx.DiGraph):
         for i in list(self.H):
 
             self.nodes[self.ids[i]]["shpath_length"] = {}
-            attribute_efficiency = []
             
             for key, value in self.nodes[self.ids[i]]["shortest_path"].items():
                 length_path = dist[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
-                if length_path != 0:
-                    efficiency = 1 / length_path
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-                else:
-                    efficiency = 0
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
 
-            for m in list(self):
-                if self.H.nodes[i]['Mark'] == m:
-                    self.nodes[m]["efficiency"] = attribute_efficiency
+        self.compute_efficiency()
 
     def single_source_shortest_path_serial(self):
         """ Serial SSSP algorithm based on Dijkstra’s method.
@@ -477,22 +466,12 @@ class GeneralGraph(nx.DiGraph):
         sums of weighted edges traversed.
         """
         for n in self:
-            attribute_efficiency = []
             sssps = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
             self.nodes[n]["shortest_path"] = sssps[1][1]
             self.nodes[n]["shpath_length"] = sssps[1][0]
-            for key, length_path in self.nodes[n]["shpath_length"].items():
-                if length_path != 0 :
-                    efficiency = 1 / length_path
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-                else:
-                    efficiency = 0
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-
-            self.nodes[n]["efficiency"] = attribute_efficiency
             
+        self.compute_efficiency()
+
     def single_source_shortest_path_parallel(self, out_q, nodi):
         """ Parallel SSSP algorithm based on Dijkstra’s method.
 
@@ -579,22 +558,11 @@ class GeneralGraph(nx.DiGraph):
 
         for ssspp in self.attribute_ssspp:
 
-            attribute_efficiency = []
             n = ssspp[0]
             self.nodes[n]["shortest_path"] = ssspp[1][1]
             self.nodes[n]["shpath_length"] = ssspp[1][0]
 
-            for key, length_path in self.nodes[n]["shpath_length"].items():
-                if length_path != 0:
-                    efficiency = 1 / length_path
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-                else:
-                    efficiency = 0
-                    dict_efficiency = {key: efficiency}
-                    attribute_efficiency.append(dict_efficiency)
-
-            self.nodes[n]["efficiency"] = attribute_efficiency
+        self.compute_efficiency()
 
     def nodal_eff(self):
         """ Global efficiency of the node.
@@ -628,21 +596,13 @@ class GeneralGraph(nx.DiGraph):
                 self.copy_of_self1.nodes[v]["final_nodal_eff"] = " "
 
             for v in self:
-                sum_efficiencies = 0
-                kv_efficiency = self.nodes[v]["efficiency"]
-                for i in kv_efficiency:
-                    for key, value in i.items():
-                        sum_efficiencies = sum_efficiencies + value
+                sum_efficiencies = sum(self.nodes[v]["efficiency"].values())
                 self.copy_of_self1.nodes[v][
                     "final_nodal_eff"] = sum_efficiencies / (g_len - 1)
 
         else:
             for v in self:
-                sum_efficiencies = 0
-                kv_efficiency = self.nodes[v]["efficiency"]
-                for i in kv_efficiency:
-                    for key, value in i.items():
-                        sum_efficiencies = sum_efficiencies + value
+                sum_efficiencies = sum(self.nodes[v]["efficiency"].values())
                 self.nodes[v]["original_nodal_eff"] = sum_efficiencies / (
                     g_len - 1)
 
