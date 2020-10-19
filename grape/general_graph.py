@@ -152,11 +152,9 @@ class GeneralGraph(nx.DiGraph):
             elif Type == "USER":
                 self.services_USER.append(id)
 
-        self.valv = {
-			"isolation_A" : { "0": "OPEN", "1": "CLOSED"},
+        self.valv = {	"isolation_A" : { "0": "OPEN", "1": "CLOSED"},
 			"isolation_B" : { "0": "CLOSED", "1": "OPEN"},
-			"unknown" : { "0": "OFF", "1": "ON"}
-			}
+			"unknown" : { "0": "OFF", "1": "ON"} }
 
     def check_input_with_gephi(self):
         """ Write list of nodes and list of edges csv files
@@ -229,7 +227,7 @@ class GeneralGraph(nx.DiGraph):
 
         csvFile.close()
 
-    def ConstructPath(self, source, target, pred):
+    def construct_path(self, source, target, pred):
         """ Reconstruct source-target paths starting from predecessors
         matrix.
 
@@ -269,35 +267,44 @@ class GeneralGraph(nx.DiGraph):
 
         return path1
 
-    def ConstructPath_kernel(self, pred, nodi):
+    def construct_path_kernel(self, pred, nodi):
 
         paths = {}
 
         for i in nodi:
             paths[self.ids[i]] = {
-                self.ids[j]: self.ConstructPath(i,j,pred)
+                self.ids[j]: self.construct_path(i,j,pred)
                 for j in sorted(list(self.H))
             }   
 
         return paths
 
-    def ConstructPath_iteration_parallel(self, pred, nodi, rec_path):
+    def construct_path_iteration_parallel(self, pred, nodi, record):
 
-        paths = self.ConstructPath_kernel(pred, nodi)
-        rec_path.update(paths) 
+        paths = self.construct_path_kernel(pred, nodi)
+        record.update(paths) 
 
-    def compute_efficiency(self):
+    def compute_efficiency_kernel(self, nodi):
 
-        for n in self:
-            self.nodes[n]["efficiency"] = {}
+        dict_efficiency = {}
+
+        for n in nodi:
+            dict_efficiency[n] = {}
             for key, length_path in self.nodes[n]["shpath_length"].items():
-                if length_path != 0 :
+                if length_path != 0 : 
                     efficiency = 1 / length_path
-                    self.nodes[n]["efficiency"].update({key: efficiency})
+                    dict_efficiency[n].update({key: efficiency})
                 else:
                     efficiency = 0
-                    self.nodes[n]["efficiency"].update({key: efficiency})
-            
+                    dict_efficiency[n].update({key: efficiency})
+
+        return dict_efficiency
+
+    def compute_efficiency_iteration_parallel(self, nodi, record):
+
+        dict_efficiency = self.compute_efficiency_kernel(nodi)
+        record.update(dict_efficiency) 
+
     def floyd_warshall_initialization(self):
 
         self.H = nx.convert_node_labels_to_integers(
@@ -380,24 +387,8 @@ class GeneralGraph(nx.DiGraph):
 
         barrier = mp.Barrier(self.num)
         processes = [
-            mp.Process(
-                target=self.floyd_warshall_kernel,
-                args=(arr, arr1, chunk[p][0], chunk[p][1], barrier))
-            for p in range(self.num)
-        ]
-
-        for proc in processes:
-            proc.start()
-
-        for proc in processes:
-            proc.join()
-
-        manager = mp.Manager()
-        shpath_temp = manager.dict()
-
-        processes = [
-            mp.Process( target=self.ConstructPath_iteration_parallel,
-            args=(arr1, list(map(self.ids_reversed.get, node_chunks[p])), shpath_temp))
+            mp.Process( target=self.floyd_warshall_kernel,
+            args=(arr, arr1, chunk[p][0], chunk[p][1], barrier))
             for p in range(self.num) ]
 
         for proc in processes:
@@ -406,10 +397,24 @@ class GeneralGraph(nx.DiGraph):
         for proc in processes:
             proc.join()
 
-        for k in shpath_temp.keys():
+        manager = mp.Manager()
+        shpaths_dicts = manager.dict()
+
+        processes = [
+            mp.Process( target=self.construct_path_iteration_parallel,
+            args=(arr1, list(map(self.ids_reversed.get, node_chunks[p])), shpaths_dicts))
+            for p in range(self.num) ]
+
+        for proc in processes:
+            proc.start()
+
+        for proc in processes:
+            proc.join()
+
+        for k in shpaths_dicts.keys():
             self.nodes[k]["shortest_path"] = {
                 key: value
-                for key, value in shpath_temp[k].items() if value
+                for key, value in shpaths_dicts[k].items() if value
             }
 
         for i in list(self.H):
@@ -420,7 +425,20 @@ class GeneralGraph(nx.DiGraph):
                 length_path = arr[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
 
-        self.compute_efficiency()
+        eff_dicts = manager.dict()
+        
+        processes = [
+            mp.Process( target=self.compute_efficiency_iteration_parallel,
+            args=(node_chunks[p], eff_dicts) )
+            for p in range(self.num) ]
+
+        for proc in processes:
+            proc.start()
+
+        for proc in processes:
+            proc.join()
+
+        nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def floyd_warshall_predecessor_and_distance_serial(self):
         """ Serial Floyd Warshall's APSP algorithm.
@@ -434,12 +452,12 @@ class GeneralGraph(nx.DiGraph):
 
         self.floyd_warshall_kernel(dist, pred, 0, dist.shape[0])
 
-        shpath_temp = self.ConstructPath_kernel(pred, list(self.H))
+        shpaths_dicts = self.construct_path_kernel(pred, list(self.H))
 
-        for k in shpath_temp.keys():
+        for k in shpaths_dicts.keys():
             self.nodes[k]["shortest_path"] = {
                 key: value
-                for key, value in shpath_temp[k].items() if value
+                for key, value in shpaths_dicts[k].items() if value
             }
 
         for i in list(self.H):
@@ -450,7 +468,8 @@ class GeneralGraph(nx.DiGraph):
                 length_path = dist[self.ids_reversed[value[0]], self.ids_reversed[value[-1]]]
                 self.nodes[self.ids[i]]["shpath_length"][key] =  length_path
 
-        self.compute_efficiency()
+        eff_dicts = self.compute_efficiency_kernel(list(self))
+        nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def single_source_shortest_path_serial(self):
         """ Serial SSSP algorithm based on Dijkstra’s method.
@@ -470,7 +489,8 @@ class GeneralGraph(nx.DiGraph):
             self.nodes[n]["shortest_path"] = sssps[1][1]
             self.nodes[n]["shpath_length"] = sssps[1][0]
             
-        self.compute_efficiency()
+        eff_dicts = self.compute_efficiency_kernel(list(self))
+        nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def single_source_shortest_path_parallel(self, out_q, nodi):
         """ Parallel SSSP algorithm based on Dijkstra’s method.
@@ -536,13 +556,9 @@ class GeneralGraph(nx.DiGraph):
         node_chunks = self.chunk_it(list(self.nodes()), self.num)
 
         processes = [
-            mp.Process(
-                target=self.single_source_shortest_path_parallel,
-                args=(
-                    out_q,
-                    node_chunks[p],
-                )) for p in range(self.num)
-        ]
+            mp.Process( target=self.single_source_shortest_path_parallel,
+            args=( out_q,node_chunks[p] ))
+            for p in range(self.num) ]
 
         for proc in processes:
             proc.start()
@@ -562,9 +578,23 @@ class GeneralGraph(nx.DiGraph):
             self.nodes[n]["shortest_path"] = ssspp[1][1]
             self.nodes[n]["shpath_length"] = ssspp[1][0]
 
-        self.compute_efficiency()
+        manager = mp.Manager()
+        eff_dicts = manager.dict()
+        
+        processes = [
+            mp.Process( target=self.compute_efficiency_iteration_parallel,
+            args=(node_chunks[p], eff_dicts) )
+            for p in range(self.num) ]
 
-    def nodal_eff(self):
+        for proc in processes:
+            proc.start()
+
+        for proc in processes:
+            proc.join()
+
+        nx.set_node_attributes(self, eff_dicts, name="efficiency")
+
+    def nodal_efficiency(self):
         """ Global efficiency of the node.
 
         Returns
@@ -603,10 +633,9 @@ class GeneralGraph(nx.DiGraph):
         else:
             for v in self:
                 sum_efficiencies = sum(self.nodes[v]["efficiency"].values())
-                self.nodes[v]["original_nodal_eff"] = sum_efficiencies / (
-                    g_len - 1)
+                self.nodes[v]["original_nodal_eff"] = sum_efficiencies / (g_len - 1)
 
-    def local_eff(self):
+    def local_efficiency(self):
         """ Local efficiency of the node.
 
         Returns
@@ -670,7 +699,7 @@ class GeneralGraph(nx.DiGraph):
                 else:
                     self.nodes[v]["original_local_eff"] = 0
 
-    def global_eff(self):
+    def global_efficiency(self):
         """ Average global efficiency of the whole graph.
 
         Returns
@@ -702,8 +731,7 @@ class GeneralGraph(nx.DiGraph):
 
         if "original_avg_global_eff" in all_attributes:
             for v in self.copy_of_self1:
-                self.copy_of_self1.nodes[v][
-                    "final_avg_global_eff"] = sum_eff / g_len
+                self.copy_of_self1.nodes[v]["final_avg_global_eff"] = sum_eff / g_len
         else:
             for v in self:
                 self.nodes[v]["original_avg_global_eff"] = sum_eff / g_len
@@ -894,9 +922,9 @@ class GeneralGraph(nx.DiGraph):
         """
         self.calculate_shortest_path()
         self.lst0 = []
-        self.nodal_eff()
-        self.global_eff()
-        self.local_eff()
+        self.nodal_efficiency()
+        self.global_efficiency()
+        self.local_efficiency()
 
         for ii in self.services_SOURCE:
             i = list(self.Mark.keys())[list(self.Mark.values()).index(ii)]
@@ -977,9 +1005,9 @@ class GeneralGraph(nx.DiGraph):
         Check the availability of paths between source and target nodes.
         """
         self.calculate_shortest_path()
-        self.nodal_eff()
-        self.global_eff()
-        self.local_eff()
+        self.nodal_efficiency()
+        self.global_efficiency()
+        self.local_efficiency()
 
         for nn in self.services_SOURCE:
             n = list(self.Mark.keys())[list(self.Mark.values()).index(nn)]
