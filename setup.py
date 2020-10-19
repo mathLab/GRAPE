@@ -1,7 +1,25 @@
 from setuptools import setup
+import grape
 
-description = (
-    "GRAPE (GRAph Parallel Environment) is a Python package that takes advantage of Graph Theory "
+# Package meta-data.
+NAME = grape.__title__
+DESCRIPTION = 'GRAph Parallel Environment.'
+URL = 'https://github.com/mathLab/GRAPE'
+MAIL = grape.__mail__
+AUTHOR = grape.__author__
+VERSION = grape.__version__
+KEYWORDS = 'risk-analysis graph-theory parallel-programming shortest-path system-analysis fault-diagnostics'
+
+REQUIRED = [
+    'networkx', 'numpy', 'scipy', 'matplotlib',
+]
+
+EXTRAS = {
+    'docs': ['sphinx', 'sphinx_rtd_theme'],
+}
+
+LDESCRIPTION = (
+    "GRAPE is a Python package that takes advantage of Graph Theory "
     "into a High Performance Computing (HPC) environment to develop a screening tool aimed "
     "at studying the effect of different kinds of perturbations in interconnected systems, such as"
     "indsutrial plants."
@@ -26,32 +44,28 @@ description = (
     "\n"
 )
 
-setup(name='grape',
-	  version='0.0.1',
-	  description='GRAph Parallel Environment.',
-	  long_description=description,
-	  classifiers=[
-	  	'Development Status :: 5 - Production/Stable',
-	  	'License :: OSI Approved :: MIT License',
-	  	'Programming Language :: Python :: 3.6',
-	  	'Intended Audience :: Science/Research',
-	  	'Topic :: Scientific/Engineering :: Mathematics'
-	  ],
-	  keywords='graphs parallel HPC systems plants',
-	  url='https://github.com/mathLab/GRAPE',
-	  author='Aurora Maurizio, Nicola Demo',
-	  author_email='auroramaurizio1@gmail.com, demo.nicola@gmail.com',
-	  license='MIT',
-	  packages=['grape'],
-	  install_requires=[
-	  		'networkx',
-	  		'numpy',
-	  		'scipy',
-	  		'matplotlib',
-	  		'Sphinx==1.4',
-	  		'sphinx_rtd_theme'
-	  ],
-	  test_suite='nose.collector',
-	  tests_require=['nose'],
-	  include_package_data=True,
-	  zip_safe=False)
+setup(
+    name=NAME,
+    version=VERSION,
+    description=DESCRIPTION,
+    long_description=LDESCRIPTION,
+    author=AUTHOR,
+    author_email=MAIL,
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3.6',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Mathematics'
+    ],
+    keywords=KEYWORDS,
+    url=URL,
+    license='MIT',
+    packages=find_packages(),
+    install_requires=REQUIRED,
+    extras_require=EXTRAS,
+    test_suite='nose.collector',
+    tests_require=['nose'],
+    include_package_data=True,
+    zip_safe=False
+)
