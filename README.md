@@ -94,6 +94,7 @@ To run tests locally:
 **GRAPE** is currently developed and mantained at [SISSA mathLab](http://mathlab.sissa.it/) by
 
 - [Aurora Maurizio](mailto:auroramaurizio1@gmail.com)
+- [Teruzzi Martina](mailto:teruzzi.martina@gmail.com)
 - [Nicola Demo](mailto:demo.nicola@gmail.com)
 
 under the supervision of [Prof. Gianluigi Rozza](mailto:gianluigi.rozza@sissa.it). 
