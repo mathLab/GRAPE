@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="grape.general_graph.GeneralGraph" href="_summaries/grape.general_graph.GeneralGraph.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> GRAPE
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GRAPE
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,19 +93,22 @@
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.html">grape.general_graph.GeneralGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.load.html">grape.general_graph.GeneralGraph.load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_input_with_gephi.html">grape.general_graph.GeneralGraph.check_input_with_gephi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.ConstructPath.html">grape.general_graph.GeneralGraph.ConstructPath</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_serial.html">grape.general_graph.GeneralGraph.inner_iteration_serial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_parallel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path.html">grape.general_graph.GeneralGraph.construct_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path_kernel.html">grape.general_graph.GeneralGraph.construct_path_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path_iteration_parallel.html">grape.general_graph.GeneralGraph.construct_path_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.compute_efficiency_kernel.html">grape.general_graph.GeneralGraph.compute_efficiency_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel.html">grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_initialization.html">grape.general_graph.GeneralGraph.floyd_warshall_initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_kernel.html">grape.general_graph.GeneralGraph.floyd_warshall_kernel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html">grape.general_graph.GeneralGraph.single_source_shortest_path_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html">grape.general_graph.GeneralGraph.single_source_shortest_path_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.chunk_it.html">grape.general_graph.GeneralGraph.chunk_it</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.parallel_wrapper_proc.html">grape.general_graph.GeneralGraph.parallel_wrapper_proc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.nodal_eff.html">grape.general_graph.GeneralGraph.nodal_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.local_eff.html">grape.general_graph.GeneralGraph.local_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.global_eff.html">grape.general_graph.GeneralGraph.global_eff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.nodal_efficiency.html">grape.general_graph.GeneralGraph.nodal_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.local_efficiency.html">grape.general_graph.GeneralGraph.local_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.global_efficiency.html">grape.general_graph.GeneralGraph.global_efficiency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.betweenness_centrality.html">grape.general_graph.GeneralGraph.betweenness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.closeness_centrality.html">grape.general_graph.GeneralGraph.closeness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.degree_centrality.html">grape.general_graph.GeneralGraph.degree_centrality</a></li>
@@ -114,20 +119,25 @@
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_after.html">grape.general_graph.GeneralGraph.check_after</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.rm_nodes.html">grape.general_graph.GeneralGraph.rm_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.merge_lists.html">grape.general_graph.GeneralGraph.merge_lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_areas.html">grape.general_graph.GeneralGraph.update_areas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.delete_a_node.html">grape.general_graph.GeneralGraph.delete_a_node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.simulate_multi_room_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_room_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.simulate_multi_area_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_area_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.service_paths_to_file.html">grape.general_graph.GeneralGraph.service_paths_to_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.graph_characterization_to_file.html">grape.general_graph.GeneralGraph.graph_characterization_to_file</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,7 +176,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="code.html">Code Documentation</a> &raquo;</li>
         
@@ -191,813 +201,713 @@
             
   <div class="section" id="module-grape.general_graph">
 <span id="generalgraph"></span><h1>GeneralGraph<a class="headerlink" href="#module-grape.general_graph" title="Permalink to this headline">¶</a></h1>
-<table border="1" class="longtable docutils">
+<p>GeneralGraph for directed graphs (DiGraph) module</p>
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.html#grape.general_graph.GeneralGraph" title="grape.general_graph.GeneralGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph</span></code></a></td>
-<td>Class GeneralGraph for directed graphs (DiGraph).</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.html#grape.general_graph.GeneralGraph" title="grape.general_graph.GeneralGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph</span></code></a></p></td>
+<td><p>Class GeneralGraph for directed graphs (DiGraph).</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.load.html#grape.general_graph.GeneralGraph.load" title="grape.general_graph.GeneralGraph.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.load</span></code></a></td>
-<td>Load input file.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.load.html#grape.general_graph.GeneralGraph.load" title="grape.general_graph.GeneralGraph.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.load</span></code></a></p></td>
+<td><p>Load input file.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_input_with_gephi.html#grape.general_graph.GeneralGraph.check_input_with_gephi" title="grape.general_graph.GeneralGraph.check_input_with_gephi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_input_with_gephi</span></code></a></td>
-<td>Write list of nodes and list of edges csv files</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_input_with_gephi.html#grape.general_graph.GeneralGraph.check_input_with_gephi" title="grape.general_graph.GeneralGraph.check_input_with_gephi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_input_with_gephi</span></code></a></p></td>
+<td><p>Write list of nodes and list of edges csv files to visualize the input with Gephi.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.ConstructPath.html#grape.general_graph.GeneralGraph.ConstructPath" title="grape.general_graph.GeneralGraph.ConstructPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.ConstructPath</span></code></a></td>
-<td>Reconstruct source-target paths starting from predecessors matrix.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path.html#grape.general_graph.GeneralGraph.construct_path" title="grape.general_graph.GeneralGraph.construct_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.construct_path</span></code></a></p></td>
+<td><p>Reconstruct source-target paths starting from predecessors matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_serial.html#grape.general_graph.GeneralGraph.inner_iteration_serial" title="grape.general_graph.GeneralGraph.inner_iteration_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.inner_iteration_serial</span></code></a></td>
-<td>Serial Floyd Warshall’s APSP inner iteration .</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path_kernel.html#grape.general_graph.GeneralGraph.construct_path_kernel" title="grape.general_graph.GeneralGraph.construct_path_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.construct_path_kernel</span></code></a></p></td>
+<td><p>Populate the dictionary of shortest paths.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_parallel.html#grape.general_graph.GeneralGraph.inner_iteration_parallel" title="grape.general_graph.GeneralGraph.inner_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.inner_iteration_parallel</span></code></a></td>
-<td>Serial Floyd Warshall’s APSP inner iteration .</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.construct_path_iteration_parallel.html#grape.general_graph.GeneralGraph.construct_path_iteration_parallel" title="grape.general_graph.GeneralGraph.construct_path_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.construct_path_iteration_parallel</span></code></a></p></td>
+<td><p>Inner iteration for parallel Floyd Warshall APSP algorithm, to update shared dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel.html#grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel" title="grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.inner_iteration_wrapper_parallel</span></code></a></td>
-<td>Wrapper for Floyd Warshall’s APSP parallel inner iteration .</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.compute_efficiency_kernel.html#grape.general_graph.GeneralGraph.compute_efficiency_kernel" title="grape.general_graph.GeneralGraph.compute_efficiency_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.compute_efficiency_kernel</span></code></a></p></td>
+<td><p>Compute efficiency, starting from path length attribute.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_predecessor_and_distance_parallel</span></code></a></td>
-<td>Parallel Floyd Warshall’s APSP algorithm.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel.html#grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel" title="grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.compute_efficiency_iteration_parallel</span></code></a></p></td>
+<td><p>Inner iteration for parallel efficiency calculation, to update shared dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_predecessor_and_distance_serial</span></code></a></td>
-<td>Serial Floyd Warshall’s APSP algorithm.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_initialization.html#grape.general_graph.GeneralGraph.floyd_warshall_initialization" title="grape.general_graph.GeneralGraph.floyd_warshall_initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_initialization</span></code></a></p></td>
+<td><p>Initialization of Floyd Warshall APSP algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html#grape.general_graph.GeneralGraph.single_source_shortest_path_serial" title="grape.general_graph.GeneralGraph.single_source_shortest_path_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.single_source_shortest_path_serial</span></code></a></td>
-<td>Serial SSSP algorithm based on BFS.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_kernel.html#grape.general_graph.GeneralGraph.floyd_warshall_kernel" title="grape.general_graph.GeneralGraph.floyd_warshall_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_kernel</span></code></a></p></td>
+<td><p>Floyd Warshall’s APSP inner iteration.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html#grape.general_graph.GeneralGraph.single_source_shortest_path_parallel" title="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.single_source_shortest_path_parallel</span></code></a></td>
-<td>Parallel SSSP algorithm based on BFS.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_predecessor_and_distance_parallel</span></code></a></p></td>
+<td><p>Parallel Floyd Warshall’s APSP algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.chunk_it.html#grape.general_graph.GeneralGraph.chunk_it" title="grape.general_graph.GeneralGraph.chunk_it"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.chunk_it</span></code></a></td>
-<td>Divide graph nodes in chunks according to number of processes.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.floyd_warshall_predecessor_and_distance_serial</span></code></a></p></td>
+<td><p>Serial Floyd Warshall’s APSP algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.parallel_wrapper_proc.html#grape.general_graph.GeneralGraph.parallel_wrapper_proc" title="grape.general_graph.GeneralGraph.parallel_wrapper_proc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.parallel_wrapper_proc</span></code></a></td>
-<td>Wrapper for parallel SSSP algorithm based on BFS.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html#grape.general_graph.GeneralGraph.single_source_shortest_path_serial" title="grape.general_graph.GeneralGraph.single_source_shortest_path_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.single_source_shortest_path_serial</span></code></a></p></td>
+<td><p>Serial SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.nodal_eff.html#grape.general_graph.GeneralGraph.nodal_eff" title="grape.general_graph.GeneralGraph.nodal_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.nodal_eff</span></code></a></td>
-<td>Global efficiency of the node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html#grape.general_graph.GeneralGraph.single_source_shortest_path_parallel" title="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.single_source_shortest_path_parallel</span></code></a></p></td>
+<td><p>Parallel SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.local_eff.html#grape.general_graph.GeneralGraph.local_eff" title="grape.general_graph.GeneralGraph.local_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.local_eff</span></code></a></td>
-<td>Local efficiency of the node.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.chunk_it.html#grape.general_graph.GeneralGraph.chunk_it" title="grape.general_graph.GeneralGraph.chunk_it"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.chunk_it</span></code></a></p></td>
+<td><p>Divide graph nodes in chunks according to number of processes.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.global_eff.html#grape.general_graph.GeneralGraph.global_eff" title="grape.general_graph.GeneralGraph.global_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.global_eff</span></code></a></td>
-<td>Average global efficiency of the whole graph.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.parallel_wrapper_proc.html#grape.general_graph.GeneralGraph.parallel_wrapper_proc" title="grape.general_graph.GeneralGraph.parallel_wrapper_proc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.parallel_wrapper_proc</span></code></a></p></td>
+<td><p>Wrapper for parallel SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.betweenness_centrality.html#grape.general_graph.GeneralGraph.betweenness_centrality" title="grape.general_graph.GeneralGraph.betweenness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.betweenness_centrality</span></code></a></td>
-<td>Betweenness_centrality measure of each node.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.nodal_efficiency.html#grape.general_graph.GeneralGraph.nodal_efficiency" title="grape.general_graph.GeneralGraph.nodal_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.nodal_efficiency</span></code></a></p></td>
+<td><p>Global efficiency of the node.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.closeness_centrality.html#grape.general_graph.GeneralGraph.closeness_centrality" title="grape.general_graph.GeneralGraph.closeness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.closeness_centrality</span></code></a></td>
-<td>Closeness_centrality measure of each node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.local_efficiency.html#grape.general_graph.GeneralGraph.local_efficiency" title="grape.general_graph.GeneralGraph.local_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.local_efficiency</span></code></a></p></td>
+<td><p>Local efficiency of the node.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.degree_centrality.html#grape.general_graph.GeneralGraph.degree_centrality" title="grape.general_graph.GeneralGraph.degree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.degree_centrality</span></code></a></td>
-<td>degree centrality measure of each node.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.global_efficiency.html#grape.general_graph.GeneralGraph.global_efficiency" title="grape.general_graph.GeneralGraph.global_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.global_efficiency</span></code></a></p></td>
+<td><p>Average global efficiency of the whole graph.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.indegree_centrality.html#grape.general_graph.GeneralGraph.indegree_centrality" title="grape.general_graph.GeneralGraph.indegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.indegree_centrality</span></code></a></td>
-<td>Indegree centrality measure of each node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.betweenness_centrality.html#grape.general_graph.GeneralGraph.betweenness_centrality" title="grape.general_graph.GeneralGraph.betweenness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.betweenness_centrality</span></code></a></p></td>
+<td><p>Betweenness_centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.outdegree_centrality.html#grape.general_graph.GeneralGraph.outdegree_centrality" title="grape.general_graph.GeneralGraph.outdegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.outdegree_centrality</span></code></a></td>
-<td>Outdegree centrality measure of each node.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.closeness_centrality.html#grape.general_graph.GeneralGraph.closeness_centrality" title="grape.general_graph.GeneralGraph.closeness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.closeness_centrality</span></code></a></p></td>
+<td><p>Closeness_centrality measure of each node.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.calculate_shortest_path.html#grape.general_graph.GeneralGraph.calculate_shortest_path" title="grape.general_graph.GeneralGraph.calculate_shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.calculate_shortest_path</span></code></a></td>
-<td>Choose the most appropriate way to compute the all-pairs shortest path depending on graph size and density .</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.degree_centrality.html#grape.general_graph.GeneralGraph.degree_centrality" title="grape.general_graph.GeneralGraph.degree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.degree_centrality</span></code></a></p></td>
+<td><p>Degree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_before.html#grape.general_graph.GeneralGraph.check_before" title="grape.general_graph.GeneralGraph.check_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_before</span></code></a></td>
-<td>Describe the topology of the integer graph, before the occurrency of any failure in the system.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.indegree_centrality.html#grape.general_graph.GeneralGraph.indegree_centrality" title="grape.general_graph.GeneralGraph.indegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.indegree_centrality</span></code></a></p></td>
+<td><p>Indegree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_after.html#grape.general_graph.GeneralGraph.check_after" title="grape.general_graph.GeneralGraph.check_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_after</span></code></a></td>
-<td>Describe the topology of the potentially damaged graph, after the occurrency of a failure in the system.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.outdegree_centrality.html#grape.general_graph.GeneralGraph.outdegree_centrality" title="grape.general_graph.GeneralGraph.outdegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.outdegree_centrality</span></code></a></p></td>
+<td><p>Outdegree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.rm_nodes.html#grape.general_graph.GeneralGraph.rm_nodes" title="grape.general_graph.GeneralGraph.rm_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.rm_nodes</span></code></a></td>
-<td>Remove nodes from the graph in a depth first search way to propagate the failure.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.calculate_shortest_path.html#grape.general_graph.GeneralGraph.calculate_shortest_path" title="grape.general_graph.GeneralGraph.calculate_shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.calculate_shortest_path</span></code></a></p></td>
+<td><p>Choose the most appropriate way to compute the all-pairs shortest path depending on graph size and density.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.merge_lists.html#grape.general_graph.GeneralGraph.merge_lists" title="grape.general_graph.GeneralGraph.merge_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.merge_lists</span></code></a></td>
-<td>Merge two lists of dictionaries according to their keys.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_before.html#grape.general_graph.GeneralGraph.check_before" title="grape.general_graph.GeneralGraph.check_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_before</span></code></a></p></td>
+<td><p>Describe the topology of the integer graph, before the occurrence of any perturbation in the system.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_status.html#grape.general_graph.GeneralGraph.update_status" title="grape.general_graph.GeneralGraph.update_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.update_status</span></code></a></td>
-<td>Update the status of the components in the rooms after the propagation of the failure.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.check_after.html#grape.general_graph.GeneralGraph.check_after" title="grape.general_graph.GeneralGraph.check_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.check_after</span></code></a></p></td>
+<td><p>Describe the topology of the potentially perturbed graph, after the occurrence of a perturbation in the system.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.delete_a_node.html#grape.general_graph.GeneralGraph.delete_a_node" title="grape.general_graph.GeneralGraph.delete_a_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.delete_a_node</span></code></a></td>
-<td>Delete a node in the graph to simulate a damage to a component in a plant and start to propagate the failure.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.rm_nodes.html#grape.general_graph.GeneralGraph.rm_nodes" title="grape.general_graph.GeneralGraph.rm_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.rm_nodes</span></code></a></p></td>
+<td><p>Remove nodes from the graph in a depth first search way to propagate the perturbation.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.simulate_multi_room_perturbation.html#grape.general_graph.GeneralGraph.simulate_multi_room_perturbation" title="grape.general_graph.GeneralGraph.simulate_multi_room_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.simulate_multi_room_perturbation</span></code></a></td>
-<td>Simulate a damage in one or multiple rooms.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.merge_lists.html#grape.general_graph.GeneralGraph.merge_lists" title="grape.general_graph.GeneralGraph.merge_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.merge_lists</span></code></a></p></td>
+<td><p>Merge two lists of dictionaries according to their keys.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_areas.html#grape.general_graph.GeneralGraph.update_areas" title="grape.general_graph.GeneralGraph.update_areas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.update_areas</span></code></a></p></td>
+<td><p>Update the status of the elements in the areas after the propagation of the perturbation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.delete_a_node.html#grape.general_graph.GeneralGraph.delete_a_node" title="grape.general_graph.GeneralGraph.delete_a_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.delete_a_node</span></code></a></p></td>
+<td><p>Delete a node in the graph to simulate a perturbation to an element in a plant and start to propagate the perturbation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.simulate_multi_area_perturbation.html#grape.general_graph.GeneralGraph.simulate_multi_area_perturbation" title="grape.general_graph.GeneralGraph.simulate_multi_area_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.simulate_multi_area_perturbation</span></code></a></p></td>
+<td><p>Simulate a perturbation in one or multiple areas.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.update_status.html#grape.general_graph.GeneralGraph.update_status" title="grape.general_graph.GeneralGraph.update_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.update_status</span></code></a></p></td>
+<td><p>Update the status of the nodes not concerned by the perturbation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.service_paths_to_file.html#grape.general_graph.GeneralGraph.service_paths_to_file" title="grape.general_graph.GeneralGraph.service_paths_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.service_paths_to_file</span></code></a></p></td>
+<td><p>Write to file the service paths situation after the perturbation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_summaries/grape.general_graph.GeneralGraph.graph_characterization_to_file.html#grape.general_graph.GeneralGraph.graph_characterization_to_file" title="grape.general_graph.GeneralGraph.graph_characterization_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeneralGraph.graph_characterization_to_file</span></code></a></p></td>
+<td><p>Write to file graph characterization after the perturbation.</p></td>
 </tr>
 </tbody>
 </table>
-<dl class="class">
+<dl class="py class">
 <dt>
-<em class="property">class </em><code class="descname">GeneralGraph</code><span class="sig-paren">(</span><em>incoming_graph_data=None</em>, <em>**attr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-name descname">GeneralGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">incoming_graph_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attr</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">networkx.classes.digraph.DiGraph</span></code></p>
 <p>Class GeneralGraph for directed graphs (DiGraph).</p>
 <p>Constructs a new graph given an input file.
 A DiGraph stores nodes and edges with optional data or attributes.
 DiGraphs hold directed edges.
 Nodes can be arbitrary python objects with optional key/value attributes.
-Edges are represented  as links between nodes with optional key/value attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>incoming_graph_data</strong> (<em>input graph</em>) – Data to initialize the graph.</td>
-</tr>
-</tbody>
-</table>
+Edges are represented  as links between nodes with optional key/value
+attributes.</p>
 <p>Initialize a graph with edges, name, or graph attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
 packages are installed the data can also be a NumPy matrix
-or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
-<li><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</li>
+or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-class docutils literal notranslate"><span class="pre">convert</span></code></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">convert</span></code></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my graph&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span> <span class="c1"># list of edges</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arbitrary graph attribute pairs (key=value) may be assigned</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">graph</span>
 <span class="go">{&#39;day&#39;: &#39;Friday&#39;}</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">ConstructPath</code><span class="sig-paren">(</span><em>source</em>, <em>target</em>, <em>pred</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.ConstructPath"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Reconstruct source-target paths starting from predecessors matrix.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>source</strong> (<em>node</em>) – Starting node for path</li>
-<li><strong>target</strong> (<em>node</em>) – Ending node for path</li>
-<li><strong>pred</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><em>numpy.ndarray</em></a>) – matrix of predecessors computed with Floyd Warshall’s APSP algorithm</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>path1</strong> (<em>list</em>)</li>
-<li><em>All returned paths include both the source and target in the path</em></li>
-<li><em>as well as the intermediate nodes.</em></li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">betweenness_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.betweenness_centrality"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Betweenness_centrality measure of each node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s betweenness_centrality attribute.
-Betweenness centrality is an index of the relative importance of a
-node and it is defined by the number of shortest paths that run
+<code class="sig-name descname">betweenness_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.betweenness_centrality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Betweenness_centrality measure of each node.
+Nodes’ “betweenness_centrality” attribute is evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Betweenness centrality is an index of the relative importance
+of a node and it is defined by the number of shortest paths that run
 through it.
 Nodes with the highest betweenness centrality hold the higher level
 of control on the information flowing between different nodes in
-the network, because more information will pass through them.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+the network, because more information will pass through them.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">calculate_shortest_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.calculate_shortest_path"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">calculate_shortest_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.calculate_shortest_path"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Choose the most appropriate way to compute the all-pairs shortest
-path depending on graph size and density .
-For a dense graph choose Floyd Warshall algorithm .
-For a sparse graph choose a BFS, SSSP based algorithm .
-For big graphs go parallel (number of processes equals the total
-number of available CPUs).
-For small graphs go serial.</p>
+path depending on graph size and density.</p>
+<p>For a dense graph choose Floyd Warshall algorithm.</p>
+<p>For a sparse graph choose SSSP algorithm based on Dijkstra’s method.</p>
+<p>For big graphs go parallel (number of processes equals the total
+number of available CPUs).</p>
+<p>For small graphs go serial.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edge weights of the graph are taken into account in the computation.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">check_after</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_after"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Describe the topology of the potentially damaged graph,
-after the occurrency of a failure in the system.
+<code class="sig-name descname">check_after</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_after"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Describe the topology of the potentially perturbed graph,
+after the occurrence of a perturbation in the system.
 Compute efficiency measures for the whole graph and its nodes.
 Check the availability of paths between source and target nodes.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">check_before</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_before"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Describe the topology of the integer graph, before the occurrency
-of any failure in the system.
+<code class="sig-name descname">check_before</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_before"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Describe the topology of the integer graph, before the
+occurrence of any perturbation in the system.
 Compute efficiency measures for the whole graph and its nodes.
 Check the availability of paths between source and target nodes.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">check_input_with_gephi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_input_with_gephi"><span class="viewcode-link">[source]</span></a></dt>
-<dd><dl class="docutils">
-<dt>Write list of nodes and list of edges csv files</dt>
-<dd>to visualize the input with Gephi.</dd>
-</dl>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>nodes_to_print</strong> (<em>list</em>)</li>
-<li><strong>edges_to_print</strong> (<em>list</em>)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">check_input_with_gephi</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.check_input_with_gephi"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Write list of nodes and list of edges csv files
+to visualize the input with Gephi.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">chunk_it</code><span class="sig-paren">(</span><em>nodi</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.chunk_it"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">static </em><code class="sig-name descname">chunk_it</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodi</span></em>, <em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.chunk_it"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Divide graph nodes in chunks according to number of processes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>nodi</strong> (<em>list</em>) – list of nodes in the graph</li>
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of available processes</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodi</strong> (<em>list</em>) – list of nodes in the graph</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – number of available processes</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">List of graph nodes to be assigned to every process.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of graph nodes to be assigned to every process</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">closeness_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.closeness_centrality"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Closeness_centrality measure of each node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s closeness_centrality attribute.
-Closeness centrality measures the reciprocal of the average shortest
-path distance from a node to all other reachable nodes in the graph.
-Thus, the more central a node is, the closer it is to all other nodes.
-This measure allows to identify good broadcasters, that is key
-elements in a graph, depicting how closely the nodes are connected
-with each other.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">closeness_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.closeness_centrality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Closeness_centrality measure of each node.
+Nodes’ “closeness_centrality” attribute is evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Closeness centrality measures the reciprocal of the
+average shortest path distance from a node to all other reachable
+nodes in the graph. Thus, the more central a node is, the closer
+it is to all other nodes. This measure allows to identify good
+broadcasters, that is key elements in a graph, depicting how
+closely the nodes are connected with each other.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">degree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.degree_centrality"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>degree centrality measure of each node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s degree centrality attribute.
-Degree centrality is a simple centrality measure that counts how
-many neighbors a node has in an undirected graph.
+<code class="sig-name descname">compute_efficiency_iteration_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodi</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.compute_efficiency_iteration_parallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Inner iteration for parallel efficiency calculation,
+to update shared dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodi</strong> (<em>list</em>) – nodes for which to compute the
+shortest path between them and all the other nodes</p></li>
+<li><p><strong>record</strong> (<em>multiprocessing.managers.dict</em>) – nested dictionary
+with key corresponding to source, while as value a
+dictionary keyed by target and valued by the
+source-target efficiency</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">compute_efficiency_kernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nodi</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.compute_efficiency_kernel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Compute efficiency, starting from path length attribute.
+Efficiency is a measure of how good is the exchange of commodities
+flowing from one node to the others.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodi</strong> (<em>list</em>) – list of nodes for which to compute the
+efficiency between them and all the other nodes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>nested dictionary with key corresponding to
+source, while as value a dictionary keyed by target and valued
+by the source-target efficiency</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">construct_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">pred</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.construct_path"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Reconstruct source-target paths starting from predecessors
+matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> – starting node for the path</p></li>
+<li><p><strong>target</strong> – ending node for the path</p></li>
+<li><p><strong>pred</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><em>numpy.ndarray</em></a>) – matrix of predecessors, computed
+with Floyd Warshall APSP algorithm</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the shortest path between source and target
+(source and target included)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">construct_path_iteration_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">nodi</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.construct_path_iteration_parallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Inner iteration for parallel Floyd Warshall APSP algorithm,
+to update shared dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><em>numpy.ndarray</em></a>) – matrix of predecessors,
+computed with Floyd Warshall APSP algorithm</p></li>
+<li><p><strong>nodi</strong> (<em>list</em>) – list of nodes for which to compute the
+shortest path between them and all the other nodes</p></li>
+<li><p><strong>record</strong> (<em>multiprocessing.managers.dict</em>) – nested dictionary
+with key corresponding to source, while as value a
+dictionary keyed by target and valued by the
+source-target shortest path</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">construct_path_kernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">nodi</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.construct_path_kernel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Populate the dictionary of shortest paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pred</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><em>numpy.ndarray</em></a>) – matrix of predecessors,
+computed with Floyd Warshall APSP algorithm</p></li>
+<li><p><strong>nodi</strong> (<em>list</em>) – list of nodes for which to compute the
+shortest path between them and all the other nodes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>nested dictionary with key corresponding to
+source, while as value a dictionary keyed by target and valued
+by the source-target shortest path</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">degree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.degree_centrality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Degree centrality measure of each node.
+Nodes’ “degree_centrality” attribute is evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Degree centrality is a simple centrality measure that counts
+how many neighbors a node has in an undirected graph.
 The more neighbors the node has the most important it is,
 occupying a strategic position that serves as a source or conduit
-for large volumes of flux transactions with other nodes. A node
-with high degree centrality is a node with many dependencies.
-TODO: it can be trivially parallelized
-(see single_source_shortest_path_parallel for the way to go )</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+for large volumes of flux transactions with other nodes.
+A node with high degree centrality is a node with many dependencies.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">delete_a_node</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.delete_a_node"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Delete a node in the graph to simulate a damage to a component in
-a plant and start to propagate the failure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node id</em>) – Node to be deleted and starting point for the failure propagation
-cascade.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>nodes attribute “IntermediateStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “FinalStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “Mark_Status”</strong> (<em>str</em>)</li>
-<li><strong>nodes attribute “Status_Room”</strong> (<em>str</em>)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">delete_a_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.delete_a_node"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Delete a node in the graph to simulate a perturbation to an element in
+a plant and start to propagate the perturbation.
+Nodes’ “IntermediateStatus”, “FinalStatus”, “Mark_Status”
+and “Status_Area” attributes are evaluated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the id of the node to remove</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">floyd_warshall_predecessor_and_distance_parallel</code><span class="sig-paren">(</span><em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Parallel Floyd Warshall’s APSP algorithm.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em> or </em><em>string</em><em>, </em><em>optional</em><em> (</em><em>default = weight</em><em>)</em>) – If weight, every edge has weight/distance/cost 1.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>Node’s “shortest_path” and “efficiency” attributes to every other node</em></li>
-<li><em>in the graph.</em></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">floyd_warshall_initialization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_initialization"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Initialization of Floyd Warshall APSP algorithm.
+The distancy matrix is mutuated by NetworkX graph adjacency
+matrix, while the predecessors matrix is initialized
+with node fathers.
+The conversion between the labels (ids) in the graph and Numpy
+matrix indices (and viceversa) is also exploited.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order for the ids relation to be bijective,
+“Mark” attribute must be unique for each node.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">floyd_warshall_predecessor_and_distance_serial</code><span class="sig-paren">(</span><em>weight='weight'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Serial Floyd Warshall’s APSP algorithm.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>weight</strong> (<a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em> or </em><em>string</em><em>, </em><em>optional</em><em> (</em><em>default = None</em><em>)</em>) – If None, every edge has weight/distance/cost 1.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>Node’s “shortest_path” and “efficiency” attributes to every other node</em></li>
-<li><em>in the graph, from every node in the graph.</em></li>
+<code class="sig-name descname">floyd_warshall_kernel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dist</span></em>, <em class="sig-param"><span class="n">pred</span></em>, <em class="sig-param"><span class="n">init</span></em>, <em class="sig-param"><span class="n">stop</span></em>, <em class="sig-param"><span class="n">barrier</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_kernel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Floyd Warshall’s APSP inner iteration.
+Distance matrix is intended to take edges weight into account.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dist</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><em>numpy.ndarray</em></a>) – matrix of distances</p></li>
+<li><p><strong>pred</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.19)"><em>numpy.ndarray</em></a>) – matrix of predecessors</p></li>
+<li><p><strong>init</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – starting column of numpy matrix slice</p></li>
+<li><p><strong>stop</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – ending column of numpy matrix slice</p></li>
+<li><p><strong>barrier</strong> (<em>multiprocessing.synchronize.Barrier</em>) – multiprocessing barrier to moderate writing on
+distance and predecessors matrices</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">global_eff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.global_eff"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Average global efficiency of the whole graph.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s “original_avg_global_eff” and “final_avg_global_eff” attributes.<p>”original_avg_global_eff” is the average global efficiency of the
-integer graph, before the occurrency of any damage which
-may affect system.</p>
-<p>”final_avg_global_eff” is the efficiency of each node in the
-potentially damaged graph, recalcualted after the propagation of
-the failure resulting from a damage.</p>
-<p>The average global efficiency of a graph is the average efficiency
-of all pairs of nodes.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">floyd_warshall_predecessor_and_distance_parallel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Parallel Floyd Warshall’s APSP algorithm. The predecessors
+and distance matrices are evaluated, together with the nested
+dictionaries for shortest-path, length of the paths and
+efficiency attributes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges weight is taken into account in the distance matrix.
+Edge weight attributes must be numerical. Distances are calculated
+as sums of weighted edges traversed.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">indegree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.indegree_centrality"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Indegree centrality measure of each node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s indegree centrality attribute (i.e. number of edges ending
-at the node in a directed graph). Nodes with high indegree
-centrality are called cascade resulting nodes.
-TODO: it can be trivially parallelized
-(see single_source_shortest_path_parallel for the way to go )</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">floyd_warshall_predecessor_and_distance_serial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Serial Floyd Warshall’s APSP algorithm. The predecessors
+and distance matrices are evaluated, together with the nested
+dictionaries for shortest-path, length of the paths and
+efficiency attributes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges weight is taken into account in the distance matrix.
+Edge weight attributes must be numerical. Distances are calculated
+as sums of weighted edges traversed.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">inner_iteration_parallel</code><span class="sig-paren">(</span><em>barrier</em>, <em>arr</em>, <em>arr1</em>, <em>init</em>, <em>stop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.inner_iteration_parallel"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Serial Floyd Warshall’s APSP inner iteration .</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>barrier</strong> (<em>multiprocessing.synchronize.Barrier</em>) – </li>
-<li><strong>arr1</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><em>numpy.ndarray</em></a>) – shared matrix of predecessors</li>
-<li><strong>arr</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><em>numpy.ndarray</em></a>) – shared matrix of distances</li>
-<li><strong>init</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – </li>
-<li><strong>stop</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – </li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>arr1</strong> (<em>numpy.ndarray</em>) – updated shared matrix of predecessors</li>
-<li><strong>arr</strong> (<em>numpy.ndarray</em>) – updated shared matrix of distances</li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">global_efficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.global_efficiency"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Average global efficiency of the whole graph.
+Nodes’ “original_avg_global_eff”, or “final_avg_global_eff” attribute
+is evaluated.</p>
+<p>“original_avg_global_eff” is the average global efficiency of the
+intact graph, before the occurrence of any perturbation, while
+“final_avg_global_eff” is the efficiency of each node in the
+potentially perturbed graph,  after the propagation of a perturbation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The average global efficiency of a graph is the average
+efficiency of all pairs of nodes.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">inner_iteration_serial</code><span class="sig-paren">(</span><em>pred1</em>, <em>dist1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.inner_iteration_serial"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Serial Floyd Warshall’s APSP inner iteration .</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pred1</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><em>numpy.ndarray</em></a>) – matrix of predecessors</li>
-<li><strong>dist1</strong> (<em>numpy.matrixlib.defmatrix.matrix</em>) – matrix of distances</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>pred1</strong> (<em>numpy.ndarray</em>) – updated matrix of predecessors</li>
-<li><strong>dist1</strong> (<em>numpy.matrixlib.defmatrix.matrix</em>) – updated matrix of distances</li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">graph_characterization_to_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.graph_characterization_to_file"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Write to file graph characterization
+after the perturbation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – output file name where to print the
+graph characterization</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">inner_iteration_wrapper_parallel</code><span class="sig-paren">(</span><em>arr</em>, <em>arr1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.inner_iteration_wrapper_parallel"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Wrapper for Floyd Warshall’s APSP parallel inner iteration .</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arr1</strong> (<em>np.array</em>) – matrix of predecessors</li>
-<li><strong>arr</strong> (<em>np.array</em>) – matrix of distances</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>arr1</strong> (<em>np.array</em>) – updated matrix of predecessors</li>
-<li><strong>arr</strong> (<em>np.array</em>) – updated matrix of distances</li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">indegree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.indegree_centrality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Indegree centrality measure of each node.
+Nodes’ “indegree_centrality” attribute is evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Indegree centrality is measured by the number of edges
+ending at the node in a directed graph. Nodes with high indegree
+centrality are called cascade resulting nodes.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">load</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.load"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Load input file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>input file in csv format</em>) – <p>The input for the graph construction currently
-consists of text files reflecting the hierarchy of
-the plant components and their features.
-In the text input files each line corresponds
-to a node/component description.
-The same line reports the name of the predecessor
-of a particular node/component,
-the relationship between them, and the list of
-node’s attributes (room in which the component is
-present, perturbation resistance, etc.).
-In this way each line correspones to an edge
-connecting a component to its parent component.</p>
-<p>Each line should contain the following info:
-- component id (“Mark”)
-- parent of the component id (“Father_mark”)
-- parent-child relationship</p>
-<blockquote>
-<div>(“Father_cond”: AND, OR, SINGLE, ORPHAN. It is an edge attribute.)</div></blockquote>
-<ul class="simple">
-<li>type of component
-(“Description”: isolation_A, isolation_B are isolating components
-with opposite behaviour. It is a node attribute.)</li>
-<li>state of the isolating component
-(“InitStatus”: 1,0. It is a node attribute.)</li>
-<li>room in which the component is located
-(“Area”. It is a node attribute.)</li>
-<li>component external perturbation resistance
-(“PerturbationResistant”: 1,0. It is a node attribute.)</li>
-<li>source - target components
-(“From_to”: SOURCE or TARGET. It is a node attribute.)</li>
-</ul>
-<p>The hierarchy of the components explains how commodities
-flow from one component to another component
-and from one system to another system.
-In fact, if the input is properly formatted, with this
-simple digraph model it is possible to represent and
-integrate different interconnected plants
-in a unique graph without losing information about
-their peculiarities.</p>
-<p>In the graph, the nodes represent the plant components
-(such as generators, cables, isolation components and pipes)
-while the edges connecting the nodes harbor the logic
-relations (edge attributes) existing between the components
-(ORPHAN, SINGLE, AND, and OR).
-• An ORPHAN edge is the edge of a node without predecessors.
-• A SINGLE edge connects a node to its only one predecessor.
-• An AND edge indicates that the node/component</p>
-<blockquote>
-<div>has more than one predecessor. All the predecessors are
-necessary for the functioning of that component.</div></blockquote>
-<ul class="simple">
-<li>An OR edge indicates that the node/component has
-more than one predecessor. Just one of the node’s
-predecessors should be active to guarantee the functioning
-of the component.</li>
-</ul>
-<p>For this reason, correct input formatting
-is one of the most important steps of the analysis.</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.load"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Load input file. Input file must be in CSV format.
+Each line corresponds to a node/element description,
+with the relative hierarchy, together with the list
+of all the node attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – input file in CSV format</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">local_eff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.local_eff"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Local efficiency of the node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s “original_local_eff” and “final_local_eff” attributes.<p>”original_local_eff” is the local efficiency of each node in the
-integer graph, before the occurrency of any damage which may
-affect the system.</p>
-<p>”final_local_eff” is the local efficiency of each node in the
-potentially damaged graph, recalcualted after the propagation
-of the failure resulting from a damage.</p>
-<p>Local efficiency shows the efficiency of the connections between
-the first-order outgoing neighbors of node v when v is removed.
-Equivalently, local efficiency measures the “resilience” of digraph
-to the damage of node removal, i.e. if we remove a node,
-how efficient its first-order outgoing neighbors can communicate.
+<code class="sig-name descname">local_efficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.local_efficiency"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Local efficiency of the node.
+Nodes’ “original_local_eff”, or “final_local_eff” attribute
+is evaluated.</p>
+<p>“original_local_eff” is the local efficiency of each node in the
+intact graph, before the occurrence of any perturbation, while
+“final_local_eff” is the local efficiency of each node in the
+potentially perturbed graph, after the propagation of a perturbation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The local efficiency shows the efficiency of the connections
+between the first-order outgoing neighbors of node v when v is removed.
+Equivalently, local efficiency measures the “resilience” of the digraph
+to the perturbation of node removal, i.e. if we remove a node,
+how efficiently its first-order outgoing neighbors can communicate.
 It is in the range [0, 1].</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">merge_lists</code><span class="sig-paren">(</span><em>l1</em>, <em>l2</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.merge_lists"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">static </em><code class="sig-name descname">merge_lists</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">l1</span></em>, <em class="sig-param"><span class="n">l2</span></em>, <em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.merge_lists"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Merge two lists of dictionaries according to their keys.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>li</strong> (<em>list of dictionaries</em>) – </li>
-<li><strong>l2</strong> (<em>list of dictionaries</em>) – </li>
-<li><strong>key</strong> (<em>list of dictionaries</em>) – </li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>l1</strong> (<em>list</em>) – first list of dictionaries to be merged</p></li>
+<li><p><strong>l2</strong> (<em>list</em>) – second list of dictionaries to be merged</p></li>
+<li><p><strong>key</strong> (<em>list</em>) – key on which to merge the two lists of dictionaries</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>path</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the merged list of dictionaries</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">nodal_eff</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.nodal_eff"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Global efficiency of the node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s “original_nodal_eff” and “final_nodal_eff” attributes.<p>”original_nodal_eff” is the efficiency of each node in the
-integer graph, before the occurrency of any damage which may
-affect the system.</p>
-<p>”final_nodal_eff” is the efficiency of each node in the potentially
-damaged graph, recalcualted after the propagation of the
-failure resulting from a damage.</p>
-<p>Global efficiency of the node is equal to zero for a node without
-any outgoing path and equal to one we can reach from node v
-to each node of the digraph.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">nodal_efficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.nodal_efficiency"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Global efficiency of the node.
+Nodes’ “original_nodal_eff”, or “final_nodal_eff” attribute
+is evaluated.</p>
+<p>“original_nodal_eff” is the efficiency of each node in the
+intact graph, before the occurrence of any perturbation, while
+“final_nodal_eff” is the efficiency of each node in the potentially
+perturbed graph, after the propagation of a perturbation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The global efficiency of the node is equal to zero for a node
+without any outgoing path and equal to one if from it we can reach
+each node of the digraph.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">outdegree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.outdegree_centrality"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Outdegree centrality measure of each node.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Node’s outdegree centrality attribute (i.e. number of edges starting
-from a node in a directed graph). Nodes with high outdegree
-centrality are called cascade inititing nodes.
-TODO: it can be trivially parallelized
-(see single_source_shortest_path_parallel for the way to go )</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)">float</a></td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">outdegree_centrality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.outdegree_centrality"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Outdegree centrality measure of each node.
+Nodes’ “outdegree_centrality” attribute is evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Outdegree centrality is measured by the number of edges
+starting from a node in a directed graph. Nodes with high outdegree
+centrality are called cascade inititing nodes.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">parallel_wrapper_proc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.parallel_wrapper_proc"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Wrapper for parallel SSSP algorithm based on BFS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>Node’s “shortest_path” and “efficiency” attributes to every other node</em></li>
-<li><em>in the graph, from every node in the graph.</em></li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">parallel_wrapper_proc</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.parallel_wrapper_proc"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Wrapper for parallel SSSP algorithm based on Dijkstra’s method.
+The nested dictionaries for shortest-path, length of the paths and
+efficiency attributes are evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges weight is taken into account. Edge weight attributes must
+be numerical. Distances are calculated as sums of weighted edges traversed.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">rm_nodes</code><span class="sig-paren">(</span><em>node</em>, <em>visited=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.rm_nodes"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-name descname">rm_nodes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">visited</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.rm_nodes"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Remove nodes from the graph in a depth first search way to
-propagate the failure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>node</strong> (<em>node</em>) – The first node from which the failure propagation cascade begins.</li>
-<li><strong>visited</strong> (<a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><em>None</em></a><em> or </em><em>string</em><em>, </em><em>optional</em>) – </li>
+propagate the perturbation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – the id of the node to remove</p></li>
+<li><p><strong>visited</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#set" title="(in Python v2.7)"><em>set</em></a><em>, </em><em>optional</em>) – list of nodes already visited</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">simulate_multi_room_perturbation</code><span class="sig-paren">(</span><em>multi_rooms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.simulate_multi_room_perturbation"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Simulate a damage in one or multiple rooms.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>multi_rooms</strong> (<em>list</em>) – List of rooms in which the damage occurred.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>nodes attribute “IntermediateStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “FinalStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “Mark_Status”</strong> (<em>str</em>)</li>
-<li><strong>nodes attribute “Status_Room”</strong> (<em>str</em>)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-name descname">service_paths_to_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.service_paths_to_file"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Write to file the service paths situation
+after the perturbation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – output file name where to print the
+service paths situation</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">single_source_shortest_path_parallel</code><span class="sig-paren">(</span><em>out_q</em>, <em>nodi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.single_source_shortest_path_parallel"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Parallel SSSP algorithm based on BFS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>out_q</strong> (<em>multiprocessing queue</em>) – </li>
-<li><strong>nodi</strong> (<em>list</em>) – list of start nodes from which the SSSP should be computed to
-every other target node in the graph.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>Node’s “shortest_path” and “efficiency” attributes to every other node</em></li>
-<li><em>in the graph, from every node in the graph.</em></li>
-</ul>
-</p>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>The shortest path is not necessarly unique. So there can be multiple
-paths between the source and each target node, all of which have the
-same shortest length. For each target node, this function returns
-only one of those paths.</p>
+<code class="sig-name descname">simulate_multi_area_perturbation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">multi_areas</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.simulate_multi_area_perturbation"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Simulate a perturbation in one or multiple areas.
+Nodes’ “IntermediateStatus”, “FinalStatus”, “Mark_Status”
+and “Status_Area” attributes are evaluated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>multi_areas</strong> (<em>list</em>) – area(s) in which the perturbing event
+occurred</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">single_source_shortest_path_serial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.single_source_shortest_path_serial"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Serial SSSP algorithm based on BFS.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><em>Node’s “shortest_path” and “efficiency” attributes to every other node</em></li>
-<li><em>in the graph, from every node in the graph.</em></li>
+<code class="sig-name descname">single_source_shortest_path_parallel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">out_q</span></em>, <em class="sig-param"><span class="n">nodi</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.single_source_shortest_path_parallel"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Parallel SSSP algorithm based on Dijkstra’s method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_q</strong> (<em>multiprocessing.queues.Queue</em>) – multiprocessing queue</p></li>
+<li><p><strong>nodi</strong> (<em>list</em>) – list of starting nodes from which the SSSP should be
+computed to every other target node in the graph</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>The shortest path is not necessarly unique. So there can be multiple
-paths between the source and each target node, all of which have the
-same shortest length. For each target node, this function returns
-only one of those paths.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges weight is taken into account. Edge weight attributes must
+be numerical. Distances are calculated as sums of weighted edges traversed.</p>
+</div>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt>
-<code class="descname">update_status</code><span class="sig-paren">(</span><em>multi_rooms</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.update_status"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Update the status of the components in the rooms after
-the propagation of the failure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>multi_rooms</strong> (<em>list</em>) – Rooms or rooms in which a perturbing event occurred.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>nodes attribute “IntermediateStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “FinalStatus”</strong> (<em>int</em>)</li>
-<li><strong>nodes attribute “Mark_Status”</strong> (<em>str</em>)</li>
-<li><strong>nodes attribute “Status_Room”</strong> (<em>str</em>)</li>
+<code class="sig-name descname">single_source_shortest_path_serial</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.single_source_shortest_path_serial"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Serial SSSP algorithm based on Dijkstra’s method.
+The nested dictionaries for shortest-path, length of the paths and
+efficiency attributes are evaluated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Edges weight is taken into account. Edge weight attributes must
+be numerical. Distances are calculated as sums of weighted edges traversed.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">update_areas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">multi_areas</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.update_areas"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Update the status of the elements in the areas after
+the propagation of the perturbation.
+Nodes’ “IntermediateStatus”, “FinalStatus”, “Mark_Status”
+and “Status_Area” attributes are evaluated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>multi_areas</strong> (<em>list</em>) – area(s) in which to update the status
+of the elements</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname">update_status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">which_status</span></em>, <em class="sig-param"><span class="n">field</span></em>, <em class="sig-param"><span class="n">already_updated</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/grape/general_graph.html#GeneralGraph.update_status"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Update the status of the nodes not concerned by the
+perturbation. The status of nodes interested by the perturbation
+is already updated during perturbation propagation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>which_status</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – status to be updated</p></li>
+<li><p><strong>field</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – name of the attribute to be updated</p></li>
+<li><p><strong>already_updated</strong> (<em>list</em>) – already updated nodes</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the updated status</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1024,14 +934,22 @@ the propagation of the failure.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018-2019, GRAPE contributors
       <span class="lastupdated">
-        Last updated on Apr 04, 2019.
+        Last updated on Oct 19, 2020.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1042,7 +960,6 @@ the propagation of the failure.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

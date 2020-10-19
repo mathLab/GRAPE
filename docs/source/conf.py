@@ -48,7 +48,7 @@ extensions = [
     'sphinx.ext.viewcode',
 #    'sphinx.ext.imgmath',
     'sphinx.ext.ifconfig',
-    'sphinxcontrib.napoleon'
+    'sphinx.ext.napoleon'
 ]
 
 intersphinx_mapping = {'python': ('http://docs.python.org/2', None),

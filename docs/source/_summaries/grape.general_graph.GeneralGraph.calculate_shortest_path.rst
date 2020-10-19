@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph.calculate\_shortest\_path
+﻿grape.general\_graph.GeneralGraph.calculate\_shortest\_path
 ===========================================================
 
 .. currentmodule:: grape.general_graph

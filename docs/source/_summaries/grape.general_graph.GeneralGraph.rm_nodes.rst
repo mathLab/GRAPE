@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph.rm\_nodes
+﻿grape.general\_graph.GeneralGraph.rm\_nodes
 ===========================================
 
 .. currentmodule:: grape.general_graph

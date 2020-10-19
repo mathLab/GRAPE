@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="grape.general_graph.GeneralGraph.load" href="grape.general_graph.GeneralGraph.load.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> GRAPE
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GRAPE
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,19 +93,22 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">grape.general_graph.GeneralGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.load.html">grape.general_graph.GeneralGraph.load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.check_input_with_gephi.html">grape.general_graph.GeneralGraph.check_input_with_gephi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.ConstructPath.html">grape.general_graph.GeneralGraph.ConstructPath</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_serial.html">grape.general_graph.GeneralGraph.inner_iteration_serial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_parallel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path.html">grape.general_graph.GeneralGraph.construct_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_kernel.html">grape.general_graph.GeneralGraph.construct_path_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_iteration_parallel.html">grape.general_graph.GeneralGraph.construct_path_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_kernel.html">grape.general_graph.GeneralGraph.compute_efficiency_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel.html">grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_initialization.html">grape.general_graph.GeneralGraph.floyd_warshall_initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_kernel.html">grape.general_graph.GeneralGraph.floyd_warshall_kernel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html">grape.general_graph.GeneralGraph.single_source_shortest_path_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html">grape.general_graph.GeneralGraph.single_source_shortest_path_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.chunk_it.html">grape.general_graph.GeneralGraph.chunk_it</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.parallel_wrapper_proc.html">grape.general_graph.GeneralGraph.parallel_wrapper_proc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_eff.html">grape.general_graph.GeneralGraph.nodal_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.local_eff.html">grape.general_graph.GeneralGraph.local_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.global_eff.html">grape.general_graph.GeneralGraph.global_eff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_efficiency.html">grape.general_graph.GeneralGraph.nodal_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.local_efficiency.html">grape.general_graph.GeneralGraph.local_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.global_efficiency.html">grape.general_graph.GeneralGraph.global_efficiency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.betweenness_centrality.html">grape.general_graph.GeneralGraph.betweenness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.closeness_centrality.html">grape.general_graph.GeneralGraph.closeness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.degree_centrality.html">grape.general_graph.GeneralGraph.degree_centrality</a></li>
@@ -114,20 +119,25 @@
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.check_after.html">grape.general_graph.GeneralGraph.check_after</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.rm_nodes.html">grape.general_graph.GeneralGraph.rm_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.merge_lists.html">grape.general_graph.GeneralGraph.merge_lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_areas.html">grape.general_graph.GeneralGraph.update_areas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.delete_a_node.html">grape.general_graph.GeneralGraph.delete_a_node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_room_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_room_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_area_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_area_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.service_paths_to_file.html">grape.general_graph.GeneralGraph.service_paths_to_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.graph_characterization_to_file.html">grape.general_graph.GeneralGraph.graph_characterization_to_file</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,7 +176,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../code.html">Code Documentation</a> &raquo;</li>
         
@@ -193,90 +203,75 @@
             
   <div class="section" id="grape-general-graph-generalgraph">
 <h1>grape.general_graph.GeneralGraph<a class="headerlink" href="#grape-general-graph-generalgraph" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
+<dl class="py class">
 <dt id="grape.general_graph.GeneralGraph">
-<em class="property">class </em><code class="descname">GeneralGraph</code><span class="sig-paren">(</span><em>incoming_graph_data=None</em>, <em>**attr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/grape/general_graph.html#GeneralGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grape.general_graph.GeneralGraph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-name descname">GeneralGraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">incoming_graph_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attr</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/grape/general_graph.html#GeneralGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grape.general_graph.GeneralGraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class GeneralGraph for directed graphs (DiGraph).</p>
 <p>Constructs a new graph given an input file.
 A DiGraph stores nodes and edges with optional data or attributes.
 DiGraphs hold directed edges.
 Nodes can be arbitrary python objects with optional key/value attributes.
-Edges are represented  as links between nodes with optional key/value attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>incoming_graph_data</strong> (<em>input graph</em>) – Data to initialize the graph.</td>
-</tr>
-</tbody>
-</table>
+Edges are represented  as links between nodes with optional key/value
+attributes.</p>
 <p>Initialize a graph with edges, name, or graph attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
 packages are installed the data can also be a NumPy matrix
-or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
-<li><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</li>
+or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-class docutils literal notranslate"><span class="pre">convert</span></code></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">convert</span></code></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my graph&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span> <span class="c1"># list of edges</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arbitrary graph attribute pairs (key=value) may be assigned</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">graph</span>
 <span class="go">{&#39;day&#39;: &#39;Friday&#39;}</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
 <dt id="grape.general_graph.GeneralGraph.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>incoming_graph_data=None</em>, <em>**attr</em><span class="sig-paren">)</span><a class="headerlink" href="#grape.general_graph.GeneralGraph.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">incoming_graph_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attr</span></em><span class="sig-paren">)</span><a class="headerlink" href="#grape.general_graph.GeneralGraph.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a graph with edges, name, or graph attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>incoming_graph_data</strong> (<em>input graph</em><em> (</em><em>optional</em><em>, </em><em>default: None</em><em>)</em>) – Data to initialize graph.  If None (default) an empty
 graph is created.  The data can be an edge list, or any
 NetworkX graph object.  If the corresponding optional Python
 packages are installed the data can also be a NumPy matrix
-or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
-<li><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</li>
+or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Attributes to add to graph as key=value pairs.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-meth docutils literal notranslate"><span class="pre">convert()</span></code></p>
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">convert()</span></code></p>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>   <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my graph&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span> <span class="c1"># list of edges</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Arbitrary graph attribute pairs (key=value) may be assigned</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="s2">&quot;Friday&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">graph</span>
 <span class="go">{&#39;day&#39;: &#39;Friday&#39;}</span>
 </pre></div>
@@ -284,269 +279,263 @@ or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
 </dd></dl>
 
 <p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.ConstructPath.html#grape.general_graph.GeneralGraph.ConstructPath" title="grape.general_graph.GeneralGraph.ConstructPath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ConstructPath</span></code></a>(source,&nbsp;target,&nbsp;pred)</td>
-<td>Reconstruct source-target paths starting from predecessors matrix.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#grape.general_graph.GeneralGraph.__init__" title="grape.general_graph.GeneralGraph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([incoming_graph_data])</p></td>
+<td><p>Initialize a graph with edges, name, or graph attributes.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#grape.general_graph.GeneralGraph.__init__" title="grape.general_graph.GeneralGraph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([incoming_graph_data])</td>
-<td>Initialize a graph with edges, name, or graph attributes.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code>(u_of_edge, v_of_edge, **attr)</p></td>
+<td><p>Add an edge between u and v.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cycle</span></code>(nodes,&nbsp;**attr)</td>
-<td></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code>(ebunch_to_add, **attr)</p></td>
+<td><p>Add all the edges in ebunch_to_add.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code>(u_of_edge,&nbsp;v_of_edge,&nbsp;**attr)</td>
-<td>Add an edge between u and v.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code>(node_for_adding, **attr)</p></td>
+<td><p>Add a single node <cite>node_for_adding</cite> and update node attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code>(ebunch_to_add,&nbsp;**attr)</td>
-<td>Add all the edges in ebunch_to_add.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes_from</span></code>(nodes_for_adding, **attr)</p></td>
+<td><p>Add multiple nodes.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code>(node_for_adding,&nbsp;**attr)</td>
-<td>Add a single node <cite>node_for_adding</cite> and update node attributes.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_weighted_edges_from</span></code>(ebunch_to_add[, weight])</p></td>
+<td><p>Add weighted edges in <cite>ebunch_to_add</cite> with specified weight attr</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes_from</span></code>(nodes_for_adding,&nbsp;**attr)</td>
-<td>Add multiple nodes.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency</span></code>()</p></td>
+<td><p>Returns an iterator over (node, adjacency dict) tuples for all nodes.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_path</span></code>(nodes,&nbsp;**attr)</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.betweenness_centrality.html#grape.general_graph.GeneralGraph.betweenness_centrality" title="grape.general_graph.GeneralGraph.betweenness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">betweenness_centrality</span></code></a>()</p></td>
+<td><p>Betweenness_centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_star</span></code>(nodes,&nbsp;**attr)</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.calculate_shortest_path.html#grape.general_graph.GeneralGraph.calculate_shortest_path" title="grape.general_graph.GeneralGraph.calculate_shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_shortest_path</span></code></a>()</p></td>
+<td><p>Choose the most appropriate way to compute the all-pairs shortest path depending on graph size and density.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_weighted_edges_from</span></code>(ebunch_to_add[,&nbsp;weight])</td>
-<td>Add weighted edges in <cite>ebunch_to_add</cite> with specified weight attr</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.check_after.html#grape.general_graph.GeneralGraph.check_after" title="grape.general_graph.GeneralGraph.check_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_after</span></code></a>()</p></td>
+<td><p>Describe the topology of the potentially perturbed graph, after the occurrence of a perturbation in the system.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency</span></code>()</td>
-<td>Return an iterator over (node, adjacency dict) tuples for all nodes.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.check_before.html#grape.general_graph.GeneralGraph.check_before" title="grape.general_graph.GeneralGraph.check_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_before</span></code></a>()</p></td>
+<td><p>Describe the topology of the integer graph, before the occurrence of any perturbation in the system.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.betweenness_centrality.html#grape.general_graph.GeneralGraph.betweenness_centrality" title="grape.general_graph.GeneralGraph.betweenness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">betweenness_centrality</span></code></a>()</td>
-<td>Betweenness_centrality measure of each node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.check_input_with_gephi.html#grape.general_graph.GeneralGraph.check_input_with_gephi" title="grape.general_graph.GeneralGraph.check_input_with_gephi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_input_with_gephi</span></code></a>()</p></td>
+<td><p>Write list of nodes and list of edges csv files to visualize the input with Gephi.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.calculate_shortest_path.html#grape.general_graph.GeneralGraph.calculate_shortest_path" title="grape.general_graph.GeneralGraph.calculate_shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_shortest_path</span></code></a>()</td>
-<td>Choose the most appropriate way to compute the all-pairs shortest path depending on graph size and density .</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.chunk_it.html#grape.general_graph.GeneralGraph.chunk_it" title="grape.general_graph.GeneralGraph.chunk_it"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunk_it</span></code></a>(nodi, n)</p></td>
+<td><p>Divide graph nodes in chunks according to number of processes.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.check_after.html#grape.general_graph.GeneralGraph.check_after" title="grape.general_graph.GeneralGraph.check_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_after</span></code></a>()</td>
-<td>Describe the topology of the potentially damaged graph, after the occurrency of a failure in the system.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<td><p>Remove all nodes and edges from the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.check_before.html#grape.general_graph.GeneralGraph.check_before" title="grape.general_graph.GeneralGraph.check_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_before</span></code></a>()</td>
-<td>Describe the topology of the integer graph, before the occurrency of any failure in the system.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.closeness_centrality.html#grape.general_graph.GeneralGraph.closeness_centrality" title="grape.general_graph.GeneralGraph.closeness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closeness_centrality</span></code></a>()</p></td>
+<td><p>Closeness_centrality measure of each node.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.check_input_with_gephi.html#grape.general_graph.GeneralGraph.check_input_with_gephi" title="grape.general_graph.GeneralGraph.check_input_with_gephi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_input_with_gephi</span></code></a>()</td>
-<td>Write list of nodes and list of edges csv files</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel.html#grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel" title="grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_efficiency_iteration_parallel</span></code></a>(nodi, …)</p></td>
+<td><p>Inner iteration for parallel efficiency calculation, to update shared dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.chunk_it.html#grape.general_graph.GeneralGraph.chunk_it" title="grape.general_graph.GeneralGraph.chunk_it"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chunk_it</span></code></a>(nodi,&nbsp;n)</td>
-<td>Divide graph nodes in chunks according to number of processes.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_kernel.html#grape.general_graph.GeneralGraph.compute_efficiency_kernel" title="grape.general_graph.GeneralGraph.compute_efficiency_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_efficiency_kernel</span></code></a>(nodi)</p></td>
+<td><p>Compute efficiency, starting from path length attribute.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</td>
-<td>Remove all nodes and edges from the graph.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path.html#grape.general_graph.GeneralGraph.construct_path" title="grape.general_graph.GeneralGraph.construct_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_path</span></code></a>(source, target, pred)</p></td>
+<td><p>Reconstruct source-target paths starting from predecessors matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.closeness_centrality.html#grape.general_graph.GeneralGraph.closeness_centrality" title="grape.general_graph.GeneralGraph.closeness_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">closeness_centrality</span></code></a>()</td>
-<td>Closeness_centrality measure of each node.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_iteration_parallel.html#grape.general_graph.GeneralGraph.construct_path_iteration_parallel" title="grape.general_graph.GeneralGraph.construct_path_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_path_iteration_parallel</span></code></a>(pred, …)</p></td>
+<td><p>Inner iteration for parallel Floyd Warshall APSP algorithm, to update shared dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([as_view])</td>
-<td>Return a copy of the graph.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_kernel.html#grape.general_graph.GeneralGraph.construct_path_kernel" title="grape.general_graph.GeneralGraph.construct_path_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct_path_kernel</span></code></a>(pred, nodi)</p></td>
+<td><p>Populate the dictionary of shortest paths.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.degree_centrality.html#grape.general_graph.GeneralGraph.degree_centrality" title="grape.general_graph.GeneralGraph.degree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree_centrality</span></code></a>()</td>
-<td>degree centrality measure of each node.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>([as_view])</p></td>
+<td><p>Returns a copy of the graph.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.delete_a_node.html#grape.general_graph.GeneralGraph.delete_a_node" title="grape.general_graph.GeneralGraph.delete_a_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_a_node</span></code></a>(node)</td>
-<td>Delete a node in the graph to simulate a damage to a component in a plant and start to propagate the failure.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.degree_centrality.html#grape.general_graph.GeneralGraph.degree_centrality" title="grape.general_graph.GeneralGraph.degree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree_centrality</span></code></a>()</p></td>
+<td><p>Degree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_subgraph</span></code>(edges)</td>
-<td>Returns the subgraph induced by the specified edges.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.delete_a_node.html#grape.general_graph.GeneralGraph.delete_a_node" title="grape.general_graph.GeneralGraph.delete_a_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_a_node</span></code></a>(node)</p></td>
+<td><p>Delete a node in the graph to simulate a perturbation to an element in a plant and start to propagate the perturbation.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_predecessor_and_distance_parallel</span></code></a>([…])</td>
-<td>Parallel Floyd Warshall’s APSP algorithm.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_subgraph</span></code>(edges)</p></td>
+<td><p>Returns the subgraph induced by the specified edges.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_predecessor_and_distance_serial</span></code></a>([…])</td>
-<td>Serial Floyd Warshall’s APSP algorithm.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_initialization.html#grape.general_graph.GeneralGraph.floyd_warshall_initialization" title="grape.general_graph.GeneralGraph.floyd_warshall_initialization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_initialization</span></code></a>()</p></td>
+<td><p>Initialization of Floyd Warshall APSP algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">fresh_copy</span></code>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_kernel.html#grape.general_graph.GeneralGraph.floyd_warshall_kernel" title="grape.general_graph.GeneralGraph.floyd_warshall_kernel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_kernel</span></code></a>(dist, pred, init, stop)</p></td>
+<td><p>Floyd Warshall’s APSP inner iteration.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code>(u,&nbsp;v[,&nbsp;default])</td>
-<td>Return the attribute dictionary associated with edge (u, v).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_predecessor_and_distance_parallel</span></code></a>()</p></td>
+<td><p>Parallel Floyd Warshall’s APSP algorithm.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.global_eff.html#grape.general_graph.GeneralGraph.global_eff" title="grape.general_graph.GeneralGraph.global_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_eff</span></code></a>()</td>
-<td>Average global efficiency of the whole graph.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html#grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial" title="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">floyd_warshall_predecessor_and_distance_serial</span></code></a>()</p></td>
+<td><p>Serial Floyd Warshall’s APSP algorithm.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code>(u,&nbsp;v)</td>
-<td>Return True if the edge (u, v) is in the graph.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code>(u, v[, default])</p></td>
+<td><p>Returns the attribute dictionary associated with edge (u, v).</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code>(n)</td>
-<td>Return True if the graph contains the node n.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.global_efficiency.html#grape.general_graph.GeneralGraph.global_efficiency" title="grape.general_graph.GeneralGraph.global_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">global_efficiency</span></code></a>()</p></td>
+<td><p>Average global efficiency of the whole graph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_predecessor</span></code>(u,&nbsp;v)</td>
-<td>Return True if node u has predecessor v.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.graph_characterization_to_file.html#grape.general_graph.GeneralGraph.graph_characterization_to_file" title="grape.general_graph.GeneralGraph.graph_characterization_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graph_characterization_to_file</span></code></a>(filename)</p></td>
+<td><p>Write to file graph characterization after the perturbation.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_successor</span></code>(u,&nbsp;v)</td>
-<td>Return True if node u has successor v.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code>(u, v)</p></td>
+<td><p>Returns True if the edge (u, v) is in the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.indegree_centrality.html#grape.general_graph.GeneralGraph.indegree_centrality" title="grape.general_graph.GeneralGraph.indegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">indegree_centrality</span></code></a>()</td>
-<td>Indegree centrality measure of each node.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code>(n)</p></td>
+<td><p>Returns True if the graph contains the node n.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_parallel.html#grape.general_graph.GeneralGraph.inner_iteration_parallel" title="grape.general_graph.GeneralGraph.inner_iteration_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner_iteration_parallel</span></code></a>(barrier,&nbsp;arr,&nbsp;arr1,&nbsp;…)</td>
-<td>Serial Floyd Warshall’s APSP inner iteration .</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_predecessor</span></code>(u, v)</p></td>
+<td><p>Returns True if node u has predecessor v.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_serial.html#grape.general_graph.GeneralGraph.inner_iteration_serial" title="grape.general_graph.GeneralGraph.inner_iteration_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner_iteration_serial</span></code></a>(pred1,&nbsp;dist1)</td>
-<td>Serial Floyd Warshall’s APSP inner iteration .</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_successor</span></code>(u, v)</p></td>
+<td><p>Returns True if node u has successor v.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel.html#grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel" title="grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner_iteration_wrapper_parallel</span></code></a>(arr,&nbsp;arr1)</td>
-<td>Wrapper for Floyd Warshall’s APSP parallel inner iteration .</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.indegree_centrality.html#grape.general_graph.GeneralGraph.indegree_centrality" title="grape.general_graph.GeneralGraph.indegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">indegree_centrality</span></code></a>()</p></td>
+<td><p>Indegree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code>()</td>
-<td>Return True if graph is directed, False otherwise.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code>()</p></td>
+<td><p>Returns True if graph is directed, False otherwise.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code>()</td>
-<td>Return True if graph is a multigraph, False otherwise.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code>()</p></td>
+<td><p>Returns True if graph is a multigraph, False otherwise.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.load.html#grape.general_graph.GeneralGraph.load" title="grape.general_graph.GeneralGraph.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename)</td>
-<td>Load input file.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.load.html#grape.general_graph.GeneralGraph.load" title="grape.general_graph.GeneralGraph.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>(filename)</p></td>
+<td><p>Load input file.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.local_eff.html#grape.general_graph.GeneralGraph.local_eff" title="grape.general_graph.GeneralGraph.local_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_eff</span></code></a>()</td>
-<td>Local efficiency of the node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.local_efficiency.html#grape.general_graph.GeneralGraph.local_efficiency" title="grape.general_graph.GeneralGraph.local_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">local_efficiency</span></code></a>()</p></td>
+<td><p>Local efficiency of the node.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.merge_lists.html#grape.general_graph.GeneralGraph.merge_lists" title="grape.general_graph.GeneralGraph.merge_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_lists</span></code></a>(l1,&nbsp;l2,&nbsp;key)</td>
-<td>Merge two lists of dictionaries according to their keys.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.merge_lists.html#grape.general_graph.GeneralGraph.merge_lists" title="grape.general_graph.GeneralGraph.merge_lists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_lists</span></code></a>(l1, l2, key)</p></td>
+<td><p>Merge two lists of dictionaries according to their keys.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code>([nbunch])</td>
-<td>Return an iterator over nodes contained in nbunch that are also in the graph.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code>([nbunch])</p></td>
+<td><p>Returns an iterator over nodes contained in nbunch that are also in the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbors</span></code>(n)</td>
-<td>Return an iterator over successor nodes of n.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbors</span></code>(n)</p></td>
+<td><p>Returns an iterator over successor nodes of n.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_eff.html#grape.general_graph.GeneralGraph.nodal_eff" title="grape.general_graph.GeneralGraph.nodal_eff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodal_eff</span></code></a>()</td>
-<td>Global efficiency of the node.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_efficiency.html#grape.general_graph.GeneralGraph.nodal_efficiency" title="grape.general_graph.GeneralGraph.nodal_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodal_efficiency</span></code></a>()</p></td>
+<td><p>Global efficiency of the node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes_with_selfloops</span></code>()</td>
-<td></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code>([u, v])</p></td>
+<td><p>Returns the number of edges between two nodes.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code>([u,&nbsp;v])</td>
-<td>Return the number of edges between two nodes.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code>()</p></td>
+<td><p>Returns the number of nodes in the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code>()</td>
-<td>Return the number of nodes in the graph.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code>()</p></td>
+<td><p>Returns the number of nodes in the graph.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_selfloops</span></code>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.outdegree_centrality.html#grape.general_graph.GeneralGraph.outdegree_centrality" title="grape.general_graph.GeneralGraph.outdegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outdegree_centrality</span></code></a>()</p></td>
+<td><p>Outdegree centrality measure of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code>()</td>
-<td>Return the number of nodes in the graph.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.parallel_wrapper_proc.html#grape.general_graph.GeneralGraph.parallel_wrapper_proc" title="grape.general_graph.GeneralGraph.parallel_wrapper_proc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_wrapper_proc</span></code></a>()</p></td>
+<td><p>Wrapper for parallel SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.outdegree_centrality.html#grape.general_graph.GeneralGraph.outdegree_centrality" title="grape.general_graph.GeneralGraph.outdegree_centrality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outdegree_centrality</span></code></a>()</td>
-<td>Outdegree centrality measure of each node.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code>(n)</p></td>
+<td><p>Returns an iterator over predecessor nodes of n.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.parallel_wrapper_proc.html#grape.general_graph.GeneralGraph.parallel_wrapper_proc" title="grape.general_graph.GeneralGraph.parallel_wrapper_proc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel_wrapper_proc</span></code></a>()</td>
-<td>Wrapper for parallel SSSP algorithm based on BFS.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code>(u, v)</p></td>
+<td><p>Remove the edge between u and v.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">predecessors</span></code>(n)</td>
-<td>Return an iterator over predecessor nodes of n.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code>(ebunch)</p></td>
+<td><p>Remove all edges specified in ebunch.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code>(u,&nbsp;v)</td>
-<td>Remove the edge between u and v.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code>(n)</p></td>
+<td><p>Remove node n.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code>(ebunch)</td>
-<td>Remove all edges specified in ebunch.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nodes_from</span></code>(nodes)</p></td>
+<td><p>Remove multiple nodes.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code>(n)</td>
-<td>Remove node n.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code>([copy])</p></td>
+<td><p>Returns the reverse of the graph.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nodes_from</span></code>(nodes)</td>
-<td>Remove multiple nodes.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.rm_nodes.html#grape.general_graph.GeneralGraph.rm_nodes" title="grape.general_graph.GeneralGraph.rm_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rm_nodes</span></code></a>(node[, visited])</p></td>
+<td><p>Remove nodes from the graph in a depth first search way to propagate the perturbation.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code>([copy])</td>
-<td>Return the reverse of the graph.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.service_paths_to_file.html#grape.general_graph.GeneralGraph.service_paths_to_file" title="grape.general_graph.GeneralGraph.service_paths_to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">service_paths_to_file</span></code></a>(filename)</p></td>
+<td><p>Write to file the service paths situation after the perturbation.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.rm_nodes.html#grape.general_graph.GeneralGraph.rm_nodes" title="grape.general_graph.GeneralGraph.rm_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rm_nodes</span></code></a>(node[,&nbsp;visited])</td>
-<td>Remove nodes from the graph in a depth first search way to propagate the failure.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_area_perturbation.html#grape.general_graph.GeneralGraph.simulate_multi_area_perturbation" title="grape.general_graph.GeneralGraph.simulate_multi_area_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate_multi_area_perturbation</span></code></a>(multi_areas)</p></td>
+<td><p>Simulate a perturbation in one or multiple areas.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">selfloop_edges</span></code>([data,&nbsp;keys,&nbsp;default])</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html#grape.general_graph.GeneralGraph.single_source_shortest_path_parallel" title="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_source_shortest_path_parallel</span></code></a>(out_q, nodi)</p></td>
+<td><p>Parallel SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_room_perturbation.html#grape.general_graph.GeneralGraph.simulate_multi_room_perturbation" title="grape.general_graph.GeneralGraph.simulate_multi_room_perturbation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate_multi_room_perturbation</span></code></a>(multi_rooms)</td>
-<td>Simulate a damage in one or multiple rooms.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html#grape.general_graph.GeneralGraph.single_source_shortest_path_serial" title="grape.general_graph.GeneralGraph.single_source_shortest_path_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_source_shortest_path_serial</span></code></a>()</p></td>
+<td><p>Serial SSSP algorithm based on Dijkstra’s method.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html#grape.general_graph.GeneralGraph.single_source_shortest_path_parallel" title="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_source_shortest_path_parallel</span></code></a>(out_q,&nbsp;nodi)</td>
-<td>Parallel SSSP algorithm based on BFS.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code>([weight])</p></td>
+<td><p>Returns the number of edges or total of all edge weights.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html#grape.general_graph.GeneralGraph.single_source_shortest_path_serial" title="grape.general_graph.GeneralGraph.single_source_shortest_path_serial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">single_source_shortest_path_serial</span></code></a>()</td>
-<td>Serial SSSP algorithm based on BFS.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code>(nodes)</p></td>
+<td><p>Returns a SubGraph view of the subgraph induced on <cite>nodes</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code>([weight])</td>
-<td>Return the number of edges or total of all edge weights.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code>(n)</p></td>
+<td><p>Returns an iterator over successor nodes of n.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code>(nodes)</td>
-<td>Return a SubGraph view of the subgraph induced on <cite>nodes</cite>.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code>([as_view])</p></td>
+<td><p>Returns a directed representation of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">successors</span></code>(n)</td>
-<td>Return an iterator over successor nodes of n.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed_class</span></code>()</p></td>
+<td><p>Returns the class to use for empty directed copies.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code>([as_view])</td>
-<td>Return a directed representation of the graph.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code>([reciprocal, as_view])</p></td>
+<td><p>Returns an undirected representation of the digraph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed_class</span></code>()</td>
-<td>Returns the class to use for empty directed copies.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected_class</span></code>()</p></td>
+<td><p>Returns the class to use for empty undirected copies.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code>([reciprocal,&nbsp;as_view])</td>
-<td>Return an undirected representation of the digraph.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>([edges, nodes])</p></td>
+<td><p>Update the graph using nodes/edges/graphs as input.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected_class</span></code>()</td>
-<td>Returns the class to use for empty undirected copies.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.update_areas.html#grape.general_graph.GeneralGraph.update_areas" title="grape.general_graph.GeneralGraph.update_areas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_areas</span></code></a>(multi_areas)</p></td>
+<td><p>Update the status of the elements in the areas after the propagation of the perturbation.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>([edges,&nbsp;nodes])</td>
-<td>Update the graph using nodes/edges/graphs as input.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html#grape.general_graph.GeneralGraph.update_status" title="grape.general_graph.GeneralGraph.update_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_status</span></code></a>(multi_rooms)</td>
-<td>Update the status of the components in the rooms after the propagation of the failure.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html#grape.general_graph.GeneralGraph.update_status" title="grape.general_graph.GeneralGraph.update_status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_status</span></code></a>(which_status, field, …)</p></td>
+<td><p>Update the status of the nodes not concerned by the perturbation.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">adj</span></code></td>
-<td>Graph adjacency object holding the neighbors of each node.</td>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adj</span></code></p></td>
+<td><p>Graph adjacency object holding the neighbors of each node.</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></td>
-<td>A DegreeView for the Graph as G.degree or G.degree().</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></p></td>
+<td><p>A DegreeView for the Graph as G.degree or G.degree().</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></td>
-<td>An OutEdgeView of the DiGraph as G.edges or G.edges().</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></p></td>
+<td><p>An OutEdgeView of the DiGraph as G.edges or G.edges().</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_degree</span></code></td>
-<td>An InDegreeView for (node, in_degree) or in_degree for single node.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_degree</span></code></p></td>
+<td><p>An InDegreeView for (node, in_degree) or in_degree for single node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_edges</span></code></td>
-<td>An InEdgeView of the Graph as G.in_edges or G.in_edges().</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">in_edges</span></code></p></td>
+<td><p>An InEdgeView of the Graph as G.in_edges or G.in_edges().</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></td>
-<td>String identifier of the graph.</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>String identifier of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">node</span></code></td>
-<td>A NodeView of the Graph as G.nodes or G.nodes().</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></p></td>
+<td><p>A NodeView of the Graph as G.nodes or G.nodes().</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></td>
-<td>A NodeView of the Graph as G.nodes or G.nodes().</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">out_degree</span></code></p></td>
+<td><p>An OutDegreeView for (node, out_degree)</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">out_degree</span></code></td>
-<td>An OutDegreeView for (node, out_degree)</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">out_edges</span></code></p></td>
+<td><p>An OutEdgeView of the DiGraph as G.edges or G.edges().</p></td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">out_edges</span></code></td>
-<td>An OutEdgeView of the DiGraph as G.edges or G.edges().</td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pred</span></code></p></td>
+<td><p>Graph adjacency object holding the predecessors of each node.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">pred</span></code></td>
-<td>Graph adjacency object holding the predecessors of each node.</td>
-</tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">succ</span></code></td>
-<td>Graph adjacency object holding the successors of each node.</td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">succ</span></code></p></td>
+<td><p>Graph adjacency object holding the successors of each node.</p></td>
 </tr>
 </tbody>
 </table>
@@ -574,14 +563,22 @@ or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018-2019, GRAPE contributors
       <span class="lastupdated">
-        Last updated on Apr 04, 2019.
+        Last updated on Oct 19, 2020.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -592,7 +589,6 @@ or 2d ndarray, a SciPy sparse matrix, or a PyGraphviz graph.</li>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

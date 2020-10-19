@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,30 +11,33 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="LICENSE.html" />
     <link rel="prev" title="Contact" href="contact.html" /> 
 </head>
 
@@ -50,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> GRAPE
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> GRAPE
           
 
           
@@ -77,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -88,11 +91,13 @@
 <li class="toctree-l1"><a class="reference internal" href="code.html">Code Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">License</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -131,7 +136,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>How to contribute</li>
     
@@ -159,12 +164,12 @@ just a few small guidelines you need to follow.</p>
 <p>Submitting a patch:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>It’s generally best to start by opening a new issue describing the bug or feature you’re intending to fix. Even if you think it’s relatively minor, it’s helpful to know what people are working on. Mention in the initial issue that you are planning to work on that bug or feature so that it can be assigned to you.</li>
-<li>Follow the normal process of forking the project, and setup a new branch to work in. It’s important that each group of changes be done in separate branches in order to ensure that a pull request only includes the commits related to that bug or feature.</li>
-<li>To ensure properly formatted code, please make sure to use 4 spaces to indent the code. The easy way is to run on your bash the provided script: ./code_formatter.sh. You should also run pylint over your code. It’s not strictly necessary that your code be completely “lint-free”, but this will help you find common style issues.</li>
-<li>Any significant changes should almost always be accompanied by tests. The project already has good test coverage, so look at some of the existing tests if you’re unsure how to go about it. We’re using coveralls that is an invaluable tools for seeing which parts of your code aren’t being exercised by your tests.</li>
-<li>Do your best to have well-formed commit messages for each change. This provides consistency throughout the project, and ensures that commit messages are able to be formatted properly by various git tools.</li>
-<li>Finally, push the commits to your fork and submit a pull request. Please, remember to rebase properly in order to maintain a clean, linear git history.</li>
+<li><p>It’s generally best to start by opening a new issue describing the bug or feature you’re intending to fix. Even if you think it’s relatively minor, it’s helpful to know what people are working on. Mention in the initial issue that you are planning to work on that bug or feature so that it can be assigned to you.</p></li>
+<li><p>Follow the normal process of forking the project, and setup a new branch to work in. It’s important that each group of changes be done in separate branches in order to ensure that a pull request only includes the commits related to that bug or feature.</p></li>
+<li><p>To ensure properly formatted code, please make sure to use 4 spaces to indent the code. The easy way is to run on your bash the provided script: ./code_formatter.sh. You should also run pylint over your code. It’s not strictly necessary that your code be completely “lint-free”, but this will help you find common style issues.</p></li>
+<li><p>Any significant changes should almost always be accompanied by tests. The project already has good test coverage, so look at some of the existing tests if you’re unsure how to go about it. We’re using coveralls that is an invaluable tools for seeing which parts of your code aren’t being exercised by your tests.</p></li>
+<li><p>Do your best to have well-formed commit messages for each change. This provides consistency throughout the project, and ensures that commit messages are able to be formatted properly by various git tools.</p></li>
+<li><p>Finally, push the commits to your fork and submit a pull request. Please, remember to rebase properly in order to maintain a clean, linear git history.</p></li>
 </ol>
 </div></blockquote>
 </div>
@@ -177,6 +182,8 @@ just a few small guidelines you need to follow.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="LICENSE.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
       
         <a href="contact.html" class="btn btn-neutral float-left" title="Contact" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
@@ -187,14 +194,22 @@ just a few small guidelines you need to follow.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018-2019, GRAPE contributors
       <span class="lastupdated">
-        Last updated on Apr 04, 2019.
+        Last updated on Oct 19, 2020.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -205,7 +220,6 @@ just a few small guidelines you need to follow.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

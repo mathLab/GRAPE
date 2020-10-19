@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph.parallel\_wrapper\_proc
+﻿grape.general\_graph.GeneralGraph.parallel\_wrapper\_proc
 =========================================================
 
 .. currentmodule:: grape.general_graph

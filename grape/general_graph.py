@@ -27,78 +27,19 @@ class GeneralGraph(nx.DiGraph):
     Nodes can be arbitrary python objects with optional key/value attributes.
     Edges are represented  as links between nodes with optional key/value
     attributes.
-
-    Parameters
-    ----------
-    incoming_graph_data : input graph
-        Data to initialize the graph.
     """
 
     def load(self, filename):
-        """Load input file.
-
-        Parameters
-        ----------
-        filename : input file in csv format
-            The input for the graph construction currently
-            consists of text files reflecting the hierarchy of
-            the plant elementss and their features.
-            In the text input files each line corresponds
-            to a node/element description.
-            The same line reports the name of the predecessor
-            of a particular node/element,
-            the relationship between them, and the list of
-            node's attributes (area in which the element is
-            present, perturbation resistance, etc.).
-            In this way each line correspones to an edge
-            connecting a element to its parent element.
-
-            Each line should contain the following info:
-            - element id ("Mark")
-              ("Mark" attribite must be unique for each node)
-            - parent of the element id ("Father_mark")
-            - parent-child relationship
-              ("Father_cond": AND, OR, SINGLE, ORPHAN. It is an edge attribute.)
-            - type of element
-              ("Description": isolation_A, isolation_B are isolating elements
-              with opposite behaviour. It is a node attribute.)
-            - state of the isolating element
-              ("InitStatus": 1,0. It is a node attribute.)
-            - area in which the element is located
-              ("Area". It is a node attribute.)
-            - element external perturbation resistance
-              ("PerturbationResistant": 1,0. It is a node attribute.)
-            - source - hub - user elements
-              ("Type": SOURCE or HUB or USER. It is a node attribute.)
-            - service flowing between two nodes
-              ("Service": it is a floating point number. It is an edge attribute.)
-
-            The hierarchy of the elements explains how commodities
-            flow from one element to another element
-            and from one system to another system.
-            In fact, if the input is properly formatted, with this
-            simple digraph model it is possible to represent and
-            integrate different interconnected plants
-            in a unique graph without losing information about
-            their peculiarities.
-
-            In the graph, the nodes represent the plant elements
-            (such as generators, cables, isolation elements and pipes)
-            while the edges connecting the nodes harbor the logic
-            relations (edge attributes) existing between the elements
-            (ORPHAN, SINGLE, AND, and OR).
-            - An ORPHAN edge is the edge of a node without predecessors.
-            - A SINGLE edge connects a node to its only one predecessor.
-            - An AND edge indicates that the node/element
-              has more than one predecessor. All the predecessors are
-              necessary for the functioning of that element.
-            - An OR edge indicates that the node/element has
-              more than one predecessor. Just one of the node's
-              predecessors should be active to guarantee the functioning
-              of the element.
-            For this reason, correct input formatting
-            is one of the most important steps of the analysis.
         """
+
+        Load input file. Input file must be in CSV format.
+        Each line corresponds to a node/element description,
+        with the relative hierarchy, together with the list
+        of all the node attributes.
+
+        :param str filename: input file in CSV format
+        """
+
         with open(filename, 'r') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=',')
 
@@ -157,14 +98,12 @@ class GeneralGraph(nx.DiGraph):
 			"unknown" : { "0": "OFF", "1": "ON"} }
 
     def check_input_with_gephi(self):
-        """ Write list of nodes and list of edges csv files
-            to visualize the input with Gephi.
-
-        Returns
-        -------
-        nodes_to_print: list
-        edges_to_print: list
         """
+
+        Write list of nodes and list of edges csv files
+        to visualize the input with Gephi.
+        """
+
         nodes_to_print = []
         with open("check_import_nodes.csv", "w") as csvFile:
             fields = [
@@ -228,26 +167,21 @@ class GeneralGraph(nx.DiGraph):
         csvFile.close()
 
     def construct_path(self, source, target, pred):
-        """ Reconstruct source-target paths starting from predecessors
+        """
+
+        Reconstruct source-target paths starting from predecessors
         matrix.
 
-        Parameters
-        ----------
-        source : node
-            Starting node for path
-        target : node
-            Ending node for path
-        pred : numpy.ndarray
-            matrix of predecessors computed with Floyd Warshall's
-            APSP algorithm
+        :param source: starting node for the path
+        :param target: ending node for the path
+        :param numpy.ndarray pred: matrix of predecessors, computed
+            with Floyd Warshall APSP algorithm
 
-        Returns
-        -------
-        path1: list
-
-        All returned paths include both the source and target in the path
-        as well as the intermediate nodes.
+        :return: the shortest path between source and target
+            (source and target included)
+        :rtype: list
         """
+
         if source == target:
             path = [source]
         else:
@@ -268,6 +202,20 @@ class GeneralGraph(nx.DiGraph):
         return path1
 
     def construct_path_kernel(self, pred, nodi):
+        """
+
+        Populate the dictionary of shortest paths.
+
+        :param numpy.ndarray pred: matrix of predecessors,
+            computed with Floyd Warshall APSP algorithm
+        :param list nodi: list of nodes for which to compute the
+            shortest path between them and all the other nodes
+
+        :return: nested dictionary with key corresponding to
+            source, while as value a dictionary keyed by target and valued
+            by the source-target shortest path
+        :rtype: dict
+        """
 
         paths = {}
 
@@ -280,11 +228,39 @@ class GeneralGraph(nx.DiGraph):
         return paths
 
     def construct_path_iteration_parallel(self, pred, nodi, record):
+        """
+
+        Inner iteration for parallel Floyd Warshall APSP algorithm,
+        to update shared dictionary.
+
+        :param numpy.ndarray pred: matrix of predecessors,
+            computed with Floyd Warshall APSP algorithm
+        :param list nodi: list of nodes for which to compute the
+            shortest path between them and all the other nodes
+        :param multiprocessing.managers.dict record: nested dictionary
+            with key corresponding to source, while as value a
+            dictionary keyed by target and valued by the
+            source-target shortest path
+        """
 
         paths = self.construct_path_kernel(pred, nodi)
         record.update(paths) 
 
     def compute_efficiency_kernel(self, nodi):
+        """
+
+        Compute efficiency, starting from path length attribute.
+        Efficiency is a measure of how good is the exchange of commodities
+        flowing from one node to the others.
+
+        :param list nodi: list of nodes for which to compute the
+            efficiency between them and all the other nodes
+
+        :return: nested dictionary with key corresponding to
+            source, while as value a dictionary keyed by target and valued
+            by the source-target efficiency
+        :rtype: dict
+        """
 
         dict_efficiency = {}
 
@@ -301,11 +277,35 @@ class GeneralGraph(nx.DiGraph):
         return dict_efficiency
 
     def compute_efficiency_iteration_parallel(self, nodi, record):
+        """
+
+        Inner iteration for parallel efficiency calculation,
+        to update shared dictionary.
+
+        :param list nodi: nodes for which to compute the
+            shortest path between them and all the other nodes
+        :param multiprocessing.managers.dict record: nested dictionary
+            with key corresponding to source, while as value a
+            dictionary keyed by target and valued by the
+            source-target efficiency
+        """
 
         dict_efficiency = self.compute_efficiency_kernel(nodi)
         record.update(dict_efficiency) 
 
     def floyd_warshall_initialization(self):
+        """
+
+        Initialization of Floyd Warshall APSP algorithm.
+        The distancy matrix is mutuated by NetworkX graph adjacency
+        matrix, while the predecessors matrix is initialized
+        with node fathers.
+        The conversion between the labels (ids) in the graph and Numpy
+        matrix indices (and viceversa) is also exploited.
+
+        .. note:: In order for the ids relation to be bijective,
+            "Mark" attribute must be unique for each node.
+        """
 
         self.H = nx.convert_node_labels_to_integers(
             self, first_label=0, label_attribute='Mark_ids')
@@ -323,28 +323,20 @@ class GeneralGraph(nx.DiGraph):
         return dist, pred
 
     def floyd_warshall_kernel(self, dist, pred, init, stop, barrier=None):
-        """ Floyd Warshall's APSP inner iteration.
-        Distance matrix is intended to take edges weight
-        into account.
-
-        Parameters
-        ----------
-        pred : numpy.ndarray
-            matrix of predecessors
-        dist : numpy.ndarray
-            matrix of distances
-        init  : int
-        stop  : int
-        barrier: multiprocessing.synchronize.Barrier
-            multiprocessing barrier
-
-        Returns
-        -------
-        pred : numpy.ndarray
-            updated matrix of predecessors
-        dist : numpy.matrixlib.defmatrix.matrix
-            updated matrix of distances
         """
+
+        Floyd Warshall's APSP inner iteration.
+        Distance matrix is intended to take edges weight into account.
+
+        :param numpy.ndarray dist: matrix of distances
+        :param numpy.ndarray pred: matrix of predecessors
+        :param int init: starting column of numpy matrix slice
+        :param int stop: ending column of numpy matrix slice
+        :param multiprocessing.synchronize.Barrier barrier:
+            multiprocessing barrier to moderate writing on
+            distance and predecessors matrices
+        """
+
         n = dist.shape[0]
         for w in range(n):  # k
             dist_copy = copy.deepcopy(dist[init:stop, :])
@@ -360,13 +352,18 @@ class GeneralGraph(nx.DiGraph):
         if barrier: barrier.wait() 
 
     def floyd_warshall_predecessor_and_distance_parallel(self):
-        """ Parallel Floyd Warshall's APSP algorithm.
-
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes to every node
-        in the graph. Edges weight is taken into account in distance matrix.
         """
+
+        Parallel Floyd Warshall's APSP algorithm. The predecessors
+        and distance matrices are evaluated, together with the nested
+        dictionaries for shortest-path, length of the paths and
+        efficiency attributes.
+
+        .. note:: Edges weight is taken into account in the distance matrix.
+            Edge weight attributes must be numerical. Distances are calculated
+            as sums of weighted edges traversed.
+        """
+
         dist, pred = self.floyd_warshall_initialization()
 
         shared_arr = mp.sharedctypes.RawArray(ctypes.c_double, dist.shape[0]**2)
@@ -441,13 +438,18 @@ class GeneralGraph(nx.DiGraph):
         nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def floyd_warshall_predecessor_and_distance_serial(self):
-        """ Serial Floyd Warshall's APSP algorithm.
-
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes between each couple of
-        nodes in the graph. Edges weight is taken into account in distance matrix.
         """
+
+        Serial Floyd Warshall's APSP algorithm. The predecessors
+        and distance matrices are evaluated, together with the nested
+        dictionaries for shortest-path, length of the paths and
+        efficiency attributes.
+
+        .. note:: Edges weight is taken into account in the distance matrix.
+            Edge weight attributes must be numerical. Distances are calculated
+            as sums of weighted edges traversed.
+        """
+
         dist, pred = self.floyd_warshall_initialization()
 
         self.floyd_warshall_kernel(dist, pred, 0, dist.shape[0])
@@ -472,18 +474,16 @@ class GeneralGraph(nx.DiGraph):
         nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def single_source_shortest_path_serial(self):
-        """ Serial SSSP algorithm based on Dijkstra’s method.
-
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes between each couple of
-        nodes in the graph. Edges weight is taken into account.
-
-        Notes
-        -----
-        Edge weight attributes must be numerical. Distances are calculated as
-        sums of weighted edges traversed.
         """
+
+        Serial SSSP algorithm based on Dijkstra’s method.
+        The nested dictionaries for shortest-path, length of the paths and
+        efficiency attributes are evaluated.
+
+        .. note:: Edges weight is taken into account. Edge weight attributes must
+            be numerical. Distances are calculated as sums of weighted edges traversed.
+        """
+
         for n in self:
             sssps = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
             self.nodes[n]["shortest_path"] = sssps[1][1]
@@ -493,44 +493,35 @@ class GeneralGraph(nx.DiGraph):
         nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def single_source_shortest_path_parallel(self, out_q, nodi):
-        """ Parallel SSSP algorithm based on Dijkstra’s method.
-
-        Parameters
-        ----------
-        out_q : multiprocessing queue
-        nodi : list
-            list of start nodes from which the SSSP should be computed to
-            every other target node in the graph.
-
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes between each couple
-        of nodes in the graph. Edges weight is taken into account.
-
-        Notes
-        -----
-        Edge weight attributes must be numerical. Distances are calculated as
-        sums of weighted edges traversed.
         """
+
+        Parallel SSSP algorithm based on Dijkstra’s method.
+
+        :param multiprocessing.queues.Queue out_q: multiprocessing queue
+        :param list nodi: list of starting nodes from which the SSSP should be
+            computed to every other target node in the graph
+
+        .. note:: Edges weight is taken into account. Edge weight attributes must
+            be numerical. Distances are calculated as sums of weighted edges traversed.
+        """
+
         for n in nodi:
             ssspp = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
             out_q.put(ssspp)
 
     @staticmethod
     def chunk_it(nodi, n):
-        """ Divide graph nodes in chunks according to number of processes.
-        
-		Parameters
-        ----------
-        nodi : list
-            list of nodes in the graph
-        n : int
-            number of available processes
-
-        Returns
-        -------
-        List of graph nodes to be assigned to every process.
         """
+
+        Divide graph nodes in chunks according to number of processes.
+
+        :param list nodi: list of nodes in the graph
+        :param int n: number of available processes
+        
+        :return: list of graph nodes to be assigned to every process
+        :rtype: list
+        """
+
         avg = len(nodi) / n
         out = []
         last = 0.0
@@ -541,12 +532,14 @@ class GeneralGraph(nx.DiGraph):
         return out
 
     def parallel_wrapper_proc(self):
-        """ Wrapper for parallel SSSP algorithm based on Dijkstra’s method.
+        """
 
-        Returns
-        -------
-        Node's "shortest_path" and "efficiency" attributes between each couple
-        of nodes in the graph. Edges weight is taken into account.
+        Wrapper for parallel SSSP algorithm based on Dijkstra’s method.
+        The nested dictionaries for shortest-path, length of the paths and
+        efficiency attributes are evaluated.
+
+        .. note:: Edges weight is taken into account. Edge weight attributes must
+            be numerical. Distances are calculated as sums of weighted edges traversed.
         """
 
         self.attribute_ssspp = []
@@ -595,25 +588,22 @@ class GeneralGraph(nx.DiGraph):
         nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
     def nodal_efficiency(self):
-        """ Global efficiency of the node.
+        """
 
-        Returns
-        -------
-        float
-            Node's "original_nodal_eff" and "final_nodal_eff" attributes.
+        Global efficiency of the node.
+        Nodes' "original_nodal_eff", or "final_nodal_eff" attribute
+        is evaluated.
 
-            "original_nodal_eff" is the efficiency of each node in the
-            integer graph, before the occurrency of any perturbation which may
-            affect the system.
+        "original_nodal_eff" is the efficiency of each node in the
+        intact graph, before the occurrence of any perturbation, while
+        "final_nodal_eff" is the efficiency of each node in the potentially
+        perturbed graph, after the propagation of a perturbation.
 
-            "final_nodal_eff" is the efficiency of each node in the potentially
-            perturbed graph, recalculated after the propagation of the
-            failure resulting from a perturbation.
-
-            Global efficiency of the node is equal to zero for a node without
-            any outgoing path and equal to one if we can reach from node v
+        .. note:: The global efficiency of the node is equal to zero for a node
+            without any outgoing path and equal to one if from it we can reach
             each node of the digraph.
         """
+        
         g_len = len(list(self))
         first_node = list(self)[0]
         all_attributes = list(self.nodes[first_node].keys())
@@ -636,28 +626,25 @@ class GeneralGraph(nx.DiGraph):
                 self.nodes[v]["original_nodal_eff"] = sum_efficiencies / (g_len - 1)
 
     def local_efficiency(self):
-        """ Local efficiency of the node.
+        """
 
-        Returns
-        -------
-        float
-            Node's "original_local_eff" and "final_local_eff" attributes.
+        Local efficiency of the node.
+        Nodes' "original_local_eff", or "final_local_eff" attribute
+        is evaluated.
 
-            "original_local_eff" is the local efficiency of each node in the
-            integer graph, before the occurrency of any perturbation which may
-            affect the system.
+        "original_local_eff" is the local efficiency of each node in the
+        intact graph, before the occurrence of any perturbation, while
+        "final_local_eff" is the local efficiency of each node in the
+        potentially perturbed graph, after the propagation of a perturbation.
 
-            "final_local_eff" is the local efficiency of each node in the
-            potentially perturbed graph, recalcualted after the propagation
-            of the failure resulting from a parturbation.
-
-            Local efficiency shows the efficiency of the connections between
-            the first-order outgoing neighbors of node v when v is removed.
-            Equivalently, local efficiency measures the "resilience" of digraph
+        .. note:: The local efficiency shows the efficiency of the connections
+            between the first-order outgoing neighbors of node v when v is removed.
+            Equivalently, local efficiency measures the "resilience" of the digraph
             to the perturbation of node removal, i.e. if we remove a node,
-            how efficient its first-order outgoing neighbors can communicate.
+            how efficiently its first-order outgoing neighbors can communicate.
             It is in the range [0, 1].
         """
+
         first_node = list(self)[0]
         all_attributes = list(self.nodes[first_node].keys())
 
@@ -700,26 +687,21 @@ class GeneralGraph(nx.DiGraph):
                     self.nodes[v]["original_local_eff"] = 0
 
     def global_efficiency(self):
-        """ Average global efficiency of the whole graph.
-
-        Returns
-        -------
-        float
-
-            Node's "original_avg_global_eff" and "final_avg_global_eff"
-            attributes.
-
-            "original_avg_global_eff" is the average global efficiency of the
-            integer graph, before the occurrency of any parturbation which
-            may affect system.
-
-            "final_avg_global_eff" is the efficiency of each node in the
-            potentially perturbed graph, recalcualted after the propagation of
-            the failure resulting from a perturbation.
-
-            The average global efficiency of a graph is the average efficiency
-            of all pairs of nodes.
         """
+
+        Average global efficiency of the whole graph.
+        Nodes' "original_avg_global_eff", or "final_avg_global_eff" attribute
+        is evaluated.
+
+        "original_avg_global_eff" is the average global efficiency of the
+        intact graph, before the occurrence of any perturbation, while
+        "final_avg_global_eff" is the efficiency of each node in the
+        potentially perturbed graph,  after the propagation of a perturbation.
+
+        .. note:: The average global efficiency of a graph is the average
+            efficiency of all pairs of nodes.
+        """
+
         g_len = len(list(self))
         sum_eff = 0
         first_node = list(self)[0]
@@ -737,20 +719,19 @@ class GeneralGraph(nx.DiGraph):
                 self.nodes[v]["original_avg_global_eff"] = sum_eff / g_len
 
     def betweenness_centrality(self):
-        """ Betweenness_centrality measure of each node.
+        """
 
-        Returns
-        -------
-        float
+        Betweenness_centrality measure of each node.
+        Nodes' "betweenness_centrality" attribute is evaluated.
 
-            Node's betweenness_centrality attribute.
-            Betweenness centrality is an index of the relative importance of a
-            node and it is defined by the number of shortest paths that run
+        .. note:: Betweenness centrality is an index of the relative importance
+            of a node and it is defined by the number of shortest paths that run
             through it.
             Nodes with the highest betweenness centrality hold the higher level
             of control on the information flowing between different nodes in
             the network, because more information will pass through them.
         """
+
         tot_shortest_paths = nx.get_node_attributes(self, 'shortest_path')
         tot_shortest_paths_list = []
 
@@ -772,20 +753,19 @@ class GeneralGraph(nx.DiGraph):
             self.nodes[node]["betweenness_centrality"] = bet_cen
 
     def closeness_centrality(self):
-        """ Closeness_centrality measure of each node.
+        """
 
-        Returns
-        -------
-        float
+        Closeness_centrality measure of each node.
+        Nodes' "closeness_centrality" attribute is evaluated.
 
-            Node's closeness_centrality attribute.
-            Closeness centrality measures the reciprocal of the average
-            shortest path distance from a node to all other reachable
+        .. note:: Closeness centrality measures the reciprocal of the
+            average shortest path distance from a node to all other reachable
             nodes in the graph. Thus, the more central a node is, the closer
             it is to all other nodes. This measure allows to identify good
             broadcasters, that is key elements in a graph, depicting how
             closely the nodes are connected with each other.
         """
+
         g_len = len(list(self))
         tot_shortest_paths = nx.get_node_attributes(self, 'shortest_path')
         tot_shortest_paths_list = []
@@ -810,22 +790,21 @@ class GeneralGraph(nx.DiGraph):
             self.nodes[node]["closeness_centrality"] = clo_cen
 
     def degree_centrality(self):
-        """ degree centrality measure of each node.
+        """
 
-        Returns
-        -------
-        float
+        Degree centrality measure of each node.
+        Nodes' "degree_centrality" attribute is evaluated.
 
-            Node's degree centrality attribute.
-            Degree centrality is a simple centrality measure that counts how
-            many neighbors a node has in an undirected graph.
+        .. note:: Degree centrality is a simple centrality measure that counts
+            how many neighbors a node has in an undirected graph.
             The more neighbors the node has the most important it is,
             occupying a strategic position that serves as a source or conduit
-            for large volumes of flux transactions with other nodes. A node
-            with high degree centrality is a node with many dependencies.
-            TODO: it can be trivially parallelized
-            (see single_source_shortest_path_parallel for the way to go)
+            for large volumes of flux transactions with other nodes.
+            A node with high degree centrality is a node with many dependencies.
         """
+
+        #TODO: it can be trivially parallelized
+        #(see single_source_shortest_path_parallel for the way to go)
         g_len = len(list(self))
 
         for node in self:
@@ -834,18 +813,18 @@ class GeneralGraph(nx.DiGraph):
             self.nodes[node]["degree_centrality"] = deg_cen
 
     def indegree_centrality(self):
-        """ Indegree centrality measure of each node.
-
-        Returns
-        -------
-        float
-
-            Node's indegree centrality attribute (i.e. number of edges ending
-            at the node in a directed graph). Nodes with high indegree
-            centrality are called cascade resulting nodes.
-            TODO: it can be trivially parallelized
-            (see single_source_shortest_path_parallel for the way to go )
         """
+
+        Indegree centrality measure of each node.
+        Nodes' "indegree_centrality" attribute is evaluated.
+
+        .. note:: Indegree centrality is measured by the number of edges
+            ending at the node in a directed graph. Nodes with high indegree
+            centrality are called cascade resulting nodes.
+        """
+
+        #TODO: it can be trivially parallelized
+        #(see single_source_shortest_path_parallel for the way to go)
         g_len = len(list(self))
         
         for node in self:
@@ -857,19 +836,18 @@ class GeneralGraph(nx.DiGraph):
                 self.nodes[node]["indegree_centrality"] = 0
 
     def outdegree_centrality(self):
-        """ Outdegree centrality measure of each node.
-
-        Returns
-        -------
-        float
-
-            Node's outdegree centrality attribute (i.e. number of edges starting
-            from a node in a directed graph). Nodes with high outdegree
-            centrality are called cascade inititing nodes.
-            TODO: it can be trivially parallelized
-            (see single_source_shortest_path_parallel for the way to go )
-
         """
+
+        Outdegree centrality measure of each node.
+        Nodes' "outdegree_centrality" attribute is evaluated.
+
+        .. note:: Outdegree centrality is measured by the number of edges
+            starting from a node in a directed graph. Nodes with high outdegree
+            centrality are called cascade inititing nodes.
+        """
+
+        #TODO: it can be trivially parallelized
+        #(see single_source_shortest_path_parallel for the way to go)
         g_len = len(list(self))
         
         for node in self:
@@ -881,15 +859,23 @@ class GeneralGraph(nx.DiGraph):
                 self.nodes[node]["outdegree_centrality"] = 0
 
     def calculate_shortest_path(self):
-        """ Choose the most appropriate way to compute the all-pairs shortest
-        path depending on graph size and density .
-        For a dense graph choose Floyd Warshall algorithm .
+        """
+
+        Choose the most appropriate way to compute the all-pairs shortest
+        path depending on graph size and density.
+
+        For a dense graph choose Floyd Warshall algorithm.
+
         For a sparse graph choose SSSP algorithm based on Dijkstra's method.
-        Edge weights of the graph are taken into account in the computation.
+        
         For big graphs go parallel (number of processes equals the total
         number of available CPUs).
+
         For small graphs go serial.
+
+        .. note:: Edge weights of the graph are taken into account in the computation.
         """
+
         n_of_nodes = self.order()
         g_density = nx.density(self)
         self.num = mp.cpu_count()
@@ -915,11 +901,14 @@ class GeneralGraph(nx.DiGraph):
                 self.floyd_warshall_predecessor_and_distance_serial()
 
     def check_before(self):
-        """ Describe the topology of the integer graph, before the occurrency
-        of any failure in the system.
+        """
+
+        Describe the topology of the integer graph, before the
+        occurrence of any perturbation in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
         """
+
         self.calculate_shortest_path()
         self.lst0 = []
         self.nodal_efficiency()
@@ -999,11 +988,14 @@ class GeneralGraph(nx.DiGraph):
                     })
 
     def check_after(self):
-        """ Describe the topology of the potentially perturbed graph,
-        after the occurrency of a failure in the system.
+        """
+
+        Describe the topology of the potentially perturbed graph,
+        after the occurrence of a perturbation in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
         """
+
         self.calculate_shortest_path()
         self.nodal_efficiency()
         self.global_efficiency()
@@ -1089,16 +1081,16 @@ class GeneralGraph(nx.DiGraph):
                 })
 
     def rm_nodes(self, node, visited=None):
-        """ Remove nodes from the graph in a depth first search way to
-        propagate the failure.
-
-        Parameters
-        ----------
-        node : node
-            The first node from which the failure propagation cascade begins.
-        visited : None or string, optional
-
         """
+
+        Remove nodes from the graph in a depth first search way to
+        propagate the perturbation.
+
+        :param str node: the id of the node to remove
+        :param visited: list of nodes already visited
+        :type visited: set, optional
+        """
+
         if visited is None:
             visited = set()
         visited.add(node)
@@ -1159,19 +1151,18 @@ class GeneralGraph(nx.DiGraph):
 
     @staticmethod
     def merge_lists(l1, l2, key):
-        """ Merge two lists of dictionaries according to their keys.
-
-        Parameters
-        ----------
-        li : list of dictionaries
-        l2 : list of dictionaries
-        key : list of dictionaries
-
-        Returns
-        ----------
-        path: list
-
         """
+
+        Merge two lists of dictionaries according to their keys.
+
+        :param list l1: first list of dictionaries to be merged
+        :param list l2: second list of dictionaries to be merged
+        :param list key: key on which to merge the two lists of dictionaries
+
+        :return: the merged list of dictionaries
+        :rtype: list
+        """
+
         merged = {}
         for item in l1 + l2:
             if item[key] in merged:
@@ -1181,21 +1172,17 @@ class GeneralGraph(nx.DiGraph):
         return [val for (_, val) in merged.items()]
 
     def update_areas(self, multi_areas):
-        """ Update the status of the elements in the areas after
-        the propagation of the failure.
-
-        Parameters
-        ----------
-        multi_areas : list
-            Areas or areas in which a perturbing event occurred.
-
-        Returns
-        ----------
-        nodes attribute "IntermediateStatus": int
-        nodes attribute "FinalStatus": int
-        nodes attribute "Mark_Status": str
-        nodes attribute "Status_Area": str
         """
+
+        Update the status of the elements in the areas after
+        the propagation of the perturbation.
+        Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
+        and "Status_Area" attributes are evaluated.
+
+        :param list multi_areas: area(s) in which to update the status
+            of the elements
+        """
+
         self.update_status(self.newstatus, "IntermediateStatus", self.nodes_in_area)
         
         self.update_status(self.finalstatus, "FinalStatus", self.nodes_in_area)
@@ -1217,22 +1204,16 @@ class GeneralGraph(nx.DiGraph):
                 self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
     def delete_a_node(self, node):
-        """ Delete a node in the graph to simulate a perturbation to an element in
-        a plant and start to propagate the failure.
-
-        Parameters
-        ----------
-        node : node id
-            Node to be deleted and starting point for the failure propagation
-            cascade.
-
-        Returns
-        ----------
-        nodes attribute "IntermediateStatus": int
-        nodes attribute "FinalStatus": int
-        nodes attribute "Mark_Status": str
-        nodes attribute "Status_Area": str
         """
+
+        Delete a node in the graph to simulate a perturbation to an element in
+        a plant and start to propagate the perturbation.
+        Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
+        and "Status_Area" attributes are evaluated.
+
+        :param str node: the id of the node to remove
+        """
+
         if node in self.nodes():
 
             self.check_before()
@@ -1263,7 +1244,7 @@ class GeneralGraph(nx.DiGraph):
 
             self.check_after()
 
-            self.service_paths_tofile("service_paths_element_perturbation.csv")
+            self.service_paths_to_file("service_paths_element_perturbation.csv")
             
             self.update_status(self.newstatus, "IntermediateStatus", self.bn)
           
@@ -1278,26 +1259,23 @@ class GeneralGraph(nx.DiGraph):
 
                 self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
 
-            self.graph_characterization_tofile("element_perturbation.csv")
+            self.graph_characterization_to_file("element_perturbation.csv")
 
         else:
             print('The node is not in the graph')
             print('Insert a valid node')
 
     def simulate_multi_area_perturbation(self, multi_areas):
-        """ Simulate a perturbation in one or multiple areas.
-
-        Parameters
-        ----------
-        multi_areas : list
-            List of areas in which the perturbation occurred.
-        Returns
-        ----------
-        nodes attribute "IntermediateStatus": int
-        nodes attribute "FinalStatus": int
-        nodes attribute "Mark_Status": str
-        nodes attribute "Status_Area": str
         """
+
+        Simulate a perturbation in one or multiple areas.
+        Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
+        and "Status_Area" attributes are evaluated.
+
+        :param list multi_areas: area(s) in which the perturbing event
+            occurred
+        """
+
         self.nodes_in_area = []
 
         for area in multi_areas:
@@ -1351,30 +1329,27 @@ class GeneralGraph(nx.DiGraph):
 
             self.check_after()
 
-        self.service_paths_tofile("service_paths_multi_area_perturbation.csv")
+        self.service_paths_to_file("service_paths_multi_area_perturbation.csv")
         
         self.update_areas(multi_areas)
         
-        self.graph_characterization_tofile("area_perturbation.csv")
+        self.graph_characterization_to_file("area_perturbation.csv")
         
     def update_status(self, which_status, field, already_updated):
-        """ Update the status of the nodes not concerned
-            by the perturbation. The status of nodes
-            interested by the perturbation is already
-            updated during failure propagation. 
-
-        Parameters
-        ----------
-        which_status : dict
-            Status to be updated.
-        field: str
-            Name of status to be updated.
-        already_updated: list
-            List of nodes already updated.
-        Returns
-        ----------
-        updated status which_status: dict
         """
+
+        Update the status of the nodes not concerned by the
+        perturbation. The status of nodes interested by the perturbation
+        is already updated during perturbation propagation.
+
+        :param dict which_status: status to be updated
+        :param str field: name of the attribute to be updated
+        :param list already_updated: already updated nodes
+
+        :return: the updated status
+        :rtype: dict
+        """
+
         if which_status:
             which_status = {
                 k: v
@@ -1394,15 +1369,16 @@ class GeneralGraph(nx.DiGraph):
 
         return which_status
 
-    def service_paths_tofile(self, filename):
-        """ Write to file the service paths
-        situation after the perturbation.
-
-        Parameters
-        ----------
-        filename : str
-            Name of output file.
+    def service_paths_to_file(self, filename):
         """
+
+        Write to file the service paths situation
+        after the perturbation.
+
+        :param str filename: output file name where to print the
+            service paths situation
+        """
+
         rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
 
         with open(filename, "w") as csvFile:
@@ -1417,15 +1393,16 @@ class GeneralGraph(nx.DiGraph):
             writer.writerows(rb_paths_p)
         csvFile.close()
 
-    def graph_characterization_tofile(self, filename):
-        """ Write to file graph characterization
+    def graph_characterization_to_file(self, filename):
+        """
+
+        Write to file graph characterization
         after the perturbation.
 
-        Parameters
-        ----------
-        filename : str
-            Name of output file.
+        :param str filename: output file name where to print the
+            graph characterization
         """
+
         list_to_print = []
         with open(filename, "w") as csvFile:
             fields = [

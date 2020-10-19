@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph.indegree\_centrality
+﻿grape.general\_graph.GeneralGraph.indegree\_centrality
 ======================================================
 
 .. currentmodule:: grape.general_graph

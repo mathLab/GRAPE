@@ -12,19 +12,22 @@ GeneralGraph
     GeneralGraph
     GeneralGraph.load
     GeneralGraph.check_input_with_gephi
-    GeneralGraph.ConstructPath
-    GeneralGraph.inner_iteration_serial
-    GeneralGraph.inner_iteration_parallel
-    GeneralGraph.inner_iteration_wrapper_parallel
+    GeneralGraph.construct_path
+    GeneralGraph.construct_path_kernel
+    GeneralGraph.construct_path_iteration_parallel
+    GeneralGraph.compute_efficiency_kernel
+    GeneralGraph.compute_efficiency_iteration_parallel
+    GeneralGraph.floyd_warshall_initialization
+    GeneralGraph.floyd_warshall_kernel
     GeneralGraph.floyd_warshall_predecessor_and_distance_parallel
     GeneralGraph.floyd_warshall_predecessor_and_distance_serial
     GeneralGraph.single_source_shortest_path_serial
     GeneralGraph.single_source_shortest_path_parallel
     GeneralGraph.chunk_it
     GeneralGraph.parallel_wrapper_proc
-    GeneralGraph.nodal_eff
-    GeneralGraph.local_eff
-    GeneralGraph.global_eff
+    GeneralGraph.nodal_efficiency
+    GeneralGraph.local_efficiency
+    GeneralGraph.global_efficiency
     GeneralGraph.betweenness_centrality
     GeneralGraph.closeness_centrality
     GeneralGraph.degree_centrality
@@ -35,9 +38,12 @@ GeneralGraph
     GeneralGraph.check_after
     GeneralGraph.rm_nodes
     GeneralGraph.merge_lists
-    GeneralGraph.update_status
+    GeneralGraph.update_areas
     GeneralGraph.delete_a_node
-    GeneralGraph.simulate_multi_room_perturbation
+    GeneralGraph.simulate_multi_area_perturbation
+    GeneralGraph.update_status
+    GeneralGraph.service_paths_to_file
+    GeneralGraph.graph_characterization_to_file
 
 .. autoclass:: GeneralGraph
     :members:

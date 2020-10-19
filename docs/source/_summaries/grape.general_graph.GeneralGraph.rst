@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph
+﻿grape.general\_graph.GeneralGraph
 =================================
 
 .. currentmodule:: grape.general_graph
@@ -13,15 +13,11 @@ grape.general\_graph.GeneralGraph
 
    .. autosummary::
    
-      ~GeneralGraph.ConstructPath
       ~GeneralGraph.__init__
-      ~GeneralGraph.add_cycle
       ~GeneralGraph.add_edge
       ~GeneralGraph.add_edges_from
       ~GeneralGraph.add_node
       ~GeneralGraph.add_nodes_from
-      ~GeneralGraph.add_path
-      ~GeneralGraph.add_star
       ~GeneralGraph.add_weighted_edges_from
       ~GeneralGraph.adjacency
       ~GeneralGraph.betweenness_centrality
@@ -32,35 +28,37 @@ grape.general\_graph.GeneralGraph
       ~GeneralGraph.chunk_it
       ~GeneralGraph.clear
       ~GeneralGraph.closeness_centrality
+      ~GeneralGraph.compute_efficiency_iteration_parallel
+      ~GeneralGraph.compute_efficiency_kernel
+      ~GeneralGraph.construct_path
+      ~GeneralGraph.construct_path_iteration_parallel
+      ~GeneralGraph.construct_path_kernel
       ~GeneralGraph.copy
       ~GeneralGraph.degree_centrality
       ~GeneralGraph.delete_a_node
       ~GeneralGraph.edge_subgraph
+      ~GeneralGraph.floyd_warshall_initialization
+      ~GeneralGraph.floyd_warshall_kernel
       ~GeneralGraph.floyd_warshall_predecessor_and_distance_parallel
       ~GeneralGraph.floyd_warshall_predecessor_and_distance_serial
-      ~GeneralGraph.fresh_copy
       ~GeneralGraph.get_edge_data
-      ~GeneralGraph.global_eff
+      ~GeneralGraph.global_efficiency
+      ~GeneralGraph.graph_characterization_to_file
       ~GeneralGraph.has_edge
       ~GeneralGraph.has_node
       ~GeneralGraph.has_predecessor
       ~GeneralGraph.has_successor
       ~GeneralGraph.indegree_centrality
-      ~GeneralGraph.inner_iteration_parallel
-      ~GeneralGraph.inner_iteration_serial
-      ~GeneralGraph.inner_iteration_wrapper_parallel
       ~GeneralGraph.is_directed
       ~GeneralGraph.is_multigraph
       ~GeneralGraph.load
-      ~GeneralGraph.local_eff
+      ~GeneralGraph.local_efficiency
       ~GeneralGraph.merge_lists
       ~GeneralGraph.nbunch_iter
       ~GeneralGraph.neighbors
-      ~GeneralGraph.nodal_eff
-      ~GeneralGraph.nodes_with_selfloops
+      ~GeneralGraph.nodal_efficiency
       ~GeneralGraph.number_of_edges
       ~GeneralGraph.number_of_nodes
-      ~GeneralGraph.number_of_selfloops
       ~GeneralGraph.order
       ~GeneralGraph.outdegree_centrality
       ~GeneralGraph.parallel_wrapper_proc
@@ -71,8 +69,8 @@ grape.general\_graph.GeneralGraph
       ~GeneralGraph.remove_nodes_from
       ~GeneralGraph.reverse
       ~GeneralGraph.rm_nodes
-      ~GeneralGraph.selfloop_edges
-      ~GeneralGraph.simulate_multi_room_perturbation
+      ~GeneralGraph.service_paths_to_file
+      ~GeneralGraph.simulate_multi_area_perturbation
       ~GeneralGraph.single_source_shortest_path_parallel
       ~GeneralGraph.single_source_shortest_path_serial
       ~GeneralGraph.size
@@ -83,6 +81,7 @@ grape.general\_graph.GeneralGraph
       ~GeneralGraph.to_undirected
       ~GeneralGraph.to_undirected_class
       ~GeneralGraph.update
+      ~GeneralGraph.update_areas
       ~GeneralGraph.update_status
    
    
@@ -99,7 +98,6 @@ grape.general\_graph.GeneralGraph
       ~GeneralGraph.in_degree
       ~GeneralGraph.in_edges
       ~GeneralGraph.name
-      ~GeneralGraph.node
       ~GeneralGraph.nodes
       ~GeneralGraph.out_degree
       ~GeneralGraph.out_edges

@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,28 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="grape.general_graph.GeneralGraph.check_input_with_gephi" href="grape.general_graph.GeneralGraph.check_input_with_gephi.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home"> GRAPE
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> GRAPE
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -91,19 +93,22 @@
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.html">grape.general_graph.GeneralGraph</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">grape.general_graph.GeneralGraph.load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.check_input_with_gephi.html">grape.general_graph.GeneralGraph.check_input_with_gephi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.ConstructPath.html">grape.general_graph.GeneralGraph.ConstructPath</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_serial.html">grape.general_graph.GeneralGraph.inner_iteration_serial</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_parallel</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel.html">grape.general_graph.GeneralGraph.inner_iteration_wrapper_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path.html">grape.general_graph.GeneralGraph.construct_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_kernel.html">grape.general_graph.GeneralGraph.construct_path_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.construct_path_iteration_parallel.html">grape.general_graph.GeneralGraph.construct_path_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_kernel.html">grape.general_graph.GeneralGraph.compute_efficiency_kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel.html">grape.general_graph.GeneralGraph.compute_efficiency_iteration_parallel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_initialization.html">grape.general_graph.GeneralGraph.floyd_warshall_initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_kernel.html">grape.general_graph.GeneralGraph.floyd_warshall_kernel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial.html">grape.general_graph.GeneralGraph.floyd_warshall_predecessor_and_distance_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_serial.html">grape.general_graph.GeneralGraph.single_source_shortest_path_serial</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.single_source_shortest_path_parallel.html">grape.general_graph.GeneralGraph.single_source_shortest_path_parallel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.chunk_it.html">grape.general_graph.GeneralGraph.chunk_it</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.parallel_wrapper_proc.html">grape.general_graph.GeneralGraph.parallel_wrapper_proc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_eff.html">grape.general_graph.GeneralGraph.nodal_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.local_eff.html">grape.general_graph.GeneralGraph.local_eff</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.global_eff.html">grape.general_graph.GeneralGraph.global_eff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.nodal_efficiency.html">grape.general_graph.GeneralGraph.nodal_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.local_efficiency.html">grape.general_graph.GeneralGraph.local_efficiency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.global_efficiency.html">grape.general_graph.GeneralGraph.global_efficiency</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.betweenness_centrality.html">grape.general_graph.GeneralGraph.betweenness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.closeness_centrality.html">grape.general_graph.GeneralGraph.closeness_centrality</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.degree_centrality.html">grape.general_graph.GeneralGraph.degree_centrality</a></li>
@@ -114,20 +119,25 @@
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.check_after.html">grape.general_graph.GeneralGraph.check_after</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.rm_nodes.html">grape.general_graph.GeneralGraph.rm_nodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.merge_lists.html">grape.general_graph.GeneralGraph.merge_lists</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_areas.html">grape.general_graph.GeneralGraph.update_areas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.delete_a_node.html">grape.general_graph.GeneralGraph.delete_a_node</a></li>
-<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_room_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_room_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.simulate_multi_area_perturbation.html">grape.general_graph.GeneralGraph.simulate_multi_area_perturbation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.update_status.html">grape.general_graph.GeneralGraph.update_status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.service_paths_to_file.html">grape.general_graph.GeneralGraph.service_paths_to_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="grape.general_graph.GeneralGraph.graph_characterization_to_file.html">grape.general_graph.GeneralGraph.graph_characterization_to_file</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LICENSE.html">License</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -166,7 +176,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../code.html">Code Documentation</a> &raquo;</li>
         
@@ -193,76 +203,18 @@
             
   <div class="section" id="grape-general-graph-generalgraph-load">
 <h1>grape.general_graph.GeneralGraph.load<a class="headerlink" href="#grape-general-graph-generalgraph-load" title="Permalink to this headline">¶</a></h1>
-<dl class="method">
+<dl class="py method">
 <dt id="grape.general_graph.GeneralGraph.load">
-<code class="descclassname">GeneralGraph.</code><code class="descname">load</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/grape/general_graph.html#GeneralGraph.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grape.general_graph.GeneralGraph.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load input file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<em>input file in csv format</em>) – <p>The input for the graph construction currently
-consists of text files reflecting the hierarchy of
-the plant components and their features.
-In the text input files each line corresponds
-to a node/component description.
-The same line reports the name of the predecessor
-of a particular node/component,
-the relationship between them, and the list of
-node’s attributes (room in which the component is
-present, perturbation resistance, etc.).
-In this way each line correspones to an edge
-connecting a component to its parent component.</p>
-<p>Each line should contain the following info:
-- component id (“Mark”)
-- parent of the component id (“Father_mark”)
-- parent-child relationship</p>
-<blockquote>
-<div>(“Father_cond”: AND, OR, SINGLE, ORPHAN. It is an edge attribute.)</div></blockquote>
-<ul class="simple">
-<li>type of component
-(“Description”: isolation_A, isolation_B are isolating components
-with opposite behaviour. It is a node attribute.)</li>
-<li>state of the isolating component
-(“InitStatus”: 1,0. It is a node attribute.)</li>
-<li>room in which the component is located
-(“Area”. It is a node attribute.)</li>
-<li>component external perturbation resistance
-(“PerturbationResistant”: 1,0. It is a node attribute.)</li>
-<li>source - target components
-(“From_to”: SOURCE or TARGET. It is a node attribute.)</li>
-</ul>
-<p>The hierarchy of the components explains how commodities
-flow from one component to another component
-and from one system to another system.
-In fact, if the input is properly formatted, with this
-simple digraph model it is possible to represent and
-integrate different interconnected plants
-in a unique graph without losing information about
-their peculiarities.</p>
-<p>In the graph, the nodes represent the plant components
-(such as generators, cables, isolation components and pipes)
-while the edges connecting the nodes harbor the logic
-relations (edge attributes) existing between the components
-(ORPHAN, SINGLE, AND, and OR).
-• An ORPHAN edge is the edge of a node without predecessors.
-• A SINGLE edge connects a node to its only one predecessor.
-• An AND edge indicates that the node/component</p>
-<blockquote>
-<div>has more than one predecessor. All the predecessors are
-necessary for the functioning of that component.</div></blockquote>
-<ul class="simple">
-<li>An OR edge indicates that the node/component has
-more than one predecessor. Just one of the node’s
-predecessors should be active to guarantee the functioning
-of the component.</li>
-</ul>
-<p>For this reason, correct input formatting
-is one of the most important steps of the analysis.</p>
-</td>
-</tr>
-</tbody>
-</table>
+<code class="sig-prename descclassname">GeneralGraph.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/grape/general_graph.html#GeneralGraph.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#grape.general_graph.GeneralGraph.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load input file. Input file must be in CSV format.
+Each line corresponds to a node/element description,
+with the relative hierarchy, together with the list
+of all the node attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – input file in CSV format</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -287,14 +239,22 @@ is one of the most important steps of the analysis.</p>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018-2019, GRAPE contributors
       <span class="lastupdated">
-        Last updated on Apr 04, 2019.
+        Last updated on Oct 19, 2020.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -305,7 +265,6 @@ is one of the most important steps of the analysis.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

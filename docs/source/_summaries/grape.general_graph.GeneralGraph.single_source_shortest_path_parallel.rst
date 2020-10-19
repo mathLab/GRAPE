@@ -1,4 +1,4 @@
-grape.general\_graph.GeneralGraph.single\_source\_shortest\_path\_parallel
+﻿grape.general\_graph.GeneralGraph.single\_source\_shortest\_path\_parallel
 ==========================================================================
 
 .. currentmodule:: grape.general_graph

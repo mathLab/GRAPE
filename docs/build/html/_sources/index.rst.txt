@@ -36,7 +36,7 @@ Installation
 The official distribution is on GitHub, and you can clone the repository using
 ::
 
-    git clone https://github.com/mathLab/PyDMD
+    git clone https://github.com/mathLab/GRAPE
 
 To install the package just type:
 ::
