@@ -66,7 +66,6 @@ class GeneralGraph(nx.DiGraph):
                     Father_cond = row['Father_cond'],
                     weight = float(row['Service']) )
 
-        self.broken = []
         self.newstatus = {}
         self.finalstatus = {}
         self.Status_Area = {}
@@ -1214,6 +1213,7 @@ class GeneralGraph(nx.DiGraph):
         :param str node: the id of the node to remove
         """
 
+        self.broken = [] #clear previous perturbation broken nodes
         if node in self.nodes():
 
             self.check_before()
@@ -1276,6 +1276,7 @@ class GeneralGraph(nx.DiGraph):
             occurred
         """
 
+        self.broken = [] #clear previous perturbation broken nodes
         self.nodes_in_area = []
 
         for area in multi_areas:
@@ -1345,9 +1346,6 @@ class GeneralGraph(nx.DiGraph):
         :param dict which_status: status to be updated
         :param str field: name of the attribute to be updated
         :param list already_updated: already updated nodes
-
-        :return: the updated status
-        :rtype: dict
         """
 
         if which_status:
@@ -1366,8 +1364,6 @@ class GeneralGraph(nx.DiGraph):
         else:
             for index in list(self.copy_of_self1):
                 self.copy_of_self1.nodes[index][field] = " "
-
-        return which_status
 
     def service_paths_to_file(self, filename):
         """
