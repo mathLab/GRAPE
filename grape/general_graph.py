@@ -1170,24 +1170,20 @@ class GeneralGraph(nx.DiGraph):
                 merged[item[key]] = item
         return [val for (_, val) in merged.items()]
 
-    def update_areas(self, multi_areas):
+    def update_areas(self, deleted_nodes, damaged_areas):
         """
 
-        Update the status of the elements in the areas after
-        the propagation of the perturbation.
-        Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
-        and "Status_Area" attributes are evaluated.
+        Update the status of the elements in the damaged areas
+        after the propagation of the perturbation.
+        Nodes' "Mark_Status" and "Status_Area" attributes are evaluated.
 
+        :param list damaged_areas: area(s) in which to update the status
+            of the elements
+        :type deleted_nodes: list or set
         :param list multi_areas: area(s) in which to update the status
             of the elements
         """
 
-        self.update_status(self.newstatus, "IntermediateStatus", self.nodes_in_area)
-        
-        self.update_status(self.finalstatus, "FinalStatus", self.nodes_in_area)
-        
-        deleted_nodes = set(self.copy_of_self1) - set(self)
-        
         for n in self.copy_of_self1:
 
             if n in deleted_nodes:
@@ -1195,9 +1191,7 @@ class GeneralGraph(nx.DiGraph):
             else:
                 self.copy_of_self1.nodes[n]["Mark_Status"] = "ACTIVE"
 
-            self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
-
-            if self.copy_of_self1.nodes[n]["Area"] in multi_areas:
+            if self.copy_of_self1.nodes[n]["Area"] in damaged_areas:
                 self.copy_of_self1.nodes[n]["Status_Area"] = "DAMAGED"
             else:
                 self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
@@ -1214,20 +1208,16 @@ class GeneralGraph(nx.DiGraph):
         """
 
         self.broken = [] #clear previous perturbation broken nodes
+        damaged_areas = set()
+
         if node in self.nodes():
 
             self.check_before()
-
             self.closeness_centrality()
-
             self.betweenness_centrality()
-
             self.indegree_centrality()
-
             self.outdegree_centrality()
-
             self.degree_centrality()
-
             self.copy_of_self1 = copy.deepcopy(self)
 
             self.rm_nodes(node)
@@ -1238,48 +1228,36 @@ class GeneralGraph(nx.DiGraph):
                 self.bn.remove("NULL")
 
             for n in self.bn:
+                damaged_areas.add(self.nodes[n]["Area"])
                 self.remove_node(n)
 
             self.lst = []
-
             self.check_after()
-
             self.service_paths_to_file("service_paths_element_perturbation.csv")
-            
             self.update_status(self.newstatus, "IntermediateStatus", self.bn)
-          
             self.update_status(self.finalstatus, "FinalStatus", self.bn)
-
-            for n in self.copy_of_self1:
-
-                if n in self.bn:
-                    self.copy_of_self1.nodes[n]["Mark_Status"] = "NOT_ACTIVE"
-                else:
-                    self.copy_of_self1.nodes[n]["Mark_Status"] = "ACTIVE"
-
-                self.copy_of_self1.nodes[n]["Status_Area"] = "AVAILABLE"
-
+            self.update_areas(self.bn, damaged_areas)
             self.graph_characterization_to_file("element_perturbation.csv")
 
         else:
             print('The node is not in the graph')
             print('Insert a valid node')
 
-    def simulate_multi_area_perturbation(self, multi_areas):
+    def simulate_multi_area_perturbation(self, damaged_areas):
         """
 
         Simulate a perturbation in one or multiple areas.
         Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
         and "Status_Area" attributes are evaluated.
 
-        :param list multi_areas: area(s) in which the perturbing event
+        :param list damaged_areas: area(s) in which the perturbing event
             occurred
         """
 
         self.broken = [] #clear previous perturbation broken nodes
         self.nodes_in_area = []
 
-        for area in multi_areas:
+        for area in damaged_areas:
 
             if area not in list(self.area.values()):
                 print('The area is not in the graph')
@@ -1331,9 +1309,12 @@ class GeneralGraph(nx.DiGraph):
             self.check_after()
 
         self.service_paths_to_file("service_paths_multi_area_perturbation.csv")
+        self.update_status(self.newstatus, "IntermediateStatus", self.nodes_in_area)
+        self.update_status(self.finalstatus, "FinalStatus", self.nodes_in_area)
+
+        deleted_nodes = set(self.copy_of_self1) - set(self)
         
-        self.update_areas(multi_areas)
-        
+        self.update_areas(deleted_nodes, damaged_areas)
         self.graph_characterization_to_file("area_perturbation.csv")
         
     def update_status(self, which_status, field, already_updated):
