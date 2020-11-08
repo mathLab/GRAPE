@@ -62,7 +62,7 @@ In this file are present 19 nodes/elements connected by
 direct edges that reflect the hierarchy of the system 
 in a parent-child fashion.
 
-The nodes are disributed in adjacent areas.
+The nodes are distributed in adjacent areas.
 
 In area1 are present 5 nodes: 1, 2, 3, 4 and 5.
 
