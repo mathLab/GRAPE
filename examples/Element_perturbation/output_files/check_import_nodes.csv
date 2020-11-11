@@ -1,5 +1,5 @@
 Mark,Description,InitStatus,PerturbationResistant,Area
-1,,,1,area1
+1,,,0,area1
 2,isolation_A,1,1,area1
 3,isolation_A,1,1,area1
 4,,,1,area1

@@ -77,7 +77,7 @@ may exceed the area boundaries and propagate
 to other systems connected to it, located in other
 areas. 
 
-Nodes 1, 2, 3, 4, 5 are perturbation resistant nodes 
+Nodes 2, 3, 4, 5 are perturbation resistant nodes 
 ("PerturbationResistant" field = "1").
 These nodes will not be affected by the simulated
 perturbation.
@@ -95,7 +95,7 @@ cascade to node 1.
 
 1. In file `general_graph.py`:
 
-* Uncomment `g.delete_a_node("1")`.
+* Uncomment `g.simulate_element_perturbation("1")`.
 
 * Uncomment `g.check_input_with_gephi()`.
 

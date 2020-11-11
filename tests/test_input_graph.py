@@ -156,7 +156,7 @@ class TestInputGraph(TestCase):
         g.load("tests/TOY_graph.csv")
 
         FR_dict = {
-            '1': '1',
+            '1': '0',
             '2': '1',
             '3': '1',
             '4': '1',

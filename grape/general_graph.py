@@ -70,6 +70,7 @@ class GeneralGraph(nx.DiGraph):
         self.finalstatus = {}
         self.Status_Area = {}
         self.Mark_Status = {}
+        self.damaged_areas = set()
 
         self.area = nx.get_node_attributes(self, 'Area')
         self.FR = nx.get_node_attributes(self, 'PerturbationResistant')
@@ -1084,6 +1085,11 @@ class GeneralGraph(nx.DiGraph):
 
         Remove nodes from the graph in a depth first search way to
         propagate the perturbation.
+        Nodes are not deleted if perturbation resistant.
+        Moreover, valves are not deleted if encountered
+        during the propagation of a the perturbation.
+        They are deleted, instead, if object of node deletion
+        themselves.
 
         :param str node: the id of the node to remove
         :param visited: list of nodes already visited
@@ -1096,7 +1102,11 @@ class GeneralGraph(nx.DiGraph):
         logging.debug('visited: %s', visited)
         logging.debug('node: %s', node)
 
-        if self.D[node] in self.valv:
+        if self.FR[node] == "1":
+            logging.debug('node %s visited, fault resistant node', node)
+            return visited
+
+        elif self.D[node] in self.valv:
 
             if self.status[node] == "0":
                 logging.debug('valve %s at node %s, state %s',
@@ -1199,16 +1209,36 @@ class GeneralGraph(nx.DiGraph):
     def delete_a_node(self, node):
         """
 
-        Delete a node in the graph to simulate a perturbation to an element in
+        Delete a node in the graph.
+
+        :param str node: the id of the node to remove
+
+        .. note:: the node id must be contained in the graph.
+            No check is done within this function.
+        """
+
+        self.broken = [] #clear previous perturbation broken nodes
+
+        self.rm_nodes(node)
+        self.bn = list(set(list(chain(*self.broken))))
+
+        if "NULL" in self.bn:
+            self.bn.remove("NULL")
+
+        for n in self.bn:
+            self.damaged_areas.add(self.nodes[n]["Area"])
+            self.remove_node(n)
+
+    def simulate_element_perturbation(self, node):
+        """
+
+        Simulate a perturbation to a single element in
         a plant and start to propagate the perturbation.
         Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
         and "Status_Area" attributes are evaluated.
 
         :param str node: the id of the node to remove
         """
-
-        self.broken = [] #clear previous perturbation broken nodes
-        damaged_areas = set()
 
         if node in self.nodes():
 
@@ -1220,44 +1250,34 @@ class GeneralGraph(nx.DiGraph):
             self.degree_centrality()
             self.copy_of_self1 = copy.deepcopy(self)
 
-            self.rm_nodes(node)
-
-            self.bn = list(set(list(chain(*self.broken))))
-
-            if "NULL" in self.bn:
-                self.bn.remove("NULL")
-
-            for n in self.bn:
-                damaged_areas.add(self.nodes[n]["Area"])
-                self.remove_node(n)
+            self.delete_a_node(node)
 
             self.lst = []
             self.check_after()
             self.service_paths_to_file("service_paths_element_perturbation.csv")
             self.update_status(self.newstatus, "IntermediateStatus", self.bn)
             self.update_status(self.finalstatus, "FinalStatus", self.bn)
-            self.update_areas(self.bn, damaged_areas)
+            self.update_areas(self.bn, self.damaged_areas)
             self.graph_characterization_to_file("element_perturbation.csv")
 
         else:
-            print('The node is not in the graph')
+            print('The node ', node, 'is not in the graph.')
             print('Insert a valid node')
 
-    def simulate_multi_area_perturbation(self, damaged_areas):
+    def simulate_multi_area_perturbation(self, perturbed_areas):
         """
 
         Simulate a perturbation in one or multiple areas.
         Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
         and "Status_Area" attributes are evaluated.
 
-        :param list damaged_areas: area(s) in which the perturbing event
+        :param list perturbed_areas: area(s) in which the perturbing event
             occurred
         """
 
-        self.broken = [] #clear previous perturbation broken nodes
-        self.nodes_in_area = []
+        nodes_in_area = []
 
-        for area in damaged_areas:
+        for area in perturbed_areas:
 
             if area not in list(self.area.values()):
                 print('The area is not in the graph')
@@ -1267,54 +1287,30 @@ class GeneralGraph(nx.DiGraph):
             else:
                 for id, Area in self.area.items():
                     if Area == area:
-                        self.nodes_in_area.append(id)
-
+                        nodes_in_area.append(id)
+        
         self.check_before()
         self.closeness_centrality()
         self.betweenness_centrality()
         self.indegree_centrality()
+        self.outdegree_centrality()
+        self.degree_centrality()
         self.copy_of_self1 = copy.deepcopy(self)
 
-        FR_nodes = []
+        for node in nodes_in_area:
+            if node in self.nodes():
+                self.delete_a_node(node)
+                nodes_in_area = list(set(nodes_in_area) - set(self.bn))
 
-        for id, PerturbationResistant in self.FR.items():
-            if PerturbationResistant == "1":
-                FR_nodes.append(id)
-
-        FV_nodes_in_area = set(self.nodes_in_area) - set(FR_nodes)
-        FV_nodes_in_area = [x for x in FV_nodes_in_area if str(x) != 'nan']
-
-        if (len(FV_nodes_in_area)) != 0:
-            for node in FV_nodes_in_area:
-                self.broken = []
-                if node in self.nodes():
-                    self.rm_nodes(node)
-                    self.bn = list(set(list(chain(*self.broken))))
-                    if "NULL" in self.bn:
-                        self.bn.remove("NULL")
-                    for n in self.bn:
-                        self.remove_node(n)
-
-                FV_nodes_in_area = list(set(FV_nodes_in_area) - set(self.bn))
-
-            FV_nodes_in_area = FV_nodes_in_area
-
-            self.lst = []
-
-            self.check_after()
-
-        else:
-            self.lst = []
-
-            self.check_after()
-
+        self.lst = []
+        self.check_after()
         self.service_paths_to_file("service_paths_multi_area_perturbation.csv")
-        self.update_status(self.newstatus, "IntermediateStatus", self.nodes_in_area)
-        self.update_status(self.finalstatus, "FinalStatus", self.nodes_in_area)
+        self.update_status(self.newstatus, "IntermediateStatus", nodes_in_area)
+        self.update_status(self.finalstatus, "FinalStatus", nodes_in_area)
 
         deleted_nodes = set(self.copy_of_self1) - set(self)
         
-        self.update_areas(deleted_nodes, damaged_areas)
+        self.update_areas(deleted_nodes, self.damaged_areas)
         self.graph_characterization_to_file("area_perturbation.csv")
         
     def update_status(self, which_status, field, already_updated):
@@ -1442,6 +1438,6 @@ if __name__ == '__main__':
     g.load(sys.argv[1])
     
     g.check_input_with_gephi()
-    g.delete_a_node("1")
+    g.simulate_element_perturbation("1")
     #g.simulate_multi_area_perturbation(['area1'])
     ##g.simulate_multi_area_perturbation(['area1','area2','area3'])

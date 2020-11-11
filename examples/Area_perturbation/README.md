@@ -77,7 +77,7 @@ may exceed the area boundaries and propagate
 to other systems connected to it, located in other
 areas. 
 
-Nodes 1, 2, 3, 4, 5 are perturbation resistant nodes 
+Nodes 2, 3, 4, 5 are perturbation resistant nodes 
 ("PerturbationResistant" field = "1").
 These nodes will not be affected by the simulated
 perturbation.

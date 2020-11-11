@@ -235,20 +235,10 @@ class TestShortestPathGraph(TestCase):
             }
         }
 
-        cls.final_shp_delete_a_node = copy.deepcopy(cls.initial_shortest_paths)
-        cls.final_shp_delete_a_node.pop('1')
+        cls.final_shp_element_perturbation = copy.deepcopy(cls.initial_shortest_paths)
+        cls.final_shp_element_perturbation.pop('1')
 
         cls.final_shp_multi_area_perturbation = {
-            '1': {
-                '1': ['1'],
-                '3': ['1', '3'],
-                '2': ['1', '2'],
-                '5': ['1', '3', '5'],
-                '4': ['1', '2', '4'],
-                '6': ['1', '2', '4', '6'],
-                '7': ['1', '2', '4', '6', '7'],
-                '8': ['1', '2', '4', '6', '8']
-            },
             '2': {
                 '2': ['2'],
                 '4': ['2', '4'],
@@ -369,29 +359,29 @@ class TestShortestPathGraph(TestCase):
 
         self.check_shortest_paths(self, self.initial_shortest_paths, g)
 
-    def test_delete_a_node(self):
+    def test_element_perturbation(self):
         """
 		The following test checks the topology of the graph after a perturbation.
-		The perturbation here considered is the deletion of a node, namely node '1'.
+		The perturbation here considered is the perturbation of element '1'.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.delete_a_node("1")
+        g.simulate_element_perturbation("1")
 
-        self.check_shortest_paths(self, self.final_shp_delete_a_node, g)
+        self.check_shortest_paths(self, self.final_shp_element_perturbation, g)
 
     def test_single_area_perturbation(self):
         """
 		The following test checks the topology of the graph after a perturbation.
 		The perturbation here considered is the perturbation in one area.
-		The shortest paths must be exactly the same as the initial ones because
-		all the nodes in area 1 are perturbation resistant.
+		The shortest paths is going to be the same as in single element perturbation
+        because all the nodes in area 1 but node '1' are perturbation resistant.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
         g.simulate_multi_area_perturbation(['area1'])
 
-        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+        self.check_shortest_paths(self, self.final_shp_element_perturbation, g)
 
     def test_multi_area_perturbation(self):
         """

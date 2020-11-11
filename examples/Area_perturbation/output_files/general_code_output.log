@@ -1,2 +1,22 @@
-DEBUG:root:valve isolation_A at node 2, state CLOSED
-DEBUG:root:valve isolation_A at node 3, state CLOSED
+DEBUG:root:visited: {'1'}
+DEBUG:root:node: 1
+DEBUG:root:predecessors: []
+DEBUG:root:broken2: [('1', 'NULL')]
+DEBUG:root:visited: {'3', '1'}
+DEBUG:root:node: 3
+DEBUG:root:node 3 visited, fault resistant node
+DEBUG:root:visited: {'3', '2', '1'}
+DEBUG:root:node: 2
+DEBUG:root:node 2 visited, fault resistant node
+DEBUG:root:visited: {'2'}
+DEBUG:root:node: 2
+DEBUG:root:node 2 visited, fault resistant node
+DEBUG:root:visited: {'3'}
+DEBUG:root:node: 3
+DEBUG:root:node 3 visited, fault resistant node
+DEBUG:root:visited: {'4'}
+DEBUG:root:node: 4
+DEBUG:root:node 4 visited, fault resistant node
+DEBUG:root:visited: {'5'}
+DEBUG:root:node: 5
+DEBUG:root:node 5 visited, fault resistant node
