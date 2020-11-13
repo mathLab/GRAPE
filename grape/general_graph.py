@@ -83,13 +83,10 @@ class GeneralGraph(nx.DiGraph):
         self.Service = nx.get_edge_attributes(self, 'weight')
 
         self.services_SOURCE = []
-        self.services_HUB = []
         self.services_USER = []
         for id, Type in self.Type.items():
             if Type == "SOURCE":
                 self.services_SOURCE.append(id)
-            elif Type == "HUB":
-                self.services_HUB.append(id)
             elif Type == "USER":
                 self.services_USER.append(id)
 
@@ -915,77 +912,39 @@ class GeneralGraph(nx.DiGraph):
         self.global_efficiency()
         self.local_efficiency()
 
-        for ii in self.services_SOURCE:
-            i = list(self.Mark.keys())[list(self.Mark.values()).index(ii)]
-            for jj in self.services_USER:
-                j = list(self.Mark.keys())[list(self.Mark.values()).index(jj)]
-                if i in self.nodes() and j in self.nodes():
-                    if nx.has_path(self, i, j):
+        for source in self.services_SOURCE:
+            for user in self.services_USER:
+               if nx.has_path(self, source, user):
 
-                        osip = list(nx.all_simple_paths(self, i, j))
-                        oshp = self.nodes[i]["shortest_path"][j]
-                        oshpl = self.nodes[i]["shpath_length"][j]
-                        oeff = 1 / oshpl
-                        ids = ii + jj
+                   osip = list(nx.all_simple_paths(self, source, user))
+                   oshp = self.nodes[source]["shortest_path"][user]
+                   oshpl = self.nodes[source]["shpath_length"][user]
+                   oeff = 1 / oshpl
+                   ids = source + user
 
-                        self.lst0.append({
-                            'from':
-                            ii,
-                            'to':
-                            jj,
-                            'original_shortest_path_length':
-                            oshpl,
-                            'original_shortest_path':
-                            oshp,
-                            'original_simple path':
-                            osip,
-                            'original_pair_efficiency':
-                            oeff,
-                            'ids':
-                            ids
-                        })
+               else:
+                   oshpl = "NO_PATH"
+                   osip = "NO_PATH"
+                   oshp = "NO_PATH"
+                   oeff = "NO_PATH"
+                   ids = source + user
 
-                    else:
-                        oshpl = "NO_PATH"
-                        osip = "NO_PATH"
-                        oshp = "NO_PATH"
-                        oeff = "NO_PATH"
-                        ids = ii + jj
-
-                        self.lst0.append({
-                            'from':
-                            ii,
-                            'to':
-                            jj,
-                            'original_shortest_path_length':
-                            oshpl,
-                            'original_shortest_path':
-                            oshp,
-                            'original_simple path':
-                            osip,
-                            'original_pair_efficiency':
-                            oeff,
-                            'ids':
-                            ids
-                        })
-
-                else:
-
-                    oshpl = "NO_PATH"
-                    osip = "NO_PATH"
-                    oshp = "NO_PATH"
-                    oeff = "NO_PATH"
-                    ids = ii + jj
-
-                    self.lst0.append({
-                        'from': ii,
-                        'to': jj,
-                        'original_shortest_path_length': oshpl,
-                        'original_shortest_path': oshp,
-                        'original_simple path': osip,
-                        'original_pair_efficiency': oeff,
-                        'ids': ids
-                    })
+               self.lst0.append({
+                  'from':
+                  source,
+                  'to':
+                  user,
+                  'original_shortest_path_length':
+                  oshpl,
+                  'original_shortest_path':
+                  oshp,
+                  'original_simple path':
+                  osip,
+                  'original_pair_efficiency':
+                  oeff,
+                  'ids':
+                  ids
+               })
 
     def check_after(self):
         """
@@ -1001,78 +960,65 @@ class GeneralGraph(nx.DiGraph):
         self.global_efficiency()
         self.local_efficiency()
 
-        for nn in self.services_SOURCE:
-            n = list(self.Mark.keys())[list(self.Mark.values()).index(nn)]
-            for OODD in self.services_USER:
-                OD = list(self.Mark.keys())[list(
-                    self.Mark.values()).index(OODD)]
+        for source in self.services_SOURCE:
+            for user in self.services_USER:
+                if nx.has_path(self, source, user):
 
-                if n in self.nodes() and OD in self.nodes():
-                    if nx.has_path(self, n, OD):
+                    sip = list(nx.all_simple_paths(self, source, user))
+                    set_sip = set(x for lst in sip for x in lst)
 
-                        sip = list(nx.all_simple_paths(self, n, OD))
+                    for node in set_sip:
 
-                        set_sip = set(x for lst in sip for x in lst)
+                        if self.D[node] in self.valv:
 
-                        for node in set_sip:
+                            if node in self.newstatus:
 
-                            if self.D[node] in self.valv:
+                                if self.newstatus[node] == "1":
 
-                                if node in self.newstatus:
+                                    logging.debug(
+                                        "valve %s at node %s, state %s",
+                                        self.D[node], node, self.valv[self.D[node]]["1"])
 
-                                    if self.newstatus[node] == "1":
+                                elif self.newstatus[node] == "0":
 
-                                        logging.debug(
-                                            "valve %s at node %s, state %s",
-                                            self.D[node], node, self.valv[self.D[node]]["1"])
+                                    self.finalstatus.update({node: "1"})
+                                    
+                                    logging.debug(
+                                        "valve %s at node %s, from %s to %s",
+                                        self.D[node], node, self.valv[self.D[node]]["0"],
+                                        self.valv[self.D[node]]["1"])
+                            else:
+                                if self.status[node] == "1":
 
-                                    elif self.newstatus[node] == "0":
+                                    logging.debug(
+                                        "valve %s at node %s, state %s",
+                                        self.D[node], node, self.valv[self.D[node]]["1"])
+                                elif self.status[node] == "0":
 
-                                        self.finalstatus.update({node: "1"})
-                                        
-                                        logging.debug(
-                                            "valve %s at node %s, from %s to %s",
-                                            self.D[node], node, self.valv[self.D[node]]["0"],
-                                            self.valv[self.D[node]]["1"])
-                                else:
-                                    if self.status[node] == "1":
+                                    self.finalstatus.update({node: "1"})
 
-                                        logging.debug(
-                                            "valve %s at node %s, state %s",
-                                            self.D[node], node, self.valv[self.D[node]]["1"])
-                                    elif self.status[node] == "0":
+                                    logging.debug(
+                                        "valve %s at node %s, from %s to %s",
+                                        self.D[node], node, self.valv[self.D[node]]["0"],
+                                        self.valv[self.D[node]]["1"])
 
-                                        self.finalstatus.update({node: "1"})
-
-                                        logging.debug(
-                                            "valve %s at node %s, from %s to %s",
-                                            self.D[node], node, self.valv[self.D[node]]["0"],
-                                            self.valv[self.D[node]]["1"])
-
-                        shp = self.nodes[n]["shortest_path"][OD]
-                        shpl = self.nodes[n]["shpath_length"][OD]
-                        neff = 1 / shpl
-                        ids = nn + OODD
-
-                    else:
-
-                        shpl = "NO_PATH"
-                        sip = "NO_PATH"
-                        shp = "NO_PATH"
-                        neff = "NO_PATH"
-                        ids = nn + OODD
+                    shp = self.nodes[source]["shortest_path"][user]
+                    shpl = self.nodes[source]["shpath_length"][user]
+                    neff = 1 / shpl
+                    ids = source + user
 
                 else:
+
                     shpl = "NO_PATH"
                     sip = "NO_PATH"
                     shp = "NO_PATH"
                     neff = "NO_PATH"
-                    ids = nn + OODD
+                    ids = source + user
 
                 self.lst.append({
-                    'from': nn,
-                    'area': self.area[n],
-                    'to': OODD,
+                    'from': source,
+                    'area': self.area[source],
+                    'to': user,
                     'final_shortest_path_length': shpl,
                     'final_shortest_path': shp,
                     'final_simple_path': sip,
@@ -1229,40 +1175,55 @@ class GeneralGraph(nx.DiGraph):
             self.damaged_areas.add(self.nodes[n]["Area"])
             self.remove_node(n)
 
-    def simulate_element_perturbation(self, node):
+    def simulate_element_perturbation(self, perturbed_nodes):
         """
 
-        Simulate a perturbation to a single element in
-        a plant and start to propagate the perturbation.
+        Simulate a perturbation of one or multiple nodes.
         Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
         and "Status_Area" attributes are evaluated.
 
-        :param str node: the id of the node to remove
+        :param list perturbed_nodes: nodes(s) involved in the
+            perturbing event
+
+        .. note:: A perturbation, depending on the considered system,
+            may spread in all directions starting from the damaged
+            component(s) and may be affect nearby areas.  
         """
 
-        if node in self.nodes():
+        for node in perturbed_nodes:
 
-            self.check_before()
-            self.closeness_centrality()
-            self.betweenness_centrality()
-            self.indegree_centrality()
-            self.outdegree_centrality()
-            self.degree_centrality()
-            self.copy_of_self1 = copy.deepcopy(self)
+            if node not in self.nodes():
+                print('The node ', node, ' is not in the graph')
+                print('Insert a valid node')
+                print("Valid nodes:", self.nodes())
+                sys.exit()
 
+        self.check_before()
+        self.closeness_centrality()
+        self.betweenness_centrality()
+        self.indegree_centrality()
+        self.outdegree_centrality()
+        self.degree_centrality()
+        self.copy_of_self1 = copy.deepcopy(self)
+
+        for node in perturbed_nodes:
             self.delete_a_node(node)
 
-            self.lst = []
-            self.check_after()
-            self.service_paths_to_file("service_paths_element_perturbation.csv")
-            self.update_status(self.newstatus, "IntermediateStatus", self.bn)
-            self.update_status(self.finalstatus, "FinalStatus", self.bn)
-            self.update_areas(self.bn, self.damaged_areas)
-            self.graph_characterization_to_file("element_perturbation.csv")
+        deleted_nodes = set(self.copy_of_self1) - set(self)
 
-        else:
-            print('The node ', node, 'is not in the graph.')
-            print('Insert a valid node')
+        del_sources = [s for s in self.services_SOURCE if s in deleted_nodes]
+        for s in del_sources: self.services_SOURCE.remove(s)
+
+        del_users = [u for u in self.services_USER if u in deleted_nodes]
+        for u in del_users: self.services_USER.remove(u)
+
+        self.lst = []
+        self.check_after()
+        self.service_paths_to_file("service_paths_element_perturbation.csv")
+        self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
+        self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
+        self.update_areas(deleted_nodes, self.damaged_areas)
+        self.graph_characterization_to_file("element_perturbation.csv")
 
     def simulate_multi_area_perturbation(self, perturbed_areas):
         """
@@ -1271,8 +1232,12 @@ class GeneralGraph(nx.DiGraph):
         Nodes' "IntermediateStatus", "FinalStatus", "Mark_Status"
         and "Status_Area" attributes are evaluated.
 
-        :param list perturbed_areas: area(s) in which the perturbing event
-            occurred
+        :param list perturbed_areas: area(s) involved in the
+            perturbing event
+
+        .. note:: A perturbation, depending on the considered system,
+            may spread in all directions starting from the damaged
+            component(s) and may be affect nearby areas
         """
 
         nodes_in_area = []
@@ -1280,7 +1245,7 @@ class GeneralGraph(nx.DiGraph):
         for area in perturbed_areas:
 
             if area not in list(self.area.values()):
-                print('The area is not in the graph')
+                print('The area ', area, ' is not in the graph')
                 print('Insert a valid area')
                 print("Valid areas:", set(self.area.values()))
                 sys.exit()
@@ -1302,14 +1267,19 @@ class GeneralGraph(nx.DiGraph):
                 self.delete_a_node(node)
                 nodes_in_area = list(set(nodes_in_area) - set(self.bn))
 
+        deleted_nodes = set(self.copy_of_self1) - set(self)
+
+        del_sources = [s for s in self.services_SOURCE if s in deleted_nodes]
+        for s in del_sources: self.services_SOURCE.remove(s)
+
+        del_users = [u for u in self.services_USER if u in deleted_nodes]
+        for u in del_users: self.services_USER.remove(u)
+
         self.lst = []
         self.check_after()
         self.service_paths_to_file("service_paths_multi_area_perturbation.csv")
-        self.update_status(self.newstatus, "IntermediateStatus", nodes_in_area)
-        self.update_status(self.finalstatus, "FinalStatus", nodes_in_area)
-
-        deleted_nodes = set(self.copy_of_self1) - set(self)
-        
+        self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
+        self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
         self.update_areas(deleted_nodes, self.damaged_areas)
         self.graph_characterization_to_file("area_perturbation.csv")
         
@@ -1438,6 +1408,6 @@ if __name__ == '__main__':
     g.load(sys.argv[1])
     
     g.check_input_with_gephi()
-    g.simulate_element_perturbation("1")
+    g.simulate_element_perturbation(["1"])
     #g.simulate_multi_area_perturbation(['area1'])
     ##g.simulate_multi_area_perturbation(['area1','area2','area3'])
