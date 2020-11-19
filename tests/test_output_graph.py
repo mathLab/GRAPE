@@ -6,9 +6,9 @@ import networkx as nx
 from grape.general_graph import GeneralGraph
 
 
-def test_nodal_eff_before():
+def test_nodal_efficiency_before():
     """
-	The following test checks the nodal efficiency before any perturbation.
+	The following test checks nodal efficiency before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -43,9 +43,9 @@ def test_nodal_eff_before():
         np.asarray(sorted(g_nodal_eff_before.values())),
         err_msg="ORIGINAL NODAL EFFICIENCY failure")
 
-def test_global_eff_before():
+def test_global_efficiency_before():
     """
-	The following test checks the global efficiency before any perturbation.
+	The following test checks global efficiency before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -80,9 +80,9 @@ def test_global_eff_before():
         np.asarray(sorted(g_global_eff_before.values())),
         err_msg="ORIGINAL GLOBAL EFFICIENCY failure")
 
-def test_local_eff_before():
+def test_local_efficiency_before():
     """
-	The following test checks the local efficiency before any perturbation.
+	The following test checks local efficiency before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -119,7 +119,7 @@ def test_local_eff_before():
 
 def test_closeness_centrality():
     """
-	The following test checks the closeness centrality before any perturbation.
+	The following test checks closeness centrality before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -157,7 +157,7 @@ def test_closeness_centrality():
 
 def test_betweenness_centrality():
     """
-	The following test checks the betweenness centrality before any perturbation.
+	The following test checks betweenness centrality before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -195,7 +195,7 @@ def test_betweenness_centrality():
 
 def test_indegree_centrality():
     """
-	The following test checks the indegree centrality before any perturbation.
+	The following test checks indegree centrality before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -233,7 +233,7 @@ def test_indegree_centrality():
 
 def test_outdegree_centrality():
     """
-	The following test checks the outdegree centrality before any perturbation.
+	The following test checks outdegree centrality before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -271,7 +271,7 @@ def test_outdegree_centrality():
 
 def test_degree_centrality():
     """
-	The following test checks the degree centrality before any perturbation.
+	The following test checks degree centrality before any perturbation.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
@@ -307,14 +307,14 @@ def test_degree_centrality():
         np.asarray(sorted(g_degree_centrality.values())),
         err_msg="DEGREE CENTRALITY failure")
 
-def test_global_eff_after_element_perturbation():
+def test_global_efficiency_after_element_perturbation():
     """
 	The following test checks the global efficiency after a perturbation.
 	The perturbation here considered is the perturbation of element '1'.
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
-    g.simulate_element_perturbation("1")
+    g.simulate_element_perturbation(["1"])
 
     global_eff_after_element_perturbation = {
         '1': 0.16783899399640145,
@@ -338,15 +338,15 @@ def test_global_eff_after_element_perturbation():
         '19': 0.16783899399640145
     }
 
-    g_global_eff_after_element_perturbation = nx.get_node_attributes(g.copy_of_self1,
-                                                      'final_avg_global_eff')
+    g_global_eff_after_element_perturbation =  \
+    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
 
     np.testing.assert_array_almost_equal(
         np.asarray(sorted(global_eff_after_element_perturbation.values())),
         np.asarray(sorted(g_global_eff_after_element_perturbation.values())),
         err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
 
-def test_global_eff_after_single_area_perturbation():
+def test_global_efficiency_after_single_area_perturbation():
     """
 	The following test checks the global efficiency after a perturbation.
 	The perturbation here considered is the perturbation of a single area,
@@ -354,7 +354,7 @@ def test_global_eff_after_single_area_perturbation():
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
-    g.simulate_multi_area_perturbation(['area1'])
+    g.simulate_area_perturbation(['area1'])
 
     global_eff_after_single_area_perturbation = {
         '1': 0.16783899399640145,
@@ -378,15 +378,15 @@ def test_global_eff_after_single_area_perturbation():
         '19': 0.16783899399640145
     }
 
-    g_global_eff_after_single_area_perturbation = nx.get_node_attributes(g.copy_of_self1,
-                                                      'final_avg_global_eff')
+    g_global_eff_after_single_area_perturbation = \
+    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
 
     np.testing.assert_array_almost_equal(
         np.asarray(sorted(global_eff_after_single_area_perturbation.values())),
         np.asarray(sorted(g_global_eff_after_single_area_perturbation.values())),
         err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation in area 1")
 
-def test_global_eff_after_multiple_area_perturbation():
+def test_global_efficiency_after_multi_area_perturbation():
     """
 	The following test checks the global efficiency after a perturbation.
 	The perturbation here considered is the perturbation of multiple areas,
@@ -394,9 +394,9 @@ def test_global_eff_after_multiple_area_perturbation():
 	"""
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
-    g.simulate_multi_area_perturbation(['area1', 'area2', 'area3'])
+    g.simulate_area_perturbation(['area1', 'area2', 'area3'])
 
-    global_eff_after_multiple_area_perturbation = {
+    global_eff_after_multi_area_perturbation = {
         '1': 0.1926593027783504,
         '2': 0.1926593027783504,
         '3': 0.1926593027783504,
@@ -418,12 +418,12 @@ def test_global_eff_after_multiple_area_perturbation():
         '19': 0.1926593027783504
     }
 
-    g_global_eff_after_multiple_area_perturbation = nx.get_node_attributes(g.copy_of_self1,
-                                                      'final_avg_global_eff')
+    g_global_eff_after_multi_area_perturbation = \
+    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
     
     np.testing.assert_array_almost_equal(
-        np.asarray(sorted(global_eff_after_multiple_area_perturbation.values())),
-        np.asarray(sorted(g_global_eff_after_multiple_area_perturbation.values())),
+        np.asarray(sorted(global_eff_after_multi_area_perturbation.values())),
+        np.asarray(sorted(g_global_eff_after_multi_area_perturbation.values())),
         err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation in areas 1,2,3")
 
 class TestOutputGraph(TestCase):
@@ -440,14 +440,14 @@ class TestOutputGraph(TestCase):
 		"""
         cls.maxDiff = None
 
-    def test_nodal_eff_after_element_perturbation(self):
+    def test_nodal_efficiency_after_element_perturbation(self):
         """
 		The following test checks the nodal efficiency after a perturbation.
 		The perturbation here considered is the perturbation of element '1'.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_element_perturbation("1")
+        g.simulate_element_perturbation(["1"])
 
         nodal_eff_after_element_perturbation = {
             '1': ' ',
@@ -471,28 +471,28 @@ class TestOutputGraph(TestCase):
             '19': 0.17647058823529413
         }
 
-        g_nodal_eff_after_element_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_nodal_eff')
+        g_nodal_eff_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_nodal_eff')
 
         self.assertEqual(
             g_nodal_eff_after_element_perturbation['1'],
             nodal_eff_after_element_perturbation['1'],
             msg="FINAL NODAL EFFICIENCY failure: perturbation of element 1")
-        g_nodal_eff_after_element_perturbation_survived = {
-            k: v
-            for k, v in g_nodal_eff_after_element_perturbation.items() if k != '1'
+        g_nodal_eff_survived = {
+            k: v for k, v in g_nodal_eff_after_element_perturbation.items()
+            if k != '1'
         }
-        nodal_eff_after_element_perturbation_survived = {
-			k: v
-			for k, v in nodal_eff_after_element_perturbation.items() if k != '1'
+        nodal_eff_survived = {
+			k: v for k, v in nodal_eff_after_element_perturbation.items()
+            if k != '1'
 		}
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(nodal_eff_after_element_perturbation_survived.values())),
-            np.asarray(sorted(g_nodal_eff_after_element_perturbation_survived.values())),
+            np.asarray(sorted(nodal_eff_survived.values())),
+            np.asarray(sorted(g_nodal_eff_survived.values())),
             err_msg="FINAL NODAL EFFICIENCY failure: perturbation of element 1")
 
-    def test_nodal_eff_after_single_area_perturbation(self):
+    def test_nodal_efficiency_after_single_area_perturbation(self):
         """
         The following test checks the nodal efficiency after a perturbation.
         The perturbation here considered is the perturbation of a single area,
@@ -500,7 +500,7 @@ class TestOutputGraph(TestCase):
         """
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1'])
+        g.simulate_area_perturbation(['area1'])
 
         nodal_eff_after_single_area_perturbation = {
             '1': ' ',
@@ -524,28 +524,28 @@ class TestOutputGraph(TestCase):
             '19': 0.17647058823529413
         }
 
-        g_nodal_eff_after_single_area_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_nodal_eff')
+        g_nodal_eff_after_single_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_nodal_eff')
 
         self.assertEqual(
             g_nodal_eff_after_single_area_perturbation['1'],
             nodal_eff_after_single_area_perturbation['1'],
             msg="FINAL NODAL EFFICIENCY failure: perturbation in area 1")
-        g_nodal_eff_after_single_area_perturbation_survived = {
-            k: v
-            for k, v in g_nodal_eff_after_single_area_perturbation.items() if k != '1'
+        g_nodal_eff_survived = {
+            k: v for k, v in g_nodal_eff_after_single_area_perturbation.items()
+            if k != '1'
         }
-        nodal_eff_after_single_area_perturbation_survived = {
-            k: v
-            for k, v in nodal_eff_after_single_area_perturbation.items() if k != '1'
+        nodal_eff_survived = {
+            k: v for k, v in nodal_eff_after_single_area_perturbation.items()
+            if k != '1'
         }
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(nodal_eff_after_single_area_perturbation_survived.values())),
-            np.asarray(sorted(g_nodal_eff_after_single_area_perturbation_survived.values())),
+            np.asarray(sorted(nodal_eff_survived.values())),
+            np.asarray(sorted(g_nodal_eff_survived.values())),
             err_msg="FINAL NODAL EFFICIENCY failure: perturbation in area 1")
 
-    def test_nodal_eff_after_multiple_area_perturbation(self):
+    def test_nodal_efficiency_after_multi_area_perturbation(self):
         """
        The following test checks the nodal efficiency after a perturbation.
        The perturbation here considered is the perturbation of multiple areas,
@@ -553,9 +553,9 @@ class TestOutputGraph(TestCase):
        """
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1', 'area2', 'area3'])
+        g.simulate_area_perturbation(['area1', 'area2', 'area3'])
 
-        nodal_eff_after_multiple_area_perturbation = {
+        nodal_eff_after_multi_area_perturbation = {
             '1': ' ',
             '2': 0.3611111111111111,
             '3': 0.16666666666666666,
@@ -577,46 +577,46 @@ class TestOutputGraph(TestCase):
             '19': ' '
         }
 
-        g_nodal_eff_after_multiple_area_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_nodal_eff')
+        g_nodal_eff_after_multi_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_nodal_eff')
 
         survived = ['2', '3', '4', '5', '6', '7', '8']
-        g_nodal_eff_after_multiple_area_perturbation_survived = {
-            k: v
-            for k, v in g_nodal_eff_after_multiple_area_perturbation.items() if k in survived
+        g_nodal_eff_survived = {
+            k: v for k, v in g_nodal_eff_after_multi_area_perturbation.items()
+            if k in survived
         }
-        nodal_eff_after_multiple_area_perturbation_survived = {
-            k: v
-            for k, v in nodal_eff_after_multiple_area_perturbation.items() if k in survived
+        nodal_eff_survived = {
+            k: v for k, v in nodal_eff_after_multi_area_perturbation.items()
+            if k in survived
         }
-        g_nodal_eff_after_multiple_area_perturbation_deleted = {
-            k: v
-            for k, v in g_nodal_eff_after_multiple_area_perturbation.items() if k not in survived
+        g_nodal_eff_deleted = {
+            k: v for k, v in g_nodal_eff_after_multi_area_perturbation.items()
+            if k not in survived
         }
-        nodal_eff_after_multiple_area_perturbation_deleted = {
-            k: v
-            for k, v in nodal_eff_after_multiple_area_perturbation.items() if k not in survived
+        nodal_eff_deleted = {
+            k: v for k, v in nodal_eff_after_multi_area_perturbation.items()
+            if k not in survived
         }
 
         self.assertDictEqual(
-            nodal_eff_after_multiple_area_perturbation_deleted,
-            g_nodal_eff_after_multiple_area_perturbation_deleted,
+            nodal_eff_deleted,
+            g_nodal_eff_deleted,
             msg="FINAL NODAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(nodal_eff_after_multiple_area_perturbation_survived.values())),
-            np.asarray(sorted(g_nodal_eff_after_multiple_area_perturbation_survived.values())),
+            np.asarray(sorted(nodal_eff_survived.values())),
+            np.asarray(sorted(g_nodal_eff_survived.values())),
             err_msg=
             "FINAL NODAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
 
-    def test_local_eff_after_element_perturbation(self):
+    def test_local_efficiency_after_element_perturbation(self):
         """
 		The following test checks the local efficiency after a perturbation.
 		The perturbation here considered is the perturbation of element '1'.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_element_perturbation("1")
+        g.simulate_element_perturbation(["1"])
 
         local_eff_after_element_perturbation = {
             '1': ' ',
@@ -640,29 +640,29 @@ class TestOutputGraph(TestCase):
             '19': 0.18627450980392157
         }
 
-        g_local_eff_after_element_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_local_eff')
+        g_local_eff_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_local_eff')
 
         self.assertEqual(
             g_local_eff_after_element_perturbation['1'],
             local_eff_after_element_perturbation['1'],
             msg="FINAL LOCAL EFFICIENCY failure: perturbation of element 1")
 
-        g_local_eff_after_element_perturbation_survived = {
-            k: v
-            for k, v in g_local_eff_after_element_perturbation.items() if k != '1'
+        g_local_eff_survived = {
+            k: v for k, v in g_local_eff_after_element_perturbation.items()
+            if k != '1'
         }
-        local_eff_after_element_perturbation_survived = {
-			k: v
-			for k, v in local_eff_after_element_perturbation.items() if k != '1'
+        local_eff_survived = {
+			k: v for k, v in local_eff_after_element_perturbation.items()
+            if k != '1'
 		}
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(local_eff_after_element_perturbation_survived.values())),
-            np.asarray(sorted(g_local_eff_after_element_perturbation_survived.values())),
+            np.asarray(sorted(local_eff_survived.values())),
+            np.asarray(sorted(g_local_eff_survived.values())),
             err_msg="FINAL LOCAL EFFICIENCY failure: perturbation of element 1")
 
-    def test_local_eff_after_single_area_perturbation(self):
+    def test_local_efficiency_after_single_area_perturbation(self):
         """
         The following test checks the local efficiency after a perturbation.
         The perturbation here considered is the perturbation of a single area,
@@ -670,7 +670,7 @@ class TestOutputGraph(TestCase):
         """
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1'])
+        g.simulate_area_perturbation(['area1'])
 
         local_eff_after_single_area_perturbation = {
             '1': ' ',
@@ -694,29 +694,29 @@ class TestOutputGraph(TestCase):
             '19': 0.18627450980392157
         }
 
-        g_local_eff_after_single_area_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_local_eff')
+        g_local_eff_after_single_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_local_eff')
 
         self.assertEqual(
             g_local_eff_after_single_area_perturbation['1'],
             local_eff_after_single_area_perturbation['1'],
             msg="FINAL LOCAL EFFICIENCY failure: perturbation in area 1")
 
-        g_local_eff_after_single_area_perturbation_survived = {
-            k: v
-            for k, v in g_local_eff_after_single_area_perturbation.items() if k != '1'
+        g_local_eff_survived = {
+            k: v for k, v in g_local_eff_after_single_area_perturbation.items()
+            if k != '1'
         }
-        local_eff_after_single_area_perturbation_survived = {
-            k: v
-            for k, v in local_eff_after_single_area_perturbation.items() if k != '1'
+        local_eff_survived = {
+            k: v for k, v in local_eff_after_single_area_perturbation.items()
+            if k != '1'
         }
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(local_eff_after_single_area_perturbation_survived.values())),
-            np.asarray(sorted(g_local_eff_after_single_area_perturbation_survived.values())),
+            np.asarray(sorted(local_eff_survived.values())),
+            np.asarray(sorted(g_local_eff_survived.values())),
             err_msg="FINAL LOCAL EFFICIENCY failure: perturbation in area 1")
 
-    def test_local_eff_after_multiple_area_perturbation(self):
+    def test_local_efficiency_after_multi_area_perturbation(self):
         """
 		The following test checks the local efficiency after a perturbation.
 		The perturbation here considered is the perturbation of multiple areas,
@@ -724,9 +724,9 @@ class TestOutputGraph(TestCase):
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1', 'area2', 'area3'])
+        g.simulate_area_perturbation(['area1', 'area2', 'area3'])
 
-        local_eff_after_multiple_area_perturbation = {
+        local_eff_after_multi_area_perturbation = {
             '1': ' ',
             '2': 0.3333333333333333,
             '3': 0.0,
@@ -748,34 +748,34 @@ class TestOutputGraph(TestCase):
             '19': ' '
         }
 
-        g_local_eff_after_multiple_area_perturbation = nx.get_node_attributes(
-            g.copy_of_self1, 'final_local_eff')
+        g_local_eff_after_multi_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_local_eff')
 
         survived = ['2', '3', '4', '5', '6', '7', '8']
-        g_local_eff_after_multiple_area_perturbation_survived = {
-            k: v
-            for k, v in g_local_eff_after_multiple_area_perturbation.items() if k in survived
+        g_local_eff_survived = {
+            k: v for k, v in g_local_eff_after_multi_area_perturbation.items()
+            if k in survived
         }
-        local_eff_after_multiple_area_perturbation_survived = {
-            k: v
-            for k, v in local_eff_after_multiple_area_perturbation.items() if k in survived
+        local_eff_survived = {
+            k: v for k, v in local_eff_after_multi_area_perturbation.items()
+            if k in survived
         }
-        g_local_eff_after_multiple_area_perturbation_deleted = {
-            k: v
-            for k, v in g_local_eff_after_multiple_area_perturbation.items() if k not in survived
+        g_local_eff_deleted = {
+            k: v for k, v in g_local_eff_after_multi_area_perturbation.items()
+            if k not in survived
         }
-        local_eff_after_multiple_area_perturbation_deleted = {
-            k: v
-            for k, v in local_eff_after_multiple_area_perturbation.items() if k not in survived
+        local_eff_deleted = {
+            k: v for k, v in local_eff_after_multi_area_perturbation.items()
+            if k not in survived
         }
 
         self.assertDictEqual(
-            local_eff_after_multiple_area_perturbation_deleted,
-            g_local_eff_after_multiple_area_perturbation_deleted,
+            local_eff_deleted,
+            g_local_eff_deleted,
             msg="FINAL LOCAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
 
         np.testing.assert_array_almost_equal(
-            np.asarray(sorted(local_eff_after_multiple_area_perturbation_survived.values())),
-            np.asarray(sorted(g_local_eff_after_multiple_area_perturbation_survived.values())),
+            np.asarray(sorted(local_eff_survived.values())),
+            np.asarray(sorted(g_local_eff_survived.values())),
             err_msg=
             "FINAL LOCAL EFFICIENCY failure: perturbation in areas 1, 2, 3")

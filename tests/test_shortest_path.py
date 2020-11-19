@@ -7,20 +7,20 @@ from grape.general_graph import GeneralGraph
 
 class TestShortestPathGraph(TestCase):
     """
-	Class TestShortestPathGraph to check shortest path calculation of GeneralGraph
+	Class TestShortestPathGraph to check shortest path calculation
+    of GeneralGraph
 	"""
 
     @classmethod
     def setUpClass(cls):
         """
 		Shortest paths for the toy graph:
-		- 'initial_shortest_paths': shortest paths before any
-		perturbation
-		- 'final_shp_delete_a_node': shortest paths after deletion of node '1'
-		- 'final_shp_multi_area_perturbation': paths after multi area
-		perturbation
+		- 'initial': shortest paths before any perturbation
+		- 'final_element_perturbation': shortest paths after
+        element perturbation
+		- 'final_area_perturbation': shortest paths after area perturbation
 		"""
-        cls.initial_shortest_paths = {
+        cls.initial = {
             '1': {
 				'1': ['1'],
 				'2': ['1', '2'],
@@ -235,10 +235,10 @@ class TestShortestPathGraph(TestCase):
             }
         }
 
-        cls.final_shp_element_perturbation = copy.deepcopy(cls.initial_shortest_paths)
-        cls.final_shp_element_perturbation.pop('1')
+        cls.final_element_perturbation = copy.deepcopy(cls.initial)
+        cls.final_element_perturbation.pop('1')
 
-        cls.final_shp_multi_area_perturbation = {
+        cls.final_multi_area_perturbation = {
             '2': {
                 '2': ['2'],
                 '4': ['2', '4'],
@@ -303,14 +303,14 @@ class TestShortestPathGraph(TestCase):
                     test.assertEqual(
                         len(path)-1,
 					    graph.nodes[source]["shpath_length"][target],
-                        msg="Wrong LENGTH of path from " + str(source) + " to " +
-                        str(target))
+                        msg="Wrong LENGTH of path from " + str(source) +
+                        " to " + str(target))
                 else:
                     test.assertEqual(
                         0.0,
                         graph.nodes[source]["shpath_length"][target],
-                        msg="Wrong LENGTH of path from " + str(source) + " to " +
-                        str(target))
+                        msg="Wrong LENGTH of path from " + str(source) +
+                        " to " + str(target))
 
     def test_Dijkstra_parallel(self):
         """
@@ -322,7 +322,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.parallel_wrapper_proc()
 
-        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+        self.check_shortest_paths(self, self.initial, g)
 
     def test_floyd_warshall_parallel(self):
         """
@@ -333,7 +333,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.floyd_warshall_predecessor_and_distance_parallel()
 
-        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+        self.check_shortest_paths(self, self.initial, g)
 
     def test_Dijkstra_serial(self):
         """
@@ -346,7 +346,7 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.single_source_shortest_path_serial()
 
-        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+        self.check_shortest_paths(self, self.initial, g)
 
     def test_floyd_warshall_serial(self):
         """
@@ -357,39 +357,42 @@ class TestShortestPathGraph(TestCase):
         g.num = mp.cpu_count()
         g.floyd_warshall_predecessor_and_distance_serial()
 
-        self.check_shortest_paths(self, self.initial_shortest_paths, g)
+        self.check_shortest_paths(self, self.initial, g)
 
     def test_element_perturbation(self):
         """
-		The following test checks the topology of the graph after a perturbation.
-		The perturbation here considered is the perturbation of element '1'.
+		The following test checks the topology of the graph after
+        a perturbation. The perturbation here considered is the
+        perturbation of element '1'.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_element_perturbation("1")
+        g.simulate_element_perturbation(["1"])
 
-        self.check_shortest_paths(self, self.final_shp_element_perturbation, g)
+        self.check_shortest_paths(self, self.final_element_perturbation, g)
 
     def test_single_area_perturbation(self):
         """
-		The following test checks the topology of the graph after a perturbation.
-		The perturbation here considered is the perturbation in one area.
-		The shortest paths is going to be the same as in single element perturbation
-        because all the nodes in area 1 but node '1' are perturbation resistant.
+		The following test checks the topology of the graph after
+        a perturbation. The perturbation here considered is the
+        perturbation in one area.
+		Shortest paths are going to be the same as in element perturbation
+        because all nodes in area 1 but node '1' are perturbation resistant.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1'])
+        g.simulate_area_perturbation(['area1'])
 
-        self.check_shortest_paths(self, self.final_shp_element_perturbation, g)
+        self.check_shortest_paths(self, self.final_element_perturbation, g)
 
     def test_multi_area_perturbation(self):
         """
-		The following test checks the topology of the graph after a perturbation.
-		The perturbation here considered is the perturbation in multiple areas.
+		The following test checks the topology of the graph after
+        a perturbation. The perturbation here considered is the
+        perturbation in multiple areas.
 		"""
         g = GeneralGraph()
         g.load("tests/TOY_graph.csv")
-        g.simulate_multi_area_perturbation(['area1', 'area2', 'area3'])
+        g.simulate_area_perturbation(['area1', 'area2', 'area3'])
 
-        self.check_shortest_paths(self, self.final_shp_multi_area_perturbation, g)
+        self.check_shortest_paths(self, self.final_multi_area_perturbation, g)

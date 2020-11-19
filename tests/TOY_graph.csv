@@ -1,4 +1,4 @@
-,"Mark","Father_cond","Father_mark","Area","PerturbationResistant","InitStatus","Description","Type","Service"
+,"Mark","Father_cond","Father_mark","Area","PerturbationResistant","InitStatus","Description","Type","Weight"
 ,"1","ORPHAN","NULL","area1","0",,,"SOURCE",0.0
 ,"2","SINGLE","1","area1","1","1","isolation_A","HUB",1.0
 ,"3","SINGLE","1","area1","1","1","isolation_A","HUB",1.0
