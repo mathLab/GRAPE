@@ -54,6 +54,8 @@ class GeneralGraph(nx.DiGraph):
                 ]:
                     self.nodes[row['Mark']][key] = row[key]
 
+                self.nodes[row['Mark']]['Service'] = float(row['Service'])
+                
                 if row['Father_mark'] == 'NULL':
                     continue
 
@@ -81,6 +83,7 @@ class GeneralGraph(nx.DiGraph):
         self.condition = nx.get_edge_attributes(self, 'Father_cond')
         self.Type = nx.get_node_attributes(self, 'Type')
         self.Weight = nx.get_edge_attributes(self, 'weight')
+        self.Service = nx.get_node_attributes(self, 'Service')
 
         self.SOURCE = []
         self.USER = []
@@ -1212,6 +1215,7 @@ class GeneralGraph(nx.DiGraph):
                 sys.exit()
 
         self.check_before()
+        self.service()
         self.closeness_centrality()
         self.betweenness_centrality()
         self.indegree_centrality()
@@ -1232,6 +1236,7 @@ class GeneralGraph(nx.DiGraph):
 
         self.lst = []
         self.check_after()
+        self.service()
         self.service_paths_to_file("service_paths_element_perturbation.csv")
         self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
         self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
@@ -1268,6 +1273,7 @@ class GeneralGraph(nx.DiGraph):
                         nodes_in_area.append(id)
         
         self.check_before()
+        self.service()
         self.closeness_centrality()
         self.betweenness_centrality()
         self.indegree_centrality()
@@ -1290,6 +1296,7 @@ class GeneralGraph(nx.DiGraph):
 
         self.lst = []
         self.check_after()
+        self.service()
         self.service_paths_to_file("service_paths_area_perturbation.csv")
         self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
         self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
@@ -1367,7 +1374,8 @@ class GeneralGraph(nx.DiGraph):
                 "Status_Area", "closeness_centrality", "betweenness_centrality",
                 "indegree_centrality", "original_local_eff", "final_local_eff",
                 "original_global_eff", "final_global_eff",
-                "original_avg_global_eff", "final_avg_global_eff"
+                "original_avg_global_eff", "final_avg_global_eff",
+                "original_service", "residual_service"
             ]
 
             writer = csv.DictWriter(csvFile, fieldnames=fields)
@@ -1409,10 +1417,83 @@ class GeneralGraph(nx.DiGraph):
                     'original_avg_global_eff':
                     self.cpy.nodes[n]["original_avg_global_eff"],
                     'final_avg_global_eff':
-                    self.cpy.nodes[n]["final_avg_global_eff"]
+                    self.cpy.nodes[n]["final_avg_global_eff"],
+                    'original_service':
+                    self.cpy.nodes[n]["original_service"],
+                    'residual_service':
+                    self.cpy.nodes[n]["residual_service"]
                 })
             writer.writerows(list_to_print)
         csvFile.close()
+
+    def service(self):
+        """
+
+        Update service in graph. "original_service" attribute
+        is updated before the occurrence of any perturbation,
+        "residual_service" after the perturbation.
+        """
+
+        first_node = list(self)[0]
+        all_attributes = list(self.nodes[first_node].keys())
+
+        if "original_service" in all_attributes:
+
+            deleted_nodes = set(list(self.cpy)) - set(list(self))
+
+            for v in deleted_nodes:
+                self.cpy.nodes[v]["residual_service"] = 0.0
+
+            self.compute_residual_service(self.cpy, 'residual_service')
+
+        else:
+
+            self.compute_residual_service(self, 'original_service')
+
+
+    def compute_residual_service(self, graph, servicename):
+        """
+
+        Compute residual service for every node,
+        together with edge splitting.
+
+        :param graph: Graph where the service is updated
+        :type graph: networkx.DiGraph
+        :param str servicename: service to populate
+        """
+
+        nx.set_node_attributes(graph, 0, 'users_per_node')
+        nx.set_edge_attributes(graph, 0., 'splitting')
+        nx.set_node_attributes(graph, 0., servicename)
+
+        users_per_source = {
+            s: [u for u in self.USER if nx.has_path(self, s, u)]
+            for s in self.SOURCE
+        }
+
+        for s in self.SOURCE:
+            for u in users_per_source[s]:
+                for node in self.nodes[s]["shortest_path"][u]:
+                     graph.nodes[node]['users_per_node'] += 1.
+
+        for s in self.SOURCE: 
+            for u in users_per_source[s]:
+                for node in self.nodes[s]["shortest_path"][u]:
+
+                    graph.nodes[node][servicename] += \
+                    self.Service[s]/len(users_per_source[s])
+
+        #Cycle just on the edges contained in source-user shortest paths
+        for s in self.SOURCE:
+            for u in users_per_source[s]:
+                for idx in range(len(self.nodes[s]["shortest_path"][u])-1):
+
+                    head = self.nodes[s]["shortest_path"][u][idx]
+                    tail = self.nodes[s]["shortest_path"][u][idx+1]
+
+                    graph.edges[head, tail]['splitting'] += \
+                    1./self.nodes[head]['users_per_node']
+
 
 
 if __name__ == '__main__':

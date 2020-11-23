@@ -318,3 +318,36 @@ class TestInputGraph(TestCase):
 
         self.assertDictEqual(
             Weight_dict, g.Weight, msg=" Wrong WEIGHT in input ")
+
+    def test_Service(self):
+        """
+		Unittest check for Service attribute of GeneralGraph:
+		correct input reading.
+		"""
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+
+        Service_dict = {
+            '1': 1.0,
+            '2': 0.0,
+            '3': 0.0,
+            '4': 0.0,
+            '5': 0.0,
+            '6': 0.0,
+            '7': 0.0,
+            '8': 0.0,
+            '9': 0.0,
+            '10': 0.0,
+            '11': 0.0,
+            '12': 0.0,
+            '13': 0.0,
+            '14': 0.0,
+            '15': 2.0,
+            '16': 0.0,
+            '17': 0.0,
+            '18': 0.0,
+            '19': 0.0
+        }
+
+        self.assertDictEqual(
+            Service_dict, g.Service, msg=" Wrong SERVICE in input ")

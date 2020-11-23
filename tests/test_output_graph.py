@@ -779,3 +779,161 @@ class TestOutputGraph(TestCase):
             np.asarray(sorted(g_local_eff_survived.values())),
             err_msg=
             "FINAL LOCAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
+
+def test_original_service():
+    """
+	The following test the original service, before the graph
+    experiences any kind of perturbation.
+	"""
+    g = GeneralGraph()
+    g.load("tests/TOY_graph.csv")
+    g.simulate_element_perturbation(["1"])
+
+    original_service = {
+        '1': 1.0,
+        '2': 0.0,
+        '3': 1.0,
+        '4': 0.0,
+        '5': 1.0,
+        '6': 0.0,
+        '7': 0.0,
+        '8': 0.0,
+        '9': 2.0,
+        '10': 2.0,
+        '11': 3.0,
+        '12': 0.0,
+        '13': 0.0,
+        '14': 3.0,
+        '15': 2.0,
+        '16': 2.0,
+        '17': 2.0,
+        '18': 3.0,
+        '19': 3.0
+    }
+
+    g_original_service = \
+    nx.get_node_attributes(g.cpy, 'original_service')
+    
+    np.testing.assert_array_almost_equal(
+        np.asarray(sorted(original_service.values())),
+        np.asarray(sorted(g_original_service.values())),
+        err_msg="ORIGINAL SERVICE failure")
+
+def test_residual_service_after_element_perturbation():
+    """
+	The following test checks residual service after a perturbation.
+    The perturbation here considered is the perturbation of element '1'.
+	"""
+    g = GeneralGraph()
+    g.load("tests/TOY_graph.csv")
+    g.simulate_element_perturbation(["1"])
+
+    residual_service = {
+        '1': 0.0,
+        '2': 0.0,
+        '3': 0.0,
+        '4': 0.0,
+        '5': 0.0,
+        '6': 0.0,
+        '7': 0.0,
+        '8': 0.0,
+        '9': 2.0,
+        '10': 2.0,
+        '11': 2.0,
+        '12': 0.0,
+        '13': 0.0,
+        '14': 2.0,
+        '15': 2.0,
+        '16': 2.0,
+        '17': 2.0,
+        '18': 2.0,
+        '19': 2.0
+    }
+
+    g_residual_service = \
+    nx.get_node_attributes(g.cpy, 'residual_service')
+    
+    np.testing.assert_array_almost_equal(
+        np.asarray(sorted(residual_service.values())),
+        np.asarray(sorted(g_residual_service.values())),
+        err_msg="RESIDUAL SERVICE failure: perturbation of element 1")
+
+def test_residual_service_after_single_area_perturbation():
+    """
+	The following test checks residual service after a perturbation.
+    The perturbation here considered is the perturbation of a single area,
+    namely 'area1'.
+	"""
+    g = GeneralGraph()
+    g.load("tests/TOY_graph.csv")
+    g.simulate_area_perturbation(["area1"])
+
+    residual_service = {
+        '1': 0.0,
+        '2': 0.0,
+        '3': 0.0,
+        '4': 0.0,
+        '5': 0.0,
+        '6': 0.0,
+        '7': 0.0,
+        '8': 0.0,
+        '9': 2.0,
+        '10': 2.0,
+        '11': 2.0,
+        '12': 0.0,
+        '13': 0.0,
+        '14': 2.0,
+        '15': 2.0,
+        '16': 2.0,
+        '17': 2.0,
+        '18': 2.0,
+        '19': 2.0
+    }
+
+    g_residual_service = \
+    nx.get_node_attributes(g.cpy, 'residual_service')
+    
+    np.testing.assert_array_almost_equal(
+        np.asarray(sorted(residual_service.values())),
+        np.asarray(sorted(g_residual_service.values())),
+        err_msg="RESIDUAL SERVICE failure: perturbation in area 1")
+
+def test_residual_service_after_multi_area_perturbation():
+    """
+	The following test checks residual service after a perturbation.
+    The perturbation here considered is the perturbation of a multiple areas,
+    namely 'area 1', 'area 2', and 'area 3'.
+	"""
+    g = GeneralGraph()
+    g.load("tests/TOY_graph.csv")
+    g.simulate_area_perturbation(['area1', 'area2', 'area3'])
+
+    residual_service = {
+        '1': 0.0,
+        '2': 0.0,
+        '3': 0.0,
+        '4': 0.0,
+        '5': 0.0,
+        '6': 0.0,
+        '7': 0.0,
+        '8': 0.0,
+        '9': 0.0,
+        '10': 0.0,
+        '11': 0.0,
+        '12': 0.0,
+        '13': 0.0,
+        '14': 0.0,
+        '15': 0.0,
+        '16': 0.0,
+        '17': 0.0,
+        '18': 0.0,
+        '19': 0.0
+    }
+
+    g_residual_service = \
+    nx.get_node_attributes(g.cpy, 'residual_service')
+    
+    np.testing.assert_array_almost_equal(
+        np.asarray(sorted(residual_service.values())),
+        np.asarray(sorted(g_residual_service.values())),
+        err_msg="RESIDUAL SERVICE failure: perturbation in areas 1, 2, 3")
