@@ -43,7 +43,7 @@ Considering that the most computationally expensive parts of the program involve
 
 ## Dependencies and installation
 
-**GRAPE** requires `numpy`, `scipy`, `matplotlib`, `networkx`, `nose` (for local test) and `sphinx` (to generate the documentation). The code is compatible with Python 2.7.
+**GRAPE** requires `numpy`, `scipy`, `matplotlib`, `networkx`, `nose` (for local test) and `sphinx` (to generate the documentation). The code is compatible with Python 3.6, and NetworkX 2.5.
 
 ### Installing from source
 
