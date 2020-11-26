@@ -1224,7 +1224,8 @@ class GeneralGraph(nx.DiGraph):
         self.cpy = copy.deepcopy(self)
 
         for node in perturbed_nodes:
-            self.delete_a_node(node)
+            if node in self.nodes():
+                self.delete_a_node(node)
 
         deleted_nodes = set(self.cpy) - set(self)
 
