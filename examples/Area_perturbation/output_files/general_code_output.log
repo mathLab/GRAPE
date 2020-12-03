@@ -1,22 +1,22 @@
-DEBUG:root:visited: {'1'}
-DEBUG:root:node: 1
-DEBUG:root:predecessors: []
-DEBUG:root:broken2: [('1', 'NULL')]
-DEBUG:root:visited: {'3', '1'}
-DEBUG:root:node: 3
-DEBUG:root:node 3 visited, fault resistant node
-DEBUG:root:visited: {'3', '2', '1'}
-DEBUG:root:node: 2
-DEBUG:root:node 2 visited, fault resistant node
-DEBUG:root:visited: {'2'}
-DEBUG:root:node: 2
-DEBUG:root:node 2 visited, fault resistant node
-DEBUG:root:visited: {'3'}
-DEBUG:root:node: 3
-DEBUG:root:node 3 visited, fault resistant node
-DEBUG:root:visited: {'4'}
-DEBUG:root:node: 4
-DEBUG:root:node 4 visited, fault resistant node
-DEBUG:root:visited: {'5'}
-DEBUG:root:node: 5
-DEBUG:root:node 5 visited, fault resistant node
+DEBUG:root:Visited: {'1'}
+DEBUG:root:Node: 1
+DEBUG:root:Predecessors: []
+DEBUG:root:Broken: ['1']
+DEBUG:root:Visited: {'3', '1'}
+DEBUG:root:Node: 3
+DEBUG:root:Node 3 visited, fault resistant node
+DEBUG:root:Visited: {'3', '1', '2'}
+DEBUG:root:Node: 2
+DEBUG:root:Node 2 visited, fault resistant node
+DEBUG:root:Visited: {'2'}
+DEBUG:root:Node: 2
+DEBUG:root:Node 2 visited, fault resistant node
+DEBUG:root:Visited: {'3'}
+DEBUG:root:Node: 3
+DEBUG:root:Node 3 visited, fault resistant node
+DEBUG:root:Visited: {'4'}
+DEBUG:root:Node: 4
+DEBUG:root:Node 4 visited, fault resistant node
+DEBUG:root:Visited: {'5'}
+DEBUG:root:Node: 5
+DEBUG:root:Node 5 visited, fault resistant node

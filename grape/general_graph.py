@@ -1061,59 +1061,69 @@ class GeneralGraph(nx.DiGraph):
         if visited is None:
             visited = set()
         visited.add(node)
-        logging.debug('visited: %s', visited)
-        logging.debug('node: %s', node)
+        logging.debug('Visited: %s', visited)
+        logging.debug('Node: %s', node)
 
         if self.FR[node] == "1":
-            logging.debug('node %s visited, fault resistant node', node)
+            logging.debug('Node %s visited, fault resistant node', node)
             return visited
 
         elif self.D[node] in self.valv:
 
             if self.status[node] == "0":
-                logging.debug('valve %s at node %s, state %s',
+                logging.debug('Valve %s at node %s, state %s',
                 self.D[node], node, self.valv[self.D[node]]["0"])
 
             elif self.status[node] == "1":
                 self.newstatus.update({node: "0"})
                 logging.debug(
-                    'valve %s at node %s, from %s to %s',
+                    'Valve %s at node %s, from %s to %s',
                     self.D[node], node, self.valv[self.D[node]]["1"],
                     self.valv[self.D[node]]["0"])
 
             if len(visited) == 1:
-                self.broken.append((node, "NULL"))
-                logging.debug("broken1: %s", self.broken)
+                self.broken.append(node)
+                logging.debug("Valve perturbed: %s", self.broken)
 
             else:
                 return visited
 
         else:
+            fathers = {"AND": set(), "OR": set(), "SINGLE": set() }
             pred = list(self.predecessors(node))
-            logging.debug("predecessors: %s", pred)
-            cond = set()
-            count = 0
-            if pred:
+            logging.debug("Predecessors: %s", pred)
+
+            if len(visited) == 1:
+                self.broken.append(node)
+                logging.debug("Broken: %s", self.broken)
+
+            elif pred:
                 for p in pred:
-                    cond.add(self.condition[(p, node)])
-                    if any(p in x for x in self.broken):
-                        count = count + 1
-            else:
-                cond.add("SINGLE")
+                    fathers[self.condition[(p, node)]].add(p)
+            
+                if fathers["AND"] & set(self.broken):
+                    self.broken.append(node)
+                    logging.debug("Broken %s, AND predecessor broken.", node)
+                    logging.debug("Nodes broken so far: %s", self.broken)
 
-            if list(cond)[0] != "OR":
-                self.broken.append((node, "NULL"))
-                logging.debug("broken2: %s", self.broken)
-            else:
-
-                if len(visited) == 1:
-                    self.broken.append((node, "NULL"))
-                    logging.debug("broken1: %s", self.broken)
+                #"SINGLE" treated as "AND"
+                elif fathers["SINGLE"] & set(self.broken):
+                    self.broken.append(node)
+                    logging.debug("Broken %s, SINGLE predecessor broken.", node)
+                    logging.debug("Nodes broken so far: %s", self.broken)
+  
                 else:
-                    if (len(pred) - count) == 0:
-                        self.broken.append((node, "NULL"))
+                    #all my "OR" predecessors are dead
+                    if (fathers["OR"] & set(self.broken)) == set(pred):
+                        self.broken.append(node)
+                        logging.debug("Broken %s, no more fathers", node)
+                        logging.debug("Nodes broken so far: %s", self.broken)
                     else:
                         return 0
+            else:
+                self.broken.append(node)
+                logging.debug("Node: %s has no more predecessors", node)
+                logging.debug("Nodes broken so far: %s", self.broken)
 
         for next in set(self[node]) - visited:
             self.rm_nodes(next, visited)
@@ -1182,10 +1192,7 @@ class GeneralGraph(nx.DiGraph):
         self.broken = [] #clear previous perturbation broken nodes
 
         self.rm_nodes(node)
-        self.bn = list(set(list(chain(*self.broken))))
-
-        if "NULL" in self.bn:
-            self.bn.remove("NULL")
+        self.bn = list(set(self.broken))
 
         for n in self.bn:
             self.damaged_areas.add(self.nodes[n]["Area"])
@@ -1477,12 +1484,11 @@ class GeneralGraph(nx.DiGraph):
                 for node in self.nodes[s]["shortest_path"][u]:
                      graph.nodes[node]['users_per_node'] += 1.
 
-        for s in self.SOURCE: 
+        for s in self.SOURCE:
             for u in users_per_source[s]:
-                for node in self.nodes[s]["shortest_path"][u]:
 
-                    graph.nodes[node][servicename] += \
-                    self.Service[s]/len(users_per_source[s])
+                graph.nodes[u][servicename] += \
+                self.Service[s]/len(users_per_source[s])
 
         #Cycle just on the edges contained in source-user shortest paths
         for s in self.SOURCE:
