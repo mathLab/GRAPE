@@ -13,6 +13,8 @@ from itertools import chain
 import copy
 import networkx as nx
 
+from .utils import chunk_it, merge_lists
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 logging.basicConfig(
     filename="general_code_output.log", level=logging.DEBUG, filemode='w')
@@ -375,7 +377,7 @@ class GeneralGraph(nx.DiGraph):
 
         n = len(self.nodes())
         chunk = [(0, int(n / self.num))]
-        node_chunks = self.chunk_it(list(self.nodes()), self.num)
+        node_chunks = chunk_it(list(self.nodes()), self.num)
 
         for i in range(1, self.num):
             chunk.append((chunk[i - 1][1],
@@ -514,28 +516,6 @@ class GeneralGraph(nx.DiGraph):
             ssspp = (n, nx.single_source_dijkstra(self, n, weight = 'weight'))
             out_q.put(ssspp)
 
-    @staticmethod
-    def chunk_it(nodi, n):
-        """
-
-        Divide graph nodes in chunks according to number of processes.
-
-        :param list nodi: list of nodes in the graph
-        :param int n: number of available processes
-        
-        :return: list of graph nodes to be assigned to every process
-        :rtype: list
-        """
-
-        avg = len(nodi) / n
-        out = []
-        last = 0.0
-
-        while last < len(nodi):
-            out.append(nodi[int(last):int(last + avg)])
-            last += avg
-        return out
-
     def parallel_wrapper_proc(self):
         """
 
@@ -552,7 +532,7 @@ class GeneralGraph(nx.DiGraph):
         
         out_q = Queue()
 
-        node_chunks = self.chunk_it(list(self.nodes()), self.num)
+        node_chunks = chunk_it(list(self.nodes()), self.num)
 
         processes = [
             mp.Process( target=self.single_source_shortest_path_parallel,
@@ -1130,28 +1110,6 @@ class GeneralGraph(nx.DiGraph):
 
         return visited
 
-    @staticmethod
-    def merge_lists(l1, l2, key):
-        """
-
-        Merge two lists of dictionaries according to their keys.
-
-        :param list l1: first list of dictionaries to be merged
-        :param list l2: second list of dictionaries to be merged
-        :param list key: key on which to merge the two lists of dictionaries
-
-        :return: the merged list of dictionaries
-        :rtype: list
-        """
-
-        merged = {}
-        for item in l1 + l2:
-            if item[key] in merged:
-                merged[item[key]].update(item)
-            else:
-                merged[item[key]] = item
-        return [val for (_, val) in merged.items()]
-
     def update_areas(self, deleted_nodes, damaged_areas):
         """
 
@@ -1350,7 +1308,7 @@ class GeneralGraph(nx.DiGraph):
             service paths situation
         """
 
-        rb_paths_p = self.merge_lists(self.lst0, self.lst, "ids")
+        rb_paths_p = merge_lists(self.lst0, self.lst, "ids")
 
         with open(filename, "w") as csvFile:
             fields = [
@@ -1500,15 +1458,3 @@ class GeneralGraph(nx.DiGraph):
 
                     graph.edges[head, tail]['splitting'] += \
                     1./self.nodes[head]['users_per_node']
-
-
-
-if __name__ == '__main__':
-
-    g = GeneralGraph()
-    g.load(sys.argv[1])
-    
-    g.check_input_with_gephi()
-    g.simulate_element_perturbation(["1"])
-    #g.simulate_area_perturbation(['area1'])
-    ##g.simulate_area_perturbation(['area1','area2','area3'])
