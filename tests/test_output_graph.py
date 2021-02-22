@@ -307,165 +307,44 @@ def test_degree_centrality():
         np.asarray(sorted(g_degree_centrality.values())),
         err_msg="DEGREE CENTRALITY failure")
 
-def test_global_efficiency_after_element_perturbation():
+def test_original_service():
     """
-	The following test checks the global efficiency after a perturbation.
-	The perturbation here considered is the perturbation of element '1'.
-	"""
+    The following test the original service, before the graph
+    experiences any kind of perturbation.
+    """
     g = GeneralGraph()
     g.load("tests/TOY_graph.csv")
     g.simulate_element_perturbation(["1"])
 
-    global_eff_after_element_perturbation = {
-        '1': 0.16783899399640145,
-        '2': 0.16783899399640145,
-        '3': 0.16783899399640145,
-        '4': 0.16783899399640145,
-        '5': 0.16783899399640145,
-        '6': 0.16783899399640145,
-        '7': 0.16783899399640145,
-        '8': 0.16783899399640145,
-        '9': 0.16783899399640145,
-        '10': 0.16783899399640145,
-        '11': 0.16783899399640145,
-        '12': 0.16783899399640145,
-        '13': 0.16783899399640145,
-        '14': 0.16783899399640145,
-        '15': 0.16783899399640145,
-        '16': 0.16783899399640145,
-        '17': 0.16783899399640145,
-        '18': 0.16783899399640145,
-        '19': 0.16783899399640145
+    original_service = {
+        '1': 0.0,
+        '2': 0.0,
+        '3': 0.0,
+        '4': 0.0,
+        '5': 0.0,
+        '6': 0.0,
+        '7': 0.0,
+        '8': 0.0,
+        '9': 0.0,
+        '10': 0.0,
+        '11': 0.0,
+        '12': 0.0,
+        '13': 0.0,
+        '14': 0.0,
+        '15': 0.0,
+        '16': 0.0,
+        '17': 0.0,
+        '18': 3.0,
+        '19': 0.0
     }
 
-    g_global_eff_after_element_perturbation =  \
-    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
-
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(global_eff_after_element_perturbation.values())),
-        np.asarray(sorted(g_global_eff_after_element_perturbation.values())),
-        err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
-
-def test_global_efficiency_after_element_perturbation_isolating():
-    """
-	The following test checks the global efficiency after a perturbation.
-	The perturbation here considered is the perturbation of element '1'.
-    In this case, we have no fault resistant nodes. However, we expect
-    the same behavior due to the presence of isolating nodes '2' and '3'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph_nofaultresistant.csv")
-    g.simulate_element_perturbation(["1"])
-
-    global_eff_after_element_perturbation = {
-        '1': 0.16783899399640145,
-        '2': 0.16783899399640145,
-        '3': 0.16783899399640145,
-        '4': 0.16783899399640145,
-        '5': 0.16783899399640145,
-        '6': 0.16783899399640145,
-        '7': 0.16783899399640145,
-        '8': 0.16783899399640145,
-        '9': 0.16783899399640145,
-        '10': 0.16783899399640145,
-        '11': 0.16783899399640145,
-        '12': 0.16783899399640145,
-        '13': 0.16783899399640145,
-        '14': 0.16783899399640145,
-        '15': 0.16783899399640145,
-        '16': 0.16783899399640145,
-        '17': 0.16783899399640145,
-        '18': 0.16783899399640145,
-        '19': 0.16783899399640145
-    }
-
-    g_global_eff_after_element_perturbation =  \
-    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
-
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(global_eff_after_element_perturbation.values())),
-        np.asarray(sorted(g_global_eff_after_element_perturbation.values())),
-        err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
-
-def test_global_efficiency_after_single_area_perturbation():
-    """
-	The following test checks the global efficiency after a perturbation.
-	The perturbation here considered is the perturbation of a single area,
-    namely 'area 1'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_area_perturbation(['area1'])
-
-    global_eff_after_single_area_perturbation = {
-        '1': 0.16783899399640145,
-        '2': 0.16783899399640145,
-        '3': 0.16783899399640145,
-        '4': 0.16783899399640145,
-        '5': 0.16783899399640145,
-        '6': 0.16783899399640145,
-        '7': 0.16783899399640145,
-        '8': 0.16783899399640145,
-        '9': 0.16783899399640145,
-        '10': 0.16783899399640145,
-        '11': 0.16783899399640145,
-        '12': 0.16783899399640145,
-        '13': 0.16783899399640145,
-        '14': 0.16783899399640145,
-        '15': 0.16783899399640145,
-        '16': 0.16783899399640145,
-        '17': 0.16783899399640145,
-        '18': 0.16783899399640145,
-        '19': 0.16783899399640145
-    }
-
-    g_global_eff_after_single_area_perturbation = \
-    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
-
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(global_eff_after_single_area_perturbation.values())),
-        np.asarray(sorted(g_global_eff_after_single_area_perturbation.values())),
-        err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation in area 1")
-
-def test_global_efficiency_after_multi_area_perturbation():
-    """
-	The following test checks the global efficiency after a perturbation.
-	The perturbation here considered is the perturbation of multiple areas,
-	namely 'area 1', 'area 2', and 'area 3'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_area_perturbation(['area1', 'area2', 'area3'])
-
-    global_eff_after_multi_area_perturbation = {
-        '1': 0.1926593027783504,
-        '2': 0.1926593027783504,
-        '3': 0.1926593027783504,
-        '4': 0.1926593027783504,
-        '5': 0.1926593027783504,
-        '6': 0.1926593027783504,
-        '7': 0.1926593027783504,
-        '8': 0.1926593027783504,
-        '9': 0.1926593027783504,
-        '10': 0.1926593027783504,
-        '11': 0.1926593027783504,
-        '12': 0.1926593027783504,
-        '13': 0.1926593027783504,
-        '14': 0.1926593027783504,
-        '15': 0.1926593027783504,
-        '16': 0.1926593027783504,
-        '17': 0.1926593027783504,
-        '18': 0.1926593027783504,
-        '19': 0.1926593027783504
-    }
-
-    g_global_eff_after_multi_area_perturbation = \
-    nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
+    g_original_service = \
+    nx.get_node_attributes(g.cpy, 'original_service')
     
     np.testing.assert_array_almost_equal(
-        np.asarray(sorted(global_eff_after_multi_area_perturbation.values())),
-        np.asarray(sorted(g_global_eff_after_multi_area_perturbation.values())),
-        err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation in areas 1,2,3")
+        np.asarray(sorted(original_service.values())),
+        np.asarray(sorted(g_original_service.values())),
+        err_msg="ORIGINAL SERVICE failure")
 
 class TestOutputGraph(TestCase):
     """
@@ -930,201 +809,454 @@ class TestOutputGraph(TestCase):
             err_msg=
             "FINAL LOCAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
 
-def test_original_service():
-    """
-	The following test the original service, before the graph
-    experiences any kind of perturbation.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_element_perturbation(["1"])
+    def test_global_efficiency_after_element_perturbation(self):
+        """
+        The following test checks the nodal efficiency after a perturbation.
+        The perturbation here considered is the perturbation of element '1'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_element_perturbation(["1"])
 
-    original_service = {
-        '1': 0.0,
-        '2': 0.0,
-        '3': 0.0,
-        '4': 0.0,
-        '5': 0.0,
-        '6': 0.0,
-        '7': 0.0,
-        '8': 0.0,
-        '9': 0.0,
-        '10': 0.0,
-        '11': 0.0,
-        '12': 0.0,
-        '13': 0.0,
-        '14': 0.0,
-        '15': 0.0,
-        '16': 0.0,
-        '17': 0.0,
-        '18': 3.0,
-        '19': 0.0
-    }
+        global_eff_after_element_perturbation = {
+            '1': ' ',
+            '2': 0.17771187599618973,
+            '3': 0.17771187599618973,
+            '4': 0.17771187599618973,
+            '5': 0.17771187599618973,
+            '6': 0.17771187599618973,
+            '7': 0.17771187599618973,
+            '8': 0.17771187599618973,
+            '9': 0.17771187599618973,
+            '10': 0.17771187599618973,
+            '11': 0.17771187599618973,
+            '12': 0.17771187599618973,
+            '13': 0.17771187599618973,
+            '14': 0.17771187599618973,
+            '15': 0.17771187599618973,
+            '16': 0.17771187599618973,
+            '17': 0.17771187599618973,
+            '18': 0.17771187599618973,
+            '19': 0.17771187599618973
+        }
 
-    g_original_service = \
-    nx.get_node_attributes(g.cpy, 'original_service')
-    
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(original_service.values())),
-        np.asarray(sorted(g_original_service.values())),
-        err_msg="ORIGINAL SERVICE failure")
+        g_global_eff_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
 
-def test_residual_service_after_element_perturbation():
-    """
-	The following test checks residual service after a perturbation.
-    The perturbation here considered is the perturbation of element '1'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_element_perturbation(["1"])
+        self.assertEqual(
+            g_global_eff_after_element_perturbation['1'],
+            global_eff_after_element_perturbation['1'],
+            msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
 
-    residual_service = {
-        '1': 0.0,
-        '2': 0.0,
-        '3': 0.0,
-        '4': 0.0,
-        '5': 0.0,
-        '6': 0.0,
-        '7': 0.0,
-        '8': 0.0,
-        '9': 0.0,
-        '10': 0.0,
-        '11': 0.0,
-        '12': 0.0,
-        '13': 0.0,
-        '14': 0.0,
-        '15': 0.0,
-        '16': 0.0,
-        '17': 0.0,
-        '18': 2.0,
-        '19': 0.0
-    }
+        g_global_eff_survived = {
+            k: v for k, v in g_global_eff_after_element_perturbation.items()
+            if k != '1'
+        }
+        global_eff_survived = {
+            k: v for k, v in global_eff_after_element_perturbation.items()
+            if k != '1'
+        }
 
-    g_residual_service = \
-    nx.get_node_attributes(g.cpy, 'residual_service')
-    
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(residual_service.values())),
-        np.asarray(sorted(g_residual_service.values())),
-        err_msg="RESIDUAL SERVICE failure: perturbation of element 1")
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(global_eff_survived.values())),
+            np.asarray(sorted(g_global_eff_survived.values())),
+            err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
 
-def test_residual_service_after_element_perturbation_isolating():
-    """
-	The following test checks residual service after a perturbation.
-    The perturbation here considered is the perturbation of element '1'.
-    In this case, we have no fault resistant nodes. However, we expect
-    the same behavior due to the presence of isolating nodes '2' and '3'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph_nofaultresistant.csv")
-    g.simulate_element_perturbation(["1"])
+    def test_global_efficiency_after_element_perturbation_isolating(self):
+        """
+        The following test checks the global efficiency after a perturbation.
+        The perturbation here considered is the perturbation of element '1'.
+        In this case, we have no fault resistant nodes. However, we expect
+        the same behavior due to the presence of isolating nodes '2' and '3'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph_nofaultresistant.csv")
+        g.simulate_element_perturbation(["1"])
 
-    residual_service = {
-        '1': 0.0,
-        '2': 0.0,
-        '3': 0.0,
-        '4': 0.0,
-        '5': 0.0,
-        '6': 0.0,
-        '7': 0.0,
-        '8': 0.0,
-        '9': 0.0,
-        '10': 0.0,
-        '11': 0.0,
-        '12': 0.0,
-        '13': 0.0,
-        '14': 0.0,
-        '15': 0.0,
-        '16': 0.0,
-        '17': 0.0,
-        '18': 2.0,
-        '19': 0.0
-    }
+        global_eff_after_element_perturbation = {
+            '1': ' ',
+            '2': 0.17771187599618973,
+            '3': 0.17771187599618973,
+            '4': 0.17771187599618973,
+            '5': 0.17771187599618973,
+            '6': 0.17771187599618973,
+            '7': 0.17771187599618973,
+            '8': 0.17771187599618973,
+            '9': 0.17771187599618973,
+            '10': 0.17771187599618973,
+            '11': 0.17771187599618973,
+            '12': 0.17771187599618973,
+            '13': 0.17771187599618973,
+            '14': 0.17771187599618973,
+            '15': 0.17771187599618973,
+            '16': 0.17771187599618973,
+            '17': 0.17771187599618973,
+            '18': 0.17771187599618973,
+            '19': 0.17771187599618973
+        }
 
-    g_residual_service = \
-    nx.get_node_attributes(g.cpy, 'residual_service')
-    
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(residual_service.values())),
-        np.asarray(sorted(g_residual_service.values())),
-        err_msg="RESIDUAL SERVICE failure: perturbation of element 1")
+        g_global_eff_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
 
-def test_residual_service_after_single_area_perturbation():
-    """
-	The following test checks residual service after a perturbation.
-    The perturbation here considered is the perturbation of a single area,
-    namely 'area1'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_area_perturbation(["area1"])
+        self.assertEqual(
+            g_global_eff_after_element_perturbation['1'],
+            global_eff_after_element_perturbation['1'],
+            msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
 
-    residual_service = {
-        '1': 0.0,
-        '2': 0.0,
-        '3': 0.0,
-        '4': 0.0,
-        '5': 0.0,
-        '6': 0.0,
-        '7': 0.0,
-        '8': 0.0,
-        '9': 0.0,
-        '10': 0.0,
-        '11': 0.0,
-        '12': 0.0,
-        '13': 0.0,
-        '14': 0.0,
-        '15': 0.0,
-        '16': 0.0,
-        '17': 0.0,
-        '18': 2.0,
-        '19': 0.0
-    }
+        g_global_eff_survived = {
+            k: v for k, v in g_global_eff_after_element_perturbation.items()
+            if k != '1'
+        }
+        global_eff_survived = {
+            k: v for k, v in global_eff_after_element_perturbation.items()
+            if k != '1'
+        }
 
-    g_residual_service = \
-    nx.get_node_attributes(g.cpy, 'residual_service')
-    
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(residual_service.values())),
-        np.asarray(sorted(g_residual_service.values())),
-        err_msg="RESIDUAL SERVICE failure: perturbation in area 1")
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(global_eff_survived.values())),
+            np.asarray(sorted(g_global_eff_survived.values())),
+            err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation of element 1")
 
-def test_residual_service_after_multi_area_perturbation():
-    """
-	The following test checks residual service after a perturbation.
-    The perturbation here considered is the perturbation of a multiple areas,
-    namely 'area 1', 'area 2', and 'area 3'.
-	"""
-    g = GeneralGraph()
-    g.load("tests/TOY_graph.csv")
-    g.simulate_area_perturbation(['area1', 'area2', 'area3'])
+    def test_global_efficiency_after_single_area_perturbation(self):
+        """
+        The following test checks the local efficiency after a perturbation.
+        The perturbation here considered is the perturbation of a single area,
+        namely 'area 1'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_area_perturbation(['area1'])
 
-    residual_service = {
-        '1': 0.0,
-        '2': 0.0,
-        '3': 0.0,
-        '4': 0.0,
-        '5': 0.0,
-        '6': 0.0,
-        '7': 0.0,
-        '8': 0.0,
-        '9': 0.0,
-        '10': 0.0,
-        '11': 0.0,
-        '12': 0.0,
-        '13': 0.0,
-        '14': 0.0,
-        '15': 0.0,
-        '16': 0.0,
-        '17': 0.0,
-        '18': 0.0,
-        '19': 0.0
-    }
+        global_eff_after_single_area_perturbation = {
+            '1': ' ',
+            '2': 0.17771187599618973,
+            '3': 0.17771187599618973,
+            '4': 0.17771187599618973,
+            '5': 0.17771187599618973,
+            '6': 0.17771187599618973,
+            '7': 0.17771187599618973,
+            '8': 0.17771187599618973,
+            '9': 0.17771187599618973,
+            '10': 0.17771187599618973,
+            '11': 0.17771187599618973,
+            '12': 0.17771187599618973,
+            '13': 0.17771187599618973,
+            '14': 0.17771187599618973,
+            '15': 0.17771187599618973,
+            '16': 0.17771187599618973,
+            '17': 0.17771187599618973,
+            '18': 0.17771187599618973,
+            '19': 0.17771187599618973
+        }
 
-    g_residual_service = \
-    nx.get_node_attributes(g.cpy, 'residual_service')
-    
-    np.testing.assert_array_almost_equal(
-        np.asarray(sorted(residual_service.values())),
-        np.asarray(sorted(g_residual_service.values())),
-        err_msg="RESIDUAL SERVICE failure: perturbation in areas 1, 2, 3")
+        g_global_eff_after_single_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
+
+        self.assertEqual(
+            g_global_eff_after_single_area_perturbation['1'],
+            global_eff_after_single_area_perturbation['1'],
+            msg="FINAL GLOBAL EFFICIENCY failure: perturbation in area 1")
+
+        g_global_eff_survived = {
+            k: v for k, v in g_global_eff_after_single_area_perturbation.items()
+            if k != '1'
+        }
+        global_eff_survived = {
+            k: v for k, v in global_eff_after_single_area_perturbation.items()
+            if k != '1'
+        }
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(global_eff_survived.values())),
+            np.asarray(sorted(g_global_eff_survived.values())),
+            err_msg="FINAL GLOBAL EFFICIENCY failure: perturbation in area 1")
+
+    def test_global_efficiency_after_multi_area_perturbation(self):
+        """
+        The following test checks the global efficiency after a perturbation.
+        The perturbation here considered is the perturbation of multiple areas,
+        namely 'area 1', 'area 2', and 'area 3'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_area_perturbation(['area1', 'area2', 'area3'])
+
+        global_eff_after_multi_area_perturbation = {
+            '1': ' ',
+            '2': 0.24206349206349204,
+            '3': 0.24206349206349204,
+            '4': 0.24206349206349204,
+            '5': 0.24206349206349204,
+            '6': 0.24206349206349204,
+            '7': 0.24206349206349204,
+            '8': 0.24206349206349204,
+            '9': ' ',
+            '10': ' ',
+            '11': ' ',
+            '12': ' ',
+            '13': ' ',
+            '14': ' ',
+            '15': ' ',
+            '16': ' ',
+            '17': ' ',
+            '18': ' ',
+            '19': ' '
+        }
+
+        g_global_eff_after_multi_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'final_avg_global_eff')
+
+        survived = ['2', '3', '4', '5', '6', '7', '8']
+        g_global_eff_survived = {
+            k: v for k, v in g_global_eff_after_multi_area_perturbation.items()
+            if k in survived
+        }
+        global_eff_survived = {
+            k: v for k, v in global_eff_after_multi_area_perturbation.items()
+            if k in survived
+        }
+        g_global_eff_deleted = {
+            k: v for k, v in g_global_eff_after_multi_area_perturbation.items()
+            if k not in survived
+        }
+        global_eff_deleted = {
+            k: v for k, v in global_eff_after_multi_area_perturbation.items()
+            if k not in survived
+        }
+
+        self.assertDictEqual(
+            global_eff_deleted,
+            g_global_eff_deleted,
+            msg="FINAL GLOBAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(global_eff_survived.values())),
+            np.asarray(sorted(g_global_eff_survived.values())),
+            err_msg=
+            "FINAL GLOBAL EFFICIENCY failure: perturbation in areas 1, 2, 3")
+
+    def test_residual_service_after_element_perturbation(self):
+        """
+        The following test checks the residual service after a perturbation.
+        The perturbation here considered is the perturbation of element '1'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_element_perturbation(["1"])
+
+        res_service_after_element_perturbation = {
+            '1': ' ',
+            '2': 0.0,
+            '3': 0.0,
+            '4': 0.0,
+            '5': 0.0,
+            '6': 0.0,
+            '7': 0.0,
+            '8': 0.0,
+            '9': 0.0,
+            '10': 0.0,
+            '11': 0.0,
+            '12': 0.0,
+            '13': 0.0,
+            '14': 0.0,
+            '15': 0.0,
+            '16': 0.0,
+            '17': 0.0,
+            '18': 2.0,
+            '19': 0.0
+        }
+
+        g_res_service_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'residual_service')
+
+        self.assertEqual(
+            g_res_service_after_element_perturbation['1'],
+            res_service_after_element_perturbation['1'],
+            msg="FINAL RESIDUAL SERVICE failure: perturbation of element 1")
+
+        g_res_service_survived = {
+            k: v for k, v in g_res_service_after_element_perturbation.items()
+            if k != '1'
+        }
+        res_service_survived = {
+            k: v for k, v in res_service_after_element_perturbation.items()
+            if k != '1'
+        }
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(res_service_survived.values())),
+            np.asarray(sorted(g_res_service_survived.values())),
+            err_msg="FINAL RESIDUAL SERVICE failure: perturbation of element 1")
+
+    def test_residual_service_after_element_perturbation_isolating(self):
+        """
+        The following test checks the residual service after a perturbation.
+        The perturbation here considered is the perturbation of element '1'.
+        In this case, we have no fault resistant nodes. However, we expect
+        the same behavior due to the presence of isolating nodes '2' and '3'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph_nofaultresistant.csv")
+        g.simulate_element_perturbation(["1"])
+
+        res_service_after_element_perturbation = {
+            '1': ' ',
+            '2': 0.0,
+            '3': 0.0,
+            '4': 0.0,
+            '5': 0.0,
+            '6': 0.0,
+            '7': 0.0,
+            '8': 0.0,
+            '9': 0.0,
+            '10': 0.0,
+            '11': 0.0,
+            '12': 0.0,
+            '13': 0.0,
+            '14': 0.0,
+            '15': 0.0,
+            '16': 0.0,
+            '17': 0.0,
+            '18': 2.0,
+            '19': 0.0
+        }
+
+        g_res_service_after_element_perturbation = \
+        nx.get_node_attributes(g.cpy, 'residual_service')
+
+        self.assertEqual(
+            g_res_service_after_element_perturbation['1'],
+            res_service_after_element_perturbation['1'],
+            msg="FINAL RESIDUAL SERVICE failure: perturbation of element 1")
+
+        g_res_service_survived = {
+            k: v for k, v in g_res_service_after_element_perturbation.items()
+            if k != '1'
+        }
+        res_service_survived = {
+            k: v for k, v in res_service_after_element_perturbation.items()
+            if k != '1'
+        }
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(res_service_survived.values())),
+            np.asarray(sorted(g_res_service_survived.values())),
+            err_msg="FINAL RESIDUAL SERVICE failure: perturbation of element 1")
+
+    def test_residual_service_after_single_area_perturbation(self):
+        """
+        The following test checks the residual service after a perturbation.
+        The perturbation here considered is the perturbation of a single area,
+        namely 'area 1'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_area_perturbation(['area1'])
+
+        res_service_after_single_area_perturbation = {
+            '1': ' ',
+            '2': 0.0,
+            '3': 0.0,
+            '4': 0.0,
+            '5': 0.0,
+            '6': 0.0,
+            '7': 0.0,
+            '8': 0.0,
+            '9': 0.0,
+            '10': 0.0,
+            '11': 0.0,
+            '12': 0.0,
+            '13': 0.0,
+            '14': 0.0,
+            '15': 0.0,
+            '16': 0.0,
+            '17': 0.0,
+            '18': 2.0,
+            '19': 0.0
+        }
+
+        g_res_service_after_single_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'residual_service')
+
+        self.assertEqual(
+            g_res_service_after_single_area_perturbation['1'],
+            res_service_after_single_area_perturbation['1'],
+            msg="FINAL RESIDUAL SERVICE failure: perturbation in area 1")
+
+        g_res_service_survived = {
+            k: v for k, v in g_res_service_after_single_area_perturbation.items()
+            if k != '1'
+        }
+        res_service_survived = {
+            k: v for k, v in res_service_after_single_area_perturbation.items()
+            if k != '1'
+        }
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(res_service_survived.values())),
+            np.asarray(sorted(g_res_service_survived.values())),
+            err_msg="FINAL RESIDUAL SERVICE failure: perturbation in area 1")
+
+    def test_residual_service_after_multi_area_perturbation(self):
+        """
+        The following test checks the residual service after a perturbation.
+        The perturbation here considered is the perturbation of multiple areas,
+        namely 'area 1', 'area 2', and 'area 3'.
+        """
+        g = GeneralGraph()
+        g.load("tests/TOY_graph.csv")
+        g.simulate_area_perturbation(['area1', 'area2', 'area3'])
+
+        res_service_after_multi_area_perturbation = {
+            '1': ' ',
+            '2': 0.0,
+            '3': 0.0,
+            '4': 0.0,
+            '5': 0.0,
+            '6': 0.0,
+            '7': 0.0,
+            '8': 0.0,
+            '9': ' ',
+            '10': ' ',
+            '11': ' ',
+            '12': ' ',
+            '13': ' ',
+            '14': ' ',
+            '15': ' ',
+            '16': ' ',
+            '17': ' ',
+            '18': ' ',
+            '19': ' '
+        }
+
+        g_res_service_after_multi_area_perturbation = \
+        nx.get_node_attributes(g.cpy, 'residual_service')
+
+        survived = ['2', '3', '4', '5', '6', '7', '8']
+        g_res_service_survived = {
+            k: v for k, v in g_res_service_after_multi_area_perturbation.items()
+            if k in survived
+        }
+        res_service_survived = {
+            k: v for k, v in res_service_after_multi_area_perturbation.items()
+            if k in survived
+        }
+        g_res_service_deleted = {
+            k: v for k, v in g_res_service_after_multi_area_perturbation.items()
+            if k not in survived
+        }
+        res_service_deleted = {
+            k: v for k, v in res_service_after_multi_area_perturbation.items()
+            if k not in survived
+        }
+
+        self.assertDictEqual(
+            res_service_deleted,
+            g_res_service_deleted,
+            msg="FINAL RESIDUAL SERVICE failure: perturbation in areas 1, 2, 3")
+
+        np.testing.assert_array_almost_equal(
+            np.asarray(sorted(res_service_survived.values())),
+            np.asarray(sorted(g_res_service_survived.values())),
+            err_msg=
+            "FINAL RESIDUAL SERVICE failure: perturbation in areas 1, 2, 3")
