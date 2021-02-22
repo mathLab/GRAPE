@@ -36,7 +36,7 @@ before_install:
 install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
-    - pip install coverage numpy scipy matplotlib networkx nose coveralls
+    - pip install coverage numpy scipy matplotlib networkx nose coveralls pandas
     - python setup.py install
 
 script:
