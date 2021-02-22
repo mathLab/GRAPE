@@ -9,11 +9,11 @@ import csv
 import ctypes
 import logging
 import warnings
-from itertools import chain
 import copy
 import networkx as nx
+import pandas as pd
 
-from .utils import chunk_it, merge_lists
+from .utils import chunk_it
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 logging.basicConfig(
@@ -42,49 +42,53 @@ class GeneralGraph(nx.DiGraph):
         :param str filename: input file in CSV format
         """
 
-        with open(filename, 'r') as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=',')
+        conv = {'Mark' : str, 'Father_mark' : str,
+                'PerturbationResistant':str, 'InitStatus':str}
+        self.df = pd.read_csv(filename, converters=conv, keep_default_na=False)
 
-            for row in reader:
+        for index in self.df.index.values.tolist():
+            if not self.df.iloc[index]['Mark'] in self:
+                self.add_node(self.df.iloc[index]['Mark'])
 
-                if not row['Mark'] in self:
-                    self.add_node(row['Mark'])
+            for key in ['Mark', 'Area', 'PerturbationResistant', 'InitStatus',
+                        'Description', 'Type', 'Father_mark']:
+                self.nodes[self.df.iloc[index]['Mark']][key] = \
+                self.df.iloc[index][key]
 
-                for key in [
-                        'Mark', 'Area', 'PerturbationResistant', 'InitStatus',
-                        'Description', 'Type', 'Mark', 'Father_mark'
-                ]:
-                    self.nodes[row['Mark']][key] = row[key]
+            self.nodes[self.df.iloc[index]['Mark']]['Service'] = \
+            float(self.df.iloc[index]['Service'])
 
-                self.nodes[row['Mark']]['Service'] = float(row['Service'])
-                
-                if row['Father_mark'] == 'NULL':
-                    continue
+            if self.df.iloc[index]['Father_mark'] == 'NULL':
+                continue
 
-                if not row['Father_mark'] in self:
-                    self.add_node(row['Father_mark'])
+            if not self.df.iloc[index]['Father_mark'] in self:
+                self.add_node(self.df.iloc[index]['Father_mark'])
 
-                self.add_edge(
-                    row['Father_mark'],
-                    row['Mark'],
-                    Father_cond = row['Father_cond'],
-                    weight = float(row['Weight']))
+            self.add_edge(
+                self.df.iloc[index]['Father_mark'],
+                self.df.iloc[index]['Mark'],
+                Father_cond = self.df.iloc[index]['Father_cond'],
+                weight = float(self.df.iloc[index]['Weight']))
 
-        self.newstatus = {}
-        self.finalstatus = {}
-        self.Status_Area = {}
-        self.Mark_Status = {}
+        self.edges_df = self.df[['Mark', 'Father_mark']]
+
+        self.df.drop(['Father_cond', 'Father_mark', 'Type',
+                      'Weight', 'Service'], axis=1, inplace=True)
+        self.df.drop_duplicates(inplace=True)
+        self.df.set_index('Mark', inplace=True)
+
+        nx.set_node_attributes(self, str(), 'IntermediateStatus')
+        nx.set_node_attributes(self, str(), 'FinalStatus')
+        nx.set_node_attributes(self, 'AVAILABLE', 'Status_Area')
+        nx.set_node_attributes(self, 'ACTIVE', 'Mark_Status')
         self.damaged_areas = set()
 
         self.area = nx.get_node_attributes(self, 'Area')
         self.FR = nx.get_node_attributes(self, 'PerturbationResistant')
         self.D = nx.get_node_attributes(self, 'Description')
         self.status = nx.get_node_attributes(self, 'InitStatus')
-        self.Mark = nx.get_node_attributes(self, 'Mark')
-        self.Father_mark = nx.get_node_attributes(self, 'Father_mark')
         self.condition = nx.get_edge_attributes(self, 'Father_cond')
         self.Type = nx.get_node_attributes(self, 'Type')
-        self.Weight = nx.get_edge_attributes(self, 'weight')
         self.Service = nx.get_node_attributes(self, 'Service')
 
         self.SOURCE = []
@@ -106,65 +110,17 @@ class GeneralGraph(nx.DiGraph):
         to visualize the input with Gephi.
         """
 
-        nodes_to_print = []
-        with open("check_import_nodes.csv", "w") as csvFile:
-            fields = [ "Mark", "Description", "InitStatus",
-                       "PerturbationResistant", "Area" ]
+        gephi_nodes_df = self.df.reset_index()
+        gephi_nodes_df.rename(columns={'index': 'Mark'}, inplace=True)
 
-            writer = csv.DictWriter(csvFile, fieldnames=fields)
-            writer.writeheader()
-            if hasattr(self, "cpy"):
-                for n in self.cpy:
-                    nodes_to_print.append({
-                        'Mark':
-                        n,
-                        'Description':
-                        self.cpy.nodes[n]["Description"],
-                        'InitStatus':
-                        self.cpy.nodes[n]["InitStatus"],
-                        'PerturbationResistant':
-                        self.cpy.nodes[n]["PerturbationResistant"],
-                        'Area':
-                        self.cpy.nodes[n]["Area"]
-                    })
-                writer.writerows(nodes_to_print)
-            else:
-                for n in self:
-                    nodes_to_print.append({
-                        'Mark':
-                        n,
-                        'Description':
-                        self.nodes[n]["Description"],
-                        'InitStatus':
-                        self.nodes[n]["InitStatus"],
-                        'PerturbationResistant':
-                        self.nodes[n]["PerturbationResistant"],
-                        'Area':
-                        self.nodes[n]["Area"]
-                    })
-                writer.writerows(nodes_to_print)
+        fields = [ "Mark", "Description", "InitStatus",
+                   "PerturbationResistant", "Area" ]
 
-        csvFile.close()
+        gephi_nodes_df[fields].to_csv("check_import_nodes.csv", index=False)
 
-        edges_to_print = []
-        with open("check_import_edges.csv", "w") as csvFile:
-            fields = ["Mark", "Father_mark"]
-            writer = csv.DictWriter(csvFile, fieldnames=fields)
-            writer.writeheader()
-
-            if hasattr(self, "cpy"):
-                for n in self.cpy:
-                    for p in self.cpy.predecessors(n):
-                        edges_to_print.append({'Mark': n, 'Father_mark': p})
-
-            else:
-                for n in self:
-                    for p in self.predecessors(n):
-                        edges_to_print.append({'Mark': n, 'Father_mark': p})
-
-            writer.writerows(edges_to_print)
-
-        csvFile.close()
+        orphans = self.edges_df['Father_mark'].str.contains("NULL")
+        self.edges_df = self.edges_df[~orphans]
+        self.edges_df.to_csv("check_import_edges.csv", index=False)
 
     def construct_path(self, source, target, pred):
         """
@@ -573,16 +529,10 @@ class GeneralGraph(nx.DiGraph):
 
         nx.set_node_attributes(self, eff_dicts, name="efficiency")
 
-    def nodal_efficiency(self, deleted_nodes=None):
+    def nodal_efficiency(self):
         """
 
         Nodal efficiency.
-
-        :param deleted_nodes: list of nodes no more in the graph
-        :type deleted_nodes: list, optional
-
-        :return: nodal efficiency keyed by node
-        :rtype: dict
 
         .. note:: The nodal efficiency of the node is equal to zero
             for a node without any outgoing path and equal to one if from it
@@ -593,29 +543,14 @@ class GeneralGraph(nx.DiGraph):
         if g_len <= 1:
             raise ValueError("Graph size must equal or larger than 2.")
 
-        nodeff = {}
-       
-        if deleted_nodes:
-            for node in deleted_nodes:
-                nodeff[node] = " "
-
         for node in self:
             sum_efficiencies = sum(self.nodes[node]["efficiency"].values())
-            nodeff[node] = sum_efficiencies / (g_len - 1)
+            self.nodes[node]["nodal_eff"] = sum_efficiencies / (g_len - 1)
 
-        return nodeff
-
-    def local_efficiency(self, nodeff, deleted_nodes=None):
+    def local_efficiency(self):
         """
 
         Local efficiency of the node.
-
-        :param dict nodeff: nodal efficiency keyed by node
-        :param deleted_nodes: list of nodes no more in the graph
-        :type deleted_nodes: list, optional
-
-        :return: local efficiency keyed by node
-        :rtype: dict
 
         .. note:: The local efficiency shows the efficiency of the connections
             between the first-order outgoing neighbors of node v
@@ -626,12 +561,6 @@ class GeneralGraph(nx.DiGraph):
             It is in the range [0, 1].
         """
 
-        loceff = {}
-
-        if deleted_nodes:
-            for node in deleted_nodes:
-                loceff[node] = " "
-
         for node in self:
             subgraph = list(self.successors(node))
             denom_subg = len(list(subgraph))
@@ -639,27 +568,18 @@ class GeneralGraph(nx.DiGraph):
             if denom_subg != 0:
                 sum_efficiencies = 0
                 for w in list(subgraph):
-                    kv_efficiency = nodeff[w]
+                    kv_efficiency = self.nodes[w]["nodal_eff"]
                     sum_efficiencies = sum_efficiencies + kv_efficiency
 
-                loceff[node] = sum_efficiencies / denom_subg
+                self.nodes[node]["local_eff"] = sum_efficiencies / denom_subg
 
             else:
-                loceff[node] = 0.
+                self.nodes[node]["local_eff"] = 0.
 
-        return loceff
-
-    def global_efficiency(self, nodeff, deleted_nodes=None):
+    def global_efficiency(self):
         """
 
         Average global efficiency of the whole graph.
-
-        :param dict nodeff: nodal efficiency keyed by node
-        :param deleted_nodes: list of nodes no more in the graph
-        :type deleted_nodes: list, optional
-
-        :return: global efficiency keyed by node
-        :rtype: dict
 
         .. note:: The average global efficiency of a graph is the average
             efficiency of all pairs of nodes.
@@ -671,15 +591,10 @@ class GeneralGraph(nx.DiGraph):
 
         sum_eff = 0
         for node in self:
-            sum_eff = sum_eff + nodeff[node] / g_len
+            sum_eff = sum_eff + self.nodes[node]["nodal_eff"] / g_len
 
-        globeff = {node : sum_eff for node in self}
-
-        if deleted_nodes:
-            for node in deleted_nodes:
-                globeff[node] = " "
-
-        return globeff
+        for node in self:
+            self.nodes[node]["avg_global_eff"] = sum_eff
 
     def betweenness_centrality(self):
         """
@@ -877,19 +792,15 @@ class GeneralGraph(nx.DiGraph):
         """
 
         self.calculate_shortest_path()
-        self.lst0 = []
+        original_source_user_paths = []
 
-        nodeff = self.nodal_efficiency()
-        nx.set_node_attributes(self, nodeff, name="original_nodal_eff")
+        self.nodal_efficiency()
+        self.global_efficiency()
+        self.local_efficiency()
+        self.compute_service()
 
-        globeff = self.global_efficiency(nodeff)
-        nx.set_node_attributes(self, globeff, name="original_avg_global_eff")
-
-        loceff = self.local_efficiency(nodeff)
-        nx.set_node_attributes(self, loceff, name="original_local_eff")
-
-        serv, _ = self.compute_service()
-        nx.set_node_attributes(self, serv, name="original_service")
+        eff_fields = ['nodal_eff', 'avg_global_eff', 'local_eff', 'service']
+        self.update_output(eff_fields, prefix="original_")
 
         for source in self.SOURCE:
             for user in self.USER:
@@ -908,7 +819,7 @@ class GeneralGraph(nx.DiGraph):
                    oeff = "NO_PATH"
                    ids = source + user
 
-               self.lst0.append({
+               original_source_user_paths.append({
                   'from':
                   source,
                   'to':
@@ -917,7 +828,7 @@ class GeneralGraph(nx.DiGraph):
                   oshpl,
                   'original_shortest_path':
                   oshp,
-                  'original_simple path':
+                  'original_simple_path':
                   osip,
                   'original_pair_efficiency':
                   oeff,
@@ -925,30 +836,27 @@ class GeneralGraph(nx.DiGraph):
                   ids
                })
 
-    def check_after(self, deleted_nodes):
+        self.paths_df = pd.DataFrame(original_source_user_paths)
+
+    def check_after(self):
         """
 
         Describe the topology of the potentially perturbed graph,
         after the occurrence of a perturbation in the system.
         Compute efficiency measures for the whole graph and its nodes.
         Check the availability of paths between source and target nodes.
-
-        :param list deleted_nodes: list of nodes no more in the graph
         """
 
         self.calculate_shortest_path()
+        final_source_user_paths = []
 
-        nodeff = self.nodal_efficiency(deleted_nodes)
-        nx.set_node_attributes(self.cpy, nodeff, name="final_nodal_eff")
-        
-        globeff = self.global_efficiency(nodeff, deleted_nodes)
-        nx.set_node_attributes(self.cpy, globeff, name="final_avg_global_eff")
-        
-        loceff = self.local_efficiency(nodeff, deleted_nodes)
-        nx.set_node_attributes(self.cpy, loceff, name="final_local_eff")
-        
-        serv, _ = self.compute_service(deleted_nodes)
-        nx.set_node_attributes(self.cpy, serv, name="residual_service")
+        self.nodal_efficiency()
+        self.global_efficiency()
+        self.local_efficiency()
+        self.compute_service()
+
+        eff_fields = ['nodal_eff', 'avg_global_eff', 'local_eff', 'service']
+        self.update_output(eff_fields, prefix="final_")
 
         for source in self.SOURCE:
             for user in self.USER:
@@ -961,24 +869,22 @@ class GeneralGraph(nx.DiGraph):
 
                         if self.D[node] in self.valv:
 
-                            if node in self.newstatus:
+                            if self.nodes[node]['IntermediateStatus'] == "1":
 
-                                if self.newstatus[node] == "1":
+                                logging.debug(
+                                   "valve %s at node %s, state %s",
+                                    self.D[node], node,
+                                    self.valv[self.D[node]]["1"])
 
-                                    logging.debug(
-                                        "valve %s at node %s, state %s",
-                                        self.D[node], node,
-                                        self.valv[self.D[node]]["1"])
+                            elif self.nodes[node]['IntermediateStatus'] == "0":
 
-                                elif self.newstatus[node] == "0":
-
-                                    self.finalstatus.update({node: "1"})
+                                self.nodes[node]['FinalStatus'] = "1"
                                     
-                                    logging.debug(
-                                        "valve %s at node %s, from %s to %s",
-                                        self.D[node], node,
-                                        self.valv[self.D[node]]["0"],
-                                        self.valv[self.D[node]]["1"])
+                                logging.debug(
+                                    "valve %s at node %s, from %s to %s",
+                                    self.D[node], node,
+                                    self.valv[self.D[node]]["0"],
+                                    self.valv[self.D[node]]["1"])
                             else:
                                 if self.status[node] == "1":
 
@@ -989,7 +895,7 @@ class GeneralGraph(nx.DiGraph):
 
                                 elif self.status[node] == "0":
 
-                                    self.finalstatus.update({node: "1"})
+                                    self.nodes[node]['FinalStatus'] = "1"
 
                                     logging.debug(
                                         "valve %s at node %s, from %s to %s",
@@ -1010,7 +916,7 @@ class GeneralGraph(nx.DiGraph):
                     neff = "NO_PATH"
                     ids = source + user
 
-                self.lst.append({
+                final_source_user_paths.append({
                     'from': source,
                     'area': self.area[source],
                     'to': user,
@@ -1020,6 +926,11 @@ class GeneralGraph(nx.DiGraph):
                     'final_pair_efficiency': neff,
                     'ids': ids
                 })
+
+        if final_source_user_paths:
+            final_df = pd.DataFrame(final_source_user_paths)
+            self.paths_df = pd.merge(self.paths_df, final_df, \
+            on=['from', 'to', 'ids'], how='outer')
 
     def rm_nodes(self, node, visited=None):
         """
@@ -1054,7 +965,7 @@ class GeneralGraph(nx.DiGraph):
                 self.D[node], node, self.valv[self.D[node]]["0"])
 
             elif self.status[node] == "1":
-                self.newstatus.update({node: "0"})
+                self.nodes[node]['IntermediateStatus'] = "0"
                 logging.debug(
                     'Valve %s at node %s, from %s to %s',
                     self.D[node], node, self.valv[self.D[node]]["1"],
@@ -1109,31 +1020,37 @@ class GeneralGraph(nx.DiGraph):
 
         return visited
 
-    def update_areas(self, deleted_nodes, damaged_areas):
+    def update_output(self, attribute_list, prefix=str()):
+        """
+
+        Update columns output DataFrame with attributes
+        in attribute_list.
+
+        :param list attribute_list: list of attributes to be updated
+            to the DataFrame
+        :param prefix: prefix to be added to column name
+        :type prefix: str, optional
+        """
+
+        nested_dict = {}
+        for col in attribute_list:
+            nested_dict[prefix + col] = nx.get_node_attributes(self, col)
+
+        self.df = pd.concat([self.df, pd.DataFrame(nested_dict)], axis=1)
+
+    def update_status_areas(self, damaged_areas):
         """
 
         Update the status of the elements in the damaged areas
         after the propagation of the perturbation.
-        Nodes' "Mark_Status" and "Status_Area" attributes are evaluated.
 
         :param list damaged_areas: area(s) in which to update the status
-            of the elements
-        :type deleted_nodes: list or set
-        :param list multi_areas: area(s) in which to update the status
-            of the elements
         """
 
-        for n in self.cpy:
+        self.df['Mark_Status'].fillna('NOT_ACTIVE', inplace=True)
 
-            if n in deleted_nodes:
-                self.cpy.nodes[n]["Mark_Status"] = "NOT_ACTIVE"
-            else:
-                self.cpy.nodes[n]["Mark_Status"] = "ACTIVE"
-
-            if self.cpy.nodes[n]["Area"] in damaged_areas:
-                self.cpy.nodes[n]["Status_Area"] = "DAMAGED"
-            else:
-                self.cpy.nodes[n]["Status_Area"] = "AVAILABLE"
+        for area in damaged_areas:
+            self.df.loc[self.df.Area == area, 'Status_Area'] = "DAMAGED"
 
     def delete_a_node(self, node):
         """
@@ -1184,26 +1101,31 @@ class GeneralGraph(nx.DiGraph):
         self.indegree_centrality()
         self.outdegree_centrality()
         self.degree_centrality()
-        self.cpy = copy.deepcopy(self)
+
+        centrality_fields = ['closeness_centrality', 'betweenness_centrality', \
+        'indegree_centrality', 'outdegree_centrality', 'degree_centrality']
+        self.update_output(centrality_fields)
 
         for node in perturbed_nodes:
             if node in self.nodes():
                 self.delete_a_node(node)
 
-        deleted_nodes = set(self.cpy) - set(self)
-
-        del_sources = [s for s in self.SOURCE if s in deleted_nodes]
+        del_sources = [s for s in self.SOURCE if s not in list(self)]
         for s in del_sources: self.SOURCE.remove(s)
 
-        del_users = [u for u in self.USER if u in deleted_nodes]
+        del_users = [u for u in self.USER if u not in list(self)]
         for u in del_users: self.USER.remove(u)
 
         self.lst = []
-        self.check_after(deleted_nodes)
-        self.service_paths_to_file("service_paths_element_perturbation.csv")
-        self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
-        self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
-        self.update_areas(deleted_nodes, self.damaged_areas)
+        self.check_after()
+        self.paths_df.to_csv("service_paths_element_perturbation.csv", \
+        index=False)
+
+        status_area_fields = ['IntermediateStatus', 'FinalStatus', \
+        'Mark_Status', 'Status_Area']
+        self.update_output(status_area_fields)
+
+        self.update_status_areas(self.damaged_areas)
         self.graph_characterization_to_file("element_perturbation.csv")
 
     def simulate_area_perturbation(self, perturbed_areas):
@@ -1241,82 +1163,33 @@ class GeneralGraph(nx.DiGraph):
         self.indegree_centrality()
         self.outdegree_centrality()
         self.degree_centrality()
-        self.cpy = copy.deepcopy(self)
+
+        centrality_fields = ['closeness_centrality', 'betweenness_centrality', \
+        'indegree_centrality', 'outdegree_centrality', 'degree_centrality']
+        self.update_output(centrality_fields)
 
         for node in nodes_in_area:
             if node in self.nodes():
                 self.delete_a_node(node)
                 nodes_in_area = list(set(nodes_in_area) - set(self.bn))
 
-        deleted_nodes = set(self.cpy) - set(self)
-
-        del_sources = [s for s in self.SOURCE if s in deleted_nodes]
+        del_sources = [s for s in self.SOURCE if s not in list(self)]
         for s in del_sources: self.SOURCE.remove(s)
 
-        del_users = [u for u in self.USER if u in deleted_nodes]
+        del_users = [u for u in self.USER if u not in list(self)]
         for u in del_users: self.USER.remove(u)
 
         self.lst = []
-        self.check_after(deleted_nodes)
-        self.service_paths_to_file("service_paths_area_perturbation.csv")
-        self.update_status(self.newstatus, "IntermediateStatus", deleted_nodes)
-        self.update_status(self.finalstatus, "FinalStatus", deleted_nodes)
-        self.update_areas(deleted_nodes, self.damaged_areas)
+        self.check_after()
+        self.paths_df.to_csv("service_paths_area_perturbation.csv", index=False)
+
+        status_area_fields = ['IntermediateStatus', 'FinalStatus', \
+        'Mark_Status', 'Status_Area']
+        self.update_output(status_area_fields)
+
+        self.update_status_areas(self.damaged_areas)
         self.graph_characterization_to_file("area_perturbation.csv")
         
-    def update_status(self, which_status, field, already_updated):
-        """
-
-        Update the status of the nodes not concerned by the
-        perturbation. The status of nodes interested by the perturbation
-        is already updated during perturbation propagation.
-
-        :param dict which_status: status to be updated
-        :param str field: name of the attribute to be updated
-        :param list already_updated: already updated nodes
-        """
-
-        if which_status:
-            which_status = {
-                k: v
-                for k, v in which_status.items()
-                if k not in already_updated
-            }
-            ns_keys = which_status.keys() & list(self.cpy)
-            os_keys = set(self.cpy) - set(ns_keys)
-
-            for index, updated_status in which_status.items():
-                self.cpy.nodes[index][field] = updated_status
-            for index in os_keys:
-                self.cpy.nodes[index][field] = " "
-        else:
-            for index in list(self.cpy):
-                self.cpy.nodes[index][field] = " "
-
-    def service_paths_to_file(self, filename):
-        """
-
-        Write to file the service paths situation
-        after the perturbation.
-
-        :param str filename: output file name where to print the
-            service paths situation
-        """
-
-        rb_paths_p = merge_lists(self.lst0, self.lst, "ids")
-
-        with open(filename, "w") as csvFile:
-            fields = [
-                "from", "to", "final_simple_path", "final_shortest_path",
-                "final_shortest_path_length", "final_pair_efficiency", "area",
-                "ids", 'original_simple path', 'original_shortest_path_length',
-                'original_pair_efficiency', 'original_shortest_path'
-            ]
-            writer = csv.DictWriter(csvFile, fieldnames=fields)
-            writer.writeheader()
-            writer.writerows(rb_paths_p)
-        csvFile.close()
-
     def graph_characterization_to_file(self, filename):
         """
 
@@ -1327,31 +1200,25 @@ class GeneralGraph(nx.DiGraph):
             graph characterization
         """
 
-        list_to_print = []
-        with open(filename, "w") as csvFile:
-            fields = [
-                "Mark", "Description", "InitStatus", "IntermediateStatus",
-                "FinalStatus", "Mark_Status", "PerturbationResistant", "Area",
-                "Status_Area", "closeness_centrality", "betweenness_centrality",
-                "indegree_centrality", "outdegree_centrality",
-                "original_local_eff", "final_local_eff",
-                "original_nodal_eff", "final_nodal_eff",
-                "original_avg_global_eff", "final_avg_global_eff",
-                "original_service", "residual_service"
-            ]
+        self.df.reset_index(inplace=True)
+        self.df.rename(columns={'index': 'Mark'}, inplace=True)
 
-            writer = csv.DictWriter(csvFile, fieldnames=fields)
-            writer.writeheader()
-            for node in self.cpy:
-                row = {f : self.cpy.nodes[node][f] for f in fields}
-                list_to_print.append(row)
-            writer.writerows(list_to_print)
-        csvFile.close()
+        fields = [
+            "Mark", "Description", "InitStatus", "IntermediateStatus",
+            "FinalStatus", "Mark_Status", "PerturbationResistant", "Area",
+            "Status_Area", "closeness_centrality", "betweenness_centrality",
+            "indegree_centrality", "outdegree_centrality",
+            "original_local_eff", "final_local_eff",
+            "original_nodal_eff", "final_nodal_eff",
+            "original_avg_global_eff", "final_avg_global_eff",
+            "original_service", "final_service"
+        ]
+        self.df[fields].to_csv(filename, index=False)
 
-    def compute_service(self, deleted_nodes=None):
+    def compute_service(self):
         """
 
-        Compute residual service for every node,
+        Compute service for every node,
         together with edge splitting.
 
         :param graph: Graph where the service is updated
@@ -1361,11 +1228,7 @@ class GeneralGraph(nx.DiGraph):
 
         users_per_node = {node: 0. for node in self}
         splitting = {edge: 0. for edge in self.edges()}
-        service = {node: 0. for node in self}
-
-        if deleted_nodes:
-            for node in deleted_nodes:
-                service[node] = " "
+        nx.set_node_attributes(self, 0., 'service')
 
         users_per_source = {
             s: [u for u in self.USER if nx.has_path(self, s, u)]
@@ -1379,7 +1242,8 @@ class GeneralGraph(nx.DiGraph):
 
         for s in self.SOURCE:
             for u in users_per_source[s]:
-                service[u] += self.Service[s]/len(users_per_source[s])
+                self.nodes[u]['service'] += \
+                self.Service[s]/len(users_per_source[s])
 
         #Cycle just on the edges contained in source-user shortest paths
         for s in self.SOURCE:
@@ -1390,5 +1254,3 @@ class GeneralGraph(nx.DiGraph):
                     tail = self.nodes[s]["shortest_path"][u][idx+1]
 
                     splitting[(head, tail)] += 1./users_per_node[head]
-
-        return service, splitting
