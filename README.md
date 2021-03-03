@@ -39,7 +39,9 @@ The package represents the dependencies between graph elements and predicts the 
 
 In particular, the contribution to the cascade effects resulting from adverse events can be evaluated through centrality and efficiency measures, highlighting the plants major criticalities, vulnerabilities and potential weak points.
 
-Considering that the most computationally expensive parts of the program involve the calculation of shortest paths, parallelization of shortest path computation in large unweighted graphs was integrated in the program. This was done taking advantage of the Python modules multiprocessing and threading. Two different sequential algorithms for the solution of the shortest path problem have been parallelized including a Single Source Shortest Path (SSSP) algorythm for sparse graphs and an All Pairs Shortest Path one (APSP) for dense graphs.
+Considering that the most computationally expensive parts of the program involve the calculation of shortest paths, parallelization of shortest path computation in large unweighted graphs was integrated in the program. This was done taking advantage of the Python modules multiprocessing and threading. Two different sequential algorithms for the solution of the shortest path problem have been parallelized including a Single Source Shortest Path (SSSP) algorithm for sparse graphs and an All Pairs Shortest Path one (APSP) for dense graphs.
+
+We acknowledge Aurora Maurizio for her substantial contributions to this package, including the conception of the algorithm and the implementation of the original code.
 
 ## Dependencies and installation
 
